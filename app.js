@@ -1019,7 +1019,7 @@
 
     if (confirmando === x.id) {
       fila.classList.add("confirmando");
-      fila.append(crearElemento("span", "sesion-confirmar", `¿Eliminar «${x.nombre}» y su progreso?`));
+      fila.append(crearElemento("span", "sesion-confirmar", `¿Eliminar ${x.nombre} y su progreso?`));
       const no = crearElemento("button", "boton chico", "Cancelar");
       const si = crearElemento("button", "boton chico peligro", "Eliminar");
       no.type = si.type = "button";
@@ -1064,9 +1064,9 @@
     abrir.append(nombre, barra, meta);
     abrir.onclick = () => abrirSesion(x.id);
 
-    const ren = botonIcono("lapiz", `Renombrar «${x.nombre}»`);
+    const ren = botonIcono("lapiz", `Renombrar ${x.nombre}`);
     ren.onclick = () => { renombrando = x.id; confirmando = null; pintarInicio(); };
-    const del = botonIcono("papelera", `Eliminar «${x.nombre}»`, "peligro");
+    const del = botonIcono("papelera", `Eliminar ${x.nombre}`, "peligro");
     del.onclick = () => { confirmando = x.id; renombrando = null; pintarInicio(); };
     fila.append(abrir, ren, del);
     return fila;
@@ -1237,11 +1237,11 @@
     progreso = validos;
     guardarProgreso();
     actualizar();
-    toast(`Progreso importado a «${sesion.nombre}»: ${Object.keys(validos).length} materia(s) marcadas.`);
+    toast(`Progreso importado a ${sesion.nombre}: ${Object.keys(validos).length} materia(s) marcadas.`);
   }));
 
   $("#btn-reiniciar").onclick = () => {
-    if (!confirm(`¿Borrar todo el progreso de «${sesion.nombre}»?`)) return;
+    if (!confirm(`¿Borrar todo el progreso de ${sesion.nombre}?`)) return;
     progreso = {};
     guardarProgreso();
     actualizar();
