@@ -25,13 +25,23 @@ can track your progress through your degree.
 
 > The user interface is in Spanish, and so are the field names of the plan format.
 
-It comes preloaded with the **Ingeniería en Sistemas Inteligentes — UASLP (August 2024)**
-plan (`planes/isi-uaslp-2024.json`): 79 courses, including the 4 emphasis areas (which
-can be hidden with the «Áreas de énfasis» toggle), the credit-based rules (e.g. 200
-Núcleo Básico credits for Administración de Proyectos I and the electives) and the
-graduation goals (405 credits, 313 mandatory, 64 elective). The prerequisites were
-taken from the lines on the PDF curriculum map; if any of them does not match what
-your faculty requires, fix it in the JSON and regenerate the `.js` file (see below).
+## Available degrees
+
+On first visit the app asks **which degree you study**; you can switch at any time
+with **Cambiar carrera**, and progress is stored separately for each degree.
+
+| Degree | Plan | Courses | Credits to graduate |
+|--------|------|---------|---------------------|
+| Ingeniería en Computación — UASLP | June 2024 | 85 (incl. 4 emphasis areas) | 450 (371 mandatory) |
+| Ingeniería en Mecatrónica — UASLP | June 2023 | 86 (incl. optional courses by branch) | 450 (413 mandatory) |
+| Ingeniería en Sistemas Inteligentes — UASLP | August 2024 | 79 (incl. 4 emphasis areas) | 405 (313 mandatory) |
+
+Each plan includes its credit-based rules (e.g. a share of the Núcleo Básico for the
+electives, minimum credits for internships or mobility), its CACEI and faculty
+classifications, and its graduation goals. Emphasis areas and optional branches are
+drawn in extra columns that can be hidden with the toggle in the header. The
+prerequisites were taken from the lines on each PDF curriculum map; if any of them does
+not match what your faculty requires, fix it in the JSON (see below).
 
 ## Usage
 
@@ -45,13 +55,18 @@ python3 -m http.server 8000
 
 then go to <http://localhost:8000>.
 
-## Loading your own plan
+## Adding or editing a degree
 
-Create a `.json` file with this format and load it with the **Cargar plan** button:
+Plans live in `planes/*.json`. To add a degree, create a new `.json` file with this
+format and regenerate the catalog (see below):
 
 ```json
 {
-  "nombre": "Licenciatura en Matemáticas",
+  "id": "matematicas-uaslp-2025",
+  "carrera": "Licenciatura en Matemáticas",
+  "institucion": "UASLP",
+  "version": "Enero 2025",
+  "nombre": "Licenciatura en Matemáticas — UASLP (Enero 2025)",
   "materias": [
     { "id": "CAL1", "nombre": "Cálculo I",  "semestre": 1, "creditos": 8, "prerrequisitos": [] },
     { "id": "CAL2", "nombre": "Cálculo II", "semestre": 2, "creditos": 8, "prerrequisitos": ["CAL1"] }
@@ -81,30 +96,34 @@ Fields of each course (`materias`):
 `semestre` can also be a string (for example `"Énfasis: Ciberseguridad"`): those
 courses are drawn in separate columns to the right of the semesters.
 
-Optional plan-level fields:
+Plan-level fields: `id` (unique, used to remember the chosen degree), `carrera`
+(shown on the degree picker) and `nombre` (default title; progress is saved under this
+name, so avoid renaming it once people use the plan) are required. Optional:
 
+- `institucion`, `version`: shown on the degree picker.
+- `etiquetaExtras`: label of the toggle for the named columns (default «Áreas de énfasis»).
 - `creditosParaEgresar`: credit target used for the % progress (defaults to the sum of all courses).
 - `grupos`: readable group names, e.g. `{ "nucleo": "Núcleo Básico" }`.
 - `clasificaciones`: name and badge colors per classification, e.g.
   `{ "IA": { "nombre": "Ingeniería Aplicada", "color": "#e3261b", "texto": "#ffe94d" } }`.
 - `departamentos`: name and border style per department, e.g.
   `{ "ingles": { "nombre": "Depto. Universitario de Inglés", "estilo": "redondeado" } }`
-  (`estilo` can be `grueso`, `delgado`, `doble` or `redondeado`).
+  (`estilo` can be `grueso`, `delgado`, `doble`, `redondeado`, `redondeado-simple` or `punteado`).
 - `metas`: extra progress bars, e.g.
   `{ "nombre": "Electivas", "creditos": 64, "tipo": "electivas" }`
-  (`tipo` can be `obligatorias`, `optativas` or `electivas`; or use `"grupo": "..."`).
+  (`tipo` can be `obligatorias`, `optativas`, `electivas` or `noObligatorias`; or use `"grupo": "..."`).
 - `notas`: list of plan rules shown in the side panel.
 
-The file may also include `"progreso": { "CAL1": "aprobada" }` to preload statuses
-(`cursando` = in progress, `aprobada` = passed, `reprobada` = failed,
-`recursando` = retaking, `unica` = last chance). The last loaded plan is remembered.
+Course statuses saved in progress files are `cursando` (in progress), `aprobada`
+(passed), `reprobada` (failed), `recursando` (retaking) and `unica` (last chance).
 
-The default plan lives in `planes/isi-uaslp-2024.json`. Since browsers do not allow
-reading local JSON files when `index.html` is opened directly, the page loads the copy
-`planes/isi-uaslp-2024.js`. If you edit the JSON, regenerate that copy:
+Since browsers do not allow reading local JSON files when `index.html` is opened
+directly, the page loads every plan from the generated `planes/catalogo.js`. After
+editing or adding a plan, regenerate it (it also checks required fields and duplicate
+ids):
 
 ```bash
-(echo "// Generado a partir de planes/isi-uaslp-2024.json"; printf "window.PLAN_PREDETERMINADO = "; cat planes/isi-uaslp-2024.json | sed '$ s/$/;/') > planes/isi-uaslp-2024.js
+python3 herramientas/generar_catalogo.py
 ```
 
 ## Files
@@ -112,8 +131,9 @@ reading local JSON files when `index.html` is opened directly, the page loads th
 - `index.html` – page structure.
 - `styles.css` – styles (light/dark, responsive).
 - `app.js` – logic: plan validation, graph layout, statuses, pan/zoom, persistence.
-- `planes/isi-uaslp-2024.json` – Ingeniería en Sistemas Inteligentes (UASLP) plan.
-- `planes/isi-uaslp-2024.js` – the same data, loaded by `index.html`.
+- `planes/*.json` – one plan per degree (source of truth).
+- `planes/catalogo.js` – all plans bundled for the page (generated, do not edit).
+- `herramientas/generar_catalogo.py` – regenerates `planes/catalogo.js`.
 
 ## License
 

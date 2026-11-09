@@ -1,7 +1,11 @@
-// Generado a partir de planes/isi-uaslp-2024.json
-window.PLAN_PREDETERMINADO = {
-  "nombre": "Ingeniería en Sistemas Inteligentes — UASLP (Agosto 2024)",
-  "creditosParaEgresar": 405,
+{
+  "id": "computacion-uaslp-2024",
+  "carrera": "Ingeniería en Computación",
+  "institucion": "UASLP",
+  "version": "Junio 2024",
+  "nombre": "Ingeniería en Computación — UASLP (Junio 2024)",
+  "creditosParaEgresar": 450,
+  "etiquetaExtras": "Áreas de énfasis",
   "clasificaciones": {
     "CB": {
       "nombre": "Ciencias Básicas y Matemáticas",
@@ -43,8 +47,8 @@ window.PLAN_PREDETERMINADO = {
       "nombre": "Depto. Físico Matemáticas",
       "estilo": "delgado"
     },
-    "humanistica": {
-      "nombre": "Formación Humanística",
+    "comunes": {
+      "nombre": "Comunes",
       "estilo": "doble"
     },
     "ingles": {
@@ -54,46 +58,60 @@ window.PLAN_PREDETERMINADO = {
   },
   "grupos": {
     "nucleo": "Núcleo Básico",
-    "robotica": "Robótica Inteligente e IA",
-    "videojuegos": "Interacción y Videojuegos",
-    "ciberseguridad": "Ciberseguridad",
-    "web": "Desarrollo Web y Multiplataforma"
+    "iot": "Internet de las Cosas",
+    "nube": "Cómputo en la Nube",
+    "web": "Desarrollo Web y Multiplataforma",
+    "geo": "Sistemas Geoespaciales"
   },
   "metas": [
     {
       "nombre": "Créditos para pasante",
-      "creditos": 405
+      "creditos": 450
     },
     {
       "nombre": "Materias obligatorias",
-      "creditos": 313,
+      "creditos": 371,
       "tipo": "obligatorias"
     },
     {
-      "nombre": "Electivas de Área de Énfasis",
-      "creditos": 64,
-      "tipo": "electivas"
+      "nombre": "Electivas de área y/u optativas",
+      "creditos": 79,
+      "tipo": "noObligatorias"
     },
     {
       "nombre": "Servicio Social (habilitado)",
-      "creditos": 284
+      "creditos": 315
     }
   ],
   "notas": [
-    "Administración de Proyectos I, Seminario de Medio Término y las Electivas de Área de Énfasis requieren 200 créditos del Núcleo Básico (90%).",
-    "Cada Área de Énfasis requiere: Robótica → Fund. de IA; Videojuegos → Graficación; Ciberseguridad → Diseño e Impl. de Redes; Web → Interfaces Gráficas.",
-    "Se deben aprobar al menos 64 créditos de electivas de área y 28 créditos más de optativas (*) o electivas.",
-    "Actividades de Aprendizaje I–V (90 cr), Movilidad I–V (225 cr) y Prácticas Profesionales (315 cr) son optativas.",
-    "El Servicio Social se puede realizar al tener 284 créditos (70%)."
+    "Administración de Proyectos I, Seminario de Medio Término y las Electivas de Área de Énfasis requieren el 90% del Núcleo Básico (220 créditos).",
+    "Cada Área de Énfasis requiere: Internet de las Cosas → Microcontroladores; Cómputo en la Nube → Diseño e Impl. de Redes; Web y Multiplataforma → Interfaces Gráficas; Sistemas Geoespaciales → Interfaces Gráficas.",
+    "Computación y Sociedad requiere 390 créditos.",
+    "Proyectos Computacionales I requiere el 100% de las obligatorias del Núcleo Básico y Administración de Proyectos I.",
+    "Interfaces Digitales de Comunicación requiere el 90% del Núcleo Básico, Microcontroladores y Procesamiento de Señales.",
+    "Fundamentos de Software de Sistemas requiere 340 créditos.",
+    "Actividades de Aprendizaje I–V (180 cr), Movilidad I–V (225 cr) y Prácticas Profesionales COMP (315 cr, 240 horas) son optativas.",
+    "Para ser pasante se requieren 450 créditos: todas las obligatorias (371) y 79 de electivas de área y/u optativas (*).",
+    "El Servicio Social se puede realizar al tener 315 créditos (70%)."
   ],
   "materias": [
     {
-      "id": "2805",
-      "nombre": "Herramientas de Software",
+      "id": "0071",
+      "nombre": "Química A",
       "semestre": 1,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "IA",
+      "clasificacion": "CB",
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
+    },
+    {
+      "id": "2151",
+      "nombre": "Matemáticas Discretas I",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
       "grupo": "nucleo",
       "departamento": "carrera"
     },
@@ -108,16 +126,6 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2151",
-      "nombre": "Matemáticas Discretas I",
-      "semestre": 1,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CB",
-      "grupo": "nucleo",
-      "departamento": "carrera"
-    },
-    {
       "id": "2150",
       "nombre": "Temas Selectos de Matemáticas",
       "semestre": 1,
@@ -128,14 +136,14 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "0071",
-      "nombre": "Química A",
+      "id": "2805",
+      "nombre": "Herramientas de Software",
       "semestre": 1,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "CB",
+      "clasificacion": "IA",
       "grupo": "nucleo",
-      "departamento": "fisicomat"
+      "departamento": "carrera"
     },
     {
       "id": "1005",
@@ -144,8 +152,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 4,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo",
-      "departamento": "humanistica"
+      "departamento": "comunes"
     },
     {
       "id": "2002",
@@ -157,12 +164,24 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2806",
-      "nombre": "Sistemas Interactivos",
+      "id": "0051",
+      "nombre": "Cálculo A",
       "semestre": 2,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "IA",
+      "clasificacion": "CB",
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
+    },
+    {
+      "id": "2152",
+      "nombre": "Matemáticas Discretas II",
+      "semestre": 2,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2151"
+      ],
+      "clasificacion": "CB",
       "grupo": "nucleo",
       "departamento": "carrera"
     },
@@ -179,18 +198,6 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2152",
-      "nombre": "Matemáticas Discretas II",
-      "semestre": 2,
-      "creditos": 8,
-      "prerrequisitos": [
-        "2151"
-      ],
-      "clasificacion": "CB",
-      "grupo": "nucleo",
-      "departamento": "carrera"
-    },
-    {
       "id": "0042",
       "nombre": "Álgebra B",
       "semestre": 2,
@@ -203,24 +210,14 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "fisicomat"
     },
     {
-      "id": "0051",
-      "nombre": "Cálculo A",
+      "id": "2978",
+      "nombre": "Fundamentos de Circuitos Eléctricos",
       "semestre": 2,
-      "creditos": 8,
+      "creditos": 10,
       "prerrequisitos": [],
-      "clasificacion": "CB",
+      "clasificacion": "CI",
       "grupo": "nucleo",
-      "departamento": "fisicomat"
-    },
-    {
-      "id": "1008",
-      "nombre": "Tendencias Sociales",
-      "semestre": 2,
-      "creditos": 2,
-      "prerrequisitos": [],
-      "clasificacion": "CS",
-      "grupo": "nucleo",
-      "departamento": "humanistica"
+      "departamento": "carrera"
     },
     {
       "id": "1936",
@@ -232,12 +229,24 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "ingles"
     },
     {
+      "id": "0052",
+      "nombre": "Cálculo B",
+      "semestre": 3,
+      "creditos": 8,
+      "prerrequisitos": [
+        "0051"
+      ],
+      "clasificacion": "CB",
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
+    },
+    {
       "id": "2304",
       "nombre": "Ingeniería de Software",
       "semestre": 3,
       "creditos": 8,
       "prerrequisitos": [
-        "2806"
+        "2231"
       ],
       "clasificacion": "IA",
       "grupo": "nucleo",
@@ -268,48 +277,37 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "0061",
-      "nombre": "Física A",
+      "id": "2979",
+      "nombre": "Dispositivos Semiconductores",
       "semestre": 3,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CB",
+      "creditos": 10,
+      "prerrequisitos": [
+        "2978"
+      ],
+      "clasificacion": "CI",
       "grupo": "nucleo",
-      "departamento": "fisicomat"
+      "departamento": "carrera"
     },
     {
-      "id": "0052",
-      "nombre": "Cálculo B",
+      "id": "1008",
+      "nombre": "Tendencias Sociales",
       "semestre": 3,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "comunes"
+    },
+    {
+      "id": "0054",
+      "nombre": "Cálculo D",
+      "semestre": 4,
       "creditos": 8,
       "prerrequisitos": [
         "0051"
       ],
       "clasificacion": "CB",
       "grupo": "nucleo",
-      "departamento": "fisicomat",
-      "optativa": true
-    },
-    {
-      "id": "2532",
-      "nombre": "Arquitectura de Computadoras",
-      "semestre": 3,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CI",
-      "grupo": "nucleo",
-      "departamento": "carrera"
-    },
-    {
-      "id": "1937",
-      "nombre": "Inglés 2",
-      "semestre": 3,
-      "creditos": 5,
-      "prerrequisitos": [
-        "1936"
-      ],
-      "clasificacion": "CC",
-      "departamento": "ingles"
+      "departamento": "fisicomat"
     },
     {
       "id": "2234",
@@ -349,35 +347,45 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2840",
-      "nombre": "Gestión de Servidores y Seguridad",
+      "id": "2977",
+      "nombre": "Fundamentos de Diseño Digital",
       "semestre": 4,
       "creditos": 8,
       "prerrequisitos": [
-        "2231"
+        "2979"
       ],
       "clasificacion": "CI",
       "grupo": "nucleo",
       "departamento": "carrera"
     },
     {
-      "id": "0054",
-      "nombre": "Cálculo D",
+      "id": "1009",
+      "nombre": "Gestión y Desarrollo Social",
       "semestre": 4,
-      "creditos": 8,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "comunes"
+    },
+    {
+      "id": "1937",
+      "nombre": "Inglés 2",
+      "semestre": 4,
+      "creditos": 5,
       "prerrequisitos": [
-        "0051"
+        "1936"
       ],
-      "clasificacion": "CB",
-      "grupo": "nucleo",
-      "departamento": "fisicomat"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2111",
       "nombre": "Análisis Numérico",
-      "semestre": 4,
+      "semestre": 5,
       "creditos": 8,
-      "prerrequisitos": [],
+      "prerrequisitos": [
+        "0054"
+      ],
       "clasificacion": "CB",
       "grupo": "nucleo",
       "departamento": "carrera"
@@ -395,56 +403,48 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2813",
-      "nombre": "Fundamentos de Inteligencia Artificial",
+      "id": "2840",
+      "nombre": "Gestión de Servidores y Seguridad",
       "semestre": 5,
       "creditos": 8,
       "prerrequisitos": [
-        "2235"
+        "2231"
       ],
       "clasificacion": "CI",
       "grupo": "nucleo",
       "departamento": "carrera"
     },
     {
-      "id": "2807",
-      "nombre": "Graficación por Computadora",
+      "id": "0061",
+      "nombre": "Física A",
       "semestre": 5,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "IA",
+      "clasificacion": "CB",
       "grupo": "nucleo",
-      "departamento": "carrera"
+      "departamento": "fisicomat"
     },
     {
-      "id": "2823",
-      "nombre": "Diseño e Implementación de Redes",
+      "id": "2980",
+      "nombre": "Diseño Digital",
       "semestre": 5,
-      "creditos": 8,
-      "prerrequisitos": [],
+      "creditos": 10,
+      "prerrequisitos": [
+        "2977"
+      ],
       "clasificacion": "CI",
       "grupo": "nucleo",
       "departamento": "carrera"
     },
     {
-      "id": "2252",
-      "nombre": "Sistemas Operativos",
-      "semestre": 5,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CI",
-      "grupo": "nucleo",
-      "departamento": "carrera"
-    },
-    {
-      "id": "1009",
-      "nombre": "Gestión y Desarrollo Social",
+      "id": "1014",
+      "nombre": "Actividades Artísticas, Deportivas o de Divulgación",
       "semestre": 5,
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo",
-      "departamento": "humanistica"
+      "departamento": "comunes",
+      "optativa": true
     },
     {
       "id": "1938",
@@ -458,47 +458,59 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "ingles"
     },
     {
-      "id": "1006",
-      "nombre": "Técnicas de Comunicación Oral y Escrita",
-      "semestre": 6,
-      "creditos": 5,
-      "prerrequisitos": [],
-      "clasificacion": "CC",
-      "departamento": "humanistica"
-    },
-    {
-      "id": "2053",
-      "nombre": "Administración de Proyectos I",
-      "semestre": 6,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CE",
-      "departamento": "carrera",
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2008",
-      "nombre": "Seminario de Medio Término",
-      "semestre": 6,
-      "creditos": 2,
-      "prerrequisitos": [],
-      "clasificacion": "CC",
-      "departamento": "carrera",
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
       "id": "2112",
       "nombre": "Probabilidad y Estadística",
       "semestre": 6,
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
+      "grupo": "nucleo",
+      "departamento": "carrera"
+    },
+    {
+      "id": "2206",
+      "nombre": "Estructuras de Datos Avanzadas",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2234"
+      ],
+      "clasificacion": "CI",
+      "grupo": "nucleo",
+      "departamento": "carrera"
+    },
+    {
+      "id": "2823",
+      "nombre": "Diseño e Implementación de Redes",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2840"
+      ],
+      "clasificacion": "CI",
+      "grupo": "nucleo",
+      "departamento": "carrera"
+    },
+    {
+      "id": "2252",
+      "nombre": "Sistemas Operativos",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CI",
+      "grupo": "nucleo",
+      "departamento": "carrera"
+    },
+    {
+      "id": "2981",
+      "nombre": "Diseño de Microcomputadoras",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2980"
+      ],
+      "clasificacion": "IA",
+      "grupo": "nucleo",
       "departamento": "carrera"
     },
     {
@@ -508,7 +520,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "departamento": "humanistica"
+      "departamento": "comunes"
     },
     {
       "id": "1939",
@@ -522,55 +534,61 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "ingles"
     },
     {
-      "id": "2050",
-      "nombre": "Proyectos Computacionales I",
+      "id": "2008",
+      "nombre": "Seminario de Medio Término",
       "semestre": 7,
-      "creditos": 8,
-      "prerrequisitos": [
-        "2053"
-      ],
-      "clasificacion": "IA",
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
       "departamento": "carrera",
-      "grupoCompleto": "nucleo"
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
     },
     {
-      "id": "2054",
-      "nombre": "Administración de Proyectos II",
+      "id": "2053",
+      "nombre": "Administración de Proyectos I",
       "semestre": 7,
       "creditos": 8,
-      "prerrequisitos": [
-        "2053"
-      ],
+      "prerrequisitos": [],
       "clasificacion": "CE",
-      "departamento": "carrera"
-    },
-    {
-      "id": "2228",
-      "nombre": "Supercómputo",
-      "semestre": 7,
-      "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "IA",
       "departamento": "carrera",
-      "optativa": true
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
     },
     {
-      "id": "2113",
-      "nombre": "Modelado Matemático",
+      "id": "2408",
+      "nombre": "Fundamentos de Compiladores",
       "semestre": 7,
       "creditos": 8,
-      "prerrequisitos": [],
-      "clasificacion": "CB",
+      "prerrequisitos": [
+        "2206"
+      ],
+      "clasificacion": "CI",
       "departamento": "carrera"
     },
     {
-      "id": "1015",
-      "nombre": "Liderazgo",
+      "id": "2982",
+      "nombre": "Microcontroladores",
       "semestre": 7,
-      "creditos": 1,
+      "creditos": 10,
+      "prerrequisitos": [
+        "2981"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera"
+    },
+    {
+      "id": "1006",
+      "nombre": "Técnicas de Comunicación Oral y Escrita",
+      "semestre": 7,
+      "creditos": 5,
       "prerrequisitos": [],
-      "clasificacion": "CS",
-      "departamento": "humanistica"
+      "clasificacion": "CC",
+      "departamento": "comunes"
     },
     {
       "id": "1940",
@@ -584,14 +602,60 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "ingles"
     },
     {
-      "id": "2051",
-      "nombre": "Proyectos Computacionales II",
+      "id": "2050",
+      "nombre": "Proyectos Computacionales I",
       "semestre": 8,
       "creditos": 8,
       "prerrequisitos": [
-        "2050"
+        "2053"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupoCompleto": "nucleo"
+    },
+    {
+      "id": "2054",
+      "nombre": "Administración de Proyectos II",
+      "semestre": 8,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2053"
       ],
       "clasificacion": "CE",
+      "departamento": "carrera"
+    },
+    {
+      "id": "1916",
+      "nombre": "Actividades de Aprendizaje I",
+      "semestre": 8,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "comunes",
+      "optativa": true,
+      "creditosMinimos": 180
+    },
+    {
+      "id": "2405",
+      "nombre": "Sistemas Operativos Avanzados",
+      "semestre": 8,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2252"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "optativa": true
+    },
+    {
+      "id": "2984",
+      "nombre": "Procesamiento de Señales",
+      "semestre": 8,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2982"
+      ],
+      "clasificacion": "CI",
       "departamento": "carrera"
     },
     {
@@ -601,44 +665,95 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 6,
       "prerrequisitos": [],
       "clasificacion": "CC",
-      "departamento": "carrera",
+      "departamento": "comunes",
       "optativa": true,
       "creditosMinimos": 225
     },
     {
-      "id": "1013",
-      "nombre": "Arte, Cultura y Humanidades II",
+      "id": "1015",
+      "nombre": "Liderazgo",
       "semestre": 8,
-      "creditos": 2,
+      "creditos": 1,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "departamento": "humanistica",
+      "departamento": "comunes"
+    },
+    {
+      "id": "2051",
+      "nombre": "Proyectos Computacionales II",
+      "semestre": 9,
+      "creditos": 8,
+      "prerrequisitos": [
+        "2050"
+      ],
+      "clasificacion": "CE",
+      "departamento": "carrera"
+    },
+    {
+      "id": "2813",
+      "nombre": "Fundamentos de Inteligencia Artificial",
+      "semestre": 9,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "carrera",
       "optativa": true
+    },
+    {
+      "id": "2409",
+      "nombre": "Fundamentos de Software de Sistemas",
+      "semestre": 9,
+      "creditos": 10,
+      "prerrequisitos": [],
+      "clasificacion": "CI",
+      "departamento": "carrera",
+      "creditosMinimos": 340
+    },
+    {
+      "id": "2313",
+      "nombre": "Administración de Bases de Datos",
+      "semestre": 9,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CI",
+      "departamento": "carrera",
+      "optativa": true
+    },
+    {
+      "id": "2228",
+      "nombre": "Supercómputo",
+      "semestre": 9,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "optativa": true
+    },
+    {
+      "id": "2007",
+      "nombre": "Prácticas Profesionales COMP",
+      "semestre": 9,
+      "creditos": 15,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "optativa": true,
+      "creditosMinimos": 315,
+      "nota": "Se deben cubrir 240 horas."
     },
     {
       "id": "1016",
       "nombre": "Emprendimiento",
-      "semestre": 8,
+      "semestre": 9,
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "departamento": "humanistica"
-    },
-    {
-      "id": "1916",
-      "nombre": "Actividades de Aprendizaje I",
-      "semestre": 8,
-      "creditos": 2,
-      "prerrequisitos": [],
-      "clasificacion": "CC",
-      "departamento": "humanistica",
-      "optativa": true,
-      "creditosMinimos": 90
+      "departamento": "comunes"
     },
     {
       "id": "2052",
       "nombre": "Proyectos Computacionales III",
-      "semestre": 9,
+      "semestre": 10,
       "creditos": 8,
       "prerrequisitos": [
         "2051"
@@ -647,349 +762,220 @@ window.PLAN_PREDETERMINADO = {
       "departamento": "carrera"
     },
     {
-      "id": "2085",
-      "nombre": "Computación y Sociedad",
-      "semestre": 9,
-      "creditos": 2,
-      "prerrequisitos": [],
-      "clasificacion": "CC",
-      "departamento": "carrera",
-      "creditosMinimos": 350
-    },
-    {
       "id": "1926",
       "nombre": "Seminario de Egreso",
-      "semestre": 9,
+      "semestre": 10,
       "creditos": 0,
       "prerrequisitos": [],
       "clasificacion": "CC",
-      "departamento": "humanistica"
+      "departamento": "comunes"
     },
     {
-      "id": "1014",
-      "nombre": "Actividades Artísticas, Deportivas o de Divulgación",
-      "semestre": 9,
+      "id": "2085",
+      "nombre": "Computación y Sociedad",
+      "semestre": 10,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "carrera",
+      "creditosMinimos": 390
+    },
+    {
+      "id": "1013",
+      "nombre": "Arte, Cultura y Humanidades II",
+      "semestre": 10,
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "departamento": "humanistica",
+      "departamento": "comunes",
       "optativa": true
     },
     {
-      "id": "2005",
-      "nombre": "Prácticas Profesionales ISI",
-      "semestre": 9,
-      "creditos": 15,
-      "prerrequisitos": [],
-      "clasificacion": "IA",
-      "departamento": "carrera",
-      "optativa": true,
-      "creditosMinimos": 315
-    },
-    {
-      "id": "2817",
-      "nombre": "Programación de Robots",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2974",
+      "nombre": "Robótica",
+      "semestre": "Énfasis: Internet de las Cosas",
       "creditos": 8,
       "prerrequisitos": [
-        "2813"
+        "2982"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "iot",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2815",
-      "nombre": "Visión Computacional",
-      "semestre": "Énfasis: Robótica e IA",
-      "creditos": 8,
+      "id": "2985",
+      "nombre": "Sistemas Embebidos",
+      "semestre": "Énfasis: Internet de las Cosas",
+      "creditos": 10,
       "prerrequisitos": [
-        "2817"
+        "2982"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "iot",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2818",
-      "nombre": "Robótica Inteligente",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2986",
+      "nombre": "Automatización",
+      "semestre": "Énfasis: Internet de las Cosas",
       "creditos": 8,
       "prerrequisitos": [
-        "2817"
+        "2982"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "iot",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2819",
-      "nombre": "Representación del Conocimiento y Ontologías",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2987",
+      "nombre": "Control Digital",
+      "semestre": "Énfasis: Internet de las Cosas",
       "creditos": 8,
       "prerrequisitos": [
-        "2813"
+        "2982"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "iot",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2809",
-      "nombre": "Cómputo Bio-Inspirado",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2988",
+      "nombre": "Interfaces Digitales de Comunicación",
+      "semestre": "Énfasis: Internet de las Cosas",
       "creditos": 8,
       "prerrequisitos": [
-        "2813"
+        "2982",
+        "2984"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "iot",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2816",
-      "nombre": "Aprendizaje Automático",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2841",
+      "nombre": "Principios de Cómputo en la Nube",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
-        "2813"
+        "2823"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2808",
-      "nombre": "Ciencia de Datos",
-      "semestre": "Énfasis: Robótica e IA",
+      "id": "2842",
+      "nombre": "Arquitectura de Nube",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
-        "2816"
+        "2841"
       ],
       "clasificacion": "IA",
-      "grupo": "robotica",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
-      "id": "2832",
-      "nombre": "Programación de Videojuegos",
-      "semestre": "Énfasis: Interacción y Videojuegos",
+      "id": "2843",
+      "nombre": "Servicios en la Nube",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
-        "2807"
+        "2842"
       ],
       "clasificacion": "IA",
-      "grupo": "videojuegos",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2834",
-      "nombre": "Motores Gráficos",
-      "semestre": "Énfasis: Interacción y Videojuegos",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2832"
-      ],
-      "clasificacion": "IA",
-      "grupo": "videojuegos",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2835",
-      "nombre": "Temas Selectos de Videojuegos",
-      "semestre": "Énfasis: Interacción y Videojuegos",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2834"
-      ],
-      "clasificacion": "IA",
-      "grupo": "videojuegos",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2833",
-      "nombre": "Diseño de Juegos",
-      "semestre": "Énfasis: Interacción y Videojuegos",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2807"
-      ],
-      "clasificacion": "IA",
-      "grupo": "videojuegos",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2836",
-      "nombre": "Arte Conceptual para Videojuegos",
-      "semestre": "Énfasis: Interacción y Videojuegos",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2807"
-      ],
-      "clasificacion": "IA",
-      "grupo": "videojuegos",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
       "id": "2824",
       "nombre": "Administración de Redes",
-      "semestre": "Énfasis: Ciberseguridad",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
         "2823"
       ],
       "clasificacion": "IA",
-      "grupo": "ciberseguridad",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
       "id": "2829",
       "nombre": "Interacción de Redes",
-      "semestre": "Énfasis: Ciberseguridad",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
         "2824"
       ],
       "clasificacion": "IA",
-      "grupo": "ciberseguridad",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
       "id": "2827",
       "nombre": "Modelado y Simulación de Redes",
-      "semestre": "Énfasis: Ciberseguridad",
+      "semestre": "Énfasis: Cómputo en la Nube",
       "creditos": 8,
       "prerrequisitos": [
         "2823"
       ],
       "clasificacion": "IA",
-      "grupo": "ciberseguridad",
       "departamento": "carrera",
+      "grupo": "nube",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2825",
-      "nombre": "Principios de Seguridad Informática",
-      "semestre": "Énfasis: Ciberseguridad",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2823"
-      ],
-      "clasificacion": "IA",
-      "grupo": "ciberseguridad",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2826",
-      "nombre": "Criptografía",
-      "semestre": "Énfasis: Ciberseguridad",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2825"
-      ],
-      "clasificacion": "IA",
-      "grupo": "ciberseguridad",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
-      }
-    },
-    {
-      "id": "2828",
-      "nombre": "Anonimato y Privacidad",
-      "semestre": "Énfasis: Ciberseguridad",
-      "creditos": 8,
-      "prerrequisitos": [
-        "2825"
-      ],
-      "clasificacion": "IA",
-      "grupo": "ciberseguridad",
-      "departamento": "carrera",
-      "electiva": true,
-      "creditosMinimosGrupo": {
-        "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
@@ -1001,12 +987,12 @@ window.PLAN_PREDETERMINADO = {
         "2236"
       ],
       "clasificacion": "IA",
-      "grupo": "web",
       "departamento": "carrera",
+      "grupo": "web",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
@@ -1018,12 +1004,12 @@ window.PLAN_PREDETERMINADO = {
         "2238"
       ],
       "clasificacion": "IA",
-      "grupo": "web",
       "departamento": "carrera",
+      "grupo": "web",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
@@ -1035,12 +1021,12 @@ window.PLAN_PREDETERMINADO = {
         "2238"
       ],
       "clasificacion": "IA",
-      "grupo": "web",
       "departamento": "carrera",
+      "grupo": "web",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
@@ -1052,12 +1038,12 @@ window.PLAN_PREDETERMINADO = {
         "2236"
       ],
       "clasificacion": "IA",
-      "grupo": "web",
       "departamento": "carrera",
+      "grupo": "web",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
       }
     },
     {
@@ -1069,13 +1055,98 @@ window.PLAN_PREDETERMINADO = {
         "2236"
       ],
       "clasificacion": "IA",
-      "grupo": "web",
       "departamento": "carrera",
+      "grupo": "web",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
-        "creditos": 200
+        "creditos": 220
+      }
+    },
+    {
+      "id": "2850",
+      "nombre": "Introducción a los Sistemas Geoespaciales",
+      "semestre": "Énfasis: Sistemas Geoespaciales",
+      "creditos": 8,
+      "prerrequisitos": [
+        "2236"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupo": "geo",
+      "electiva": true,
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
+    },
+    {
+      "id": "2851",
+      "nombre": "Bases de Datos Geoespaciales",
+      "semestre": "Énfasis: Sistemas Geoespaciales",
+      "creditos": 8,
+      "prerrequisitos": [
+        "2850"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupo": "geo",
+      "electiva": true,
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
+    },
+    {
+      "id": "2853",
+      "nombre": "Geoaplicaciones Web y Moviles",
+      "semestre": "Énfasis: Sistemas Geoespaciales",
+      "creditos": 8,
+      "prerrequisitos": [
+        "2850"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupo": "geo",
+      "electiva": true,
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
+    },
+    {
+      "id": "2815",
+      "nombre": "Visión Computacional",
+      "semestre": "Énfasis: Sistemas Geoespaciales",
+      "creditos": 8,
+      "prerrequisitos": [
+        "2236"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupo": "geo",
+      "electiva": true,
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
+      }
+    },
+    {
+      "id": "2852",
+      "nombre": "Geointeligencia Artificial Aplicada a la Teledetección",
+      "semestre": "Énfasis: Sistemas Geoespaciales",
+      "creditos": 8,
+      "prerrequisitos": [
+        "2815"
+      ],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "grupo": "geo",
+      "electiva": true,
+      "creditosMinimosGrupo": {
+        "grupo": "nucleo",
+        "creditos": 220
       }
     }
   ]
-};
+}

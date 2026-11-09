@@ -1,4 +1,8 @@
 {
+  "id": "isi-uaslp-2024",
+  "carrera": "Ingeniería en Sistemas Inteligentes",
+  "institucion": "UASLP",
+  "version": "Agosto 2024",
   "nombre": "Ingeniería en Sistemas Inteligentes — UASLP (Agosto 2024)",
   "creditosParaEgresar": 405,
   "clasificaciones": {
@@ -1076,5 +1080,6 @@
         "creditos": 200
       }
     }
-  ]
+  ],
+  "etiquetaExtras": "Áreas de énfasis"
 }

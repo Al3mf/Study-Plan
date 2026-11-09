@@ -1,0 +1,1101 @@
+{
+  "id": "mecatronica-uaslp-2023",
+  "carrera": "Ingeniería en Mecatrónica",
+  "institucion": "UASLP",
+  "version": "Junio 2023",
+  "nombre": "Ingeniería en Mecatrónica — UASLP (Junio 2023)",
+  "creditosParaEgresar": 450,
+  "etiquetaExtras": "Optativas",
+  "clasificaciones": {
+    "CB": {
+      "nombre": "Ciencias Básicas",
+      "color": "#a99bc9",
+      "texto": "#ffffff"
+    },
+    "CI": {
+      "nombre": "Ciencias de la Ingeniería",
+      "color": "#2f6fe4",
+      "texto": "#ffffff"
+    },
+    "IA": {
+      "nombre": "Ingeniería Aplicada",
+      "color": "#e3261b",
+      "texto": "#ffe94d"
+    },
+    "DI": {
+      "nombre": "Diseño en Ingeniería",
+      "color": "#12937a",
+      "texto": "#ffffff"
+    },
+    "CS": {
+      "nombre": "Ciencias Sociales y Humanidades",
+      "color": "#f5e400",
+      "texto": "#d42020"
+    },
+    "CE": {
+      "nombre": "Ciencias Económico-Administrativas",
+      "color": "#f07a1a",
+      "texto": "#ffffff"
+    },
+    "CC": {
+      "nombre": "Cursos Complementarios",
+      "color": "",
+      "texto": ""
+    }
+  },
+  "departamentos": {
+    "area": {
+      "nombre": "Área",
+      "estilo": "grueso"
+    },
+    "carrera": {
+      "nombre": "Carrera",
+      "estilo": "redondeado-simple"
+    },
+    "dfm": {
+      "nombre": "Depto. Físico Matemáticas",
+      "estilo": "delgado"
+    },
+    "humanistica": {
+      "nombre": "Formación Humanística",
+      "estilo": "doble"
+    },
+    "dui": {
+      "nombre": "Depto. Universitario de Inglés",
+      "estilo": "redondeado"
+    },
+    "prerrequisito": {
+      "nombre": "Pre-requisito",
+      "estilo": "punteado"
+    }
+  },
+  "grupos": {
+    "niveles-1-6": "Niveles I a VI"
+  },
+  "metas": [
+    {
+      "nombre": "Créditos para pasante",
+      "creditos": 450
+    },
+    {
+      "nombre": "Materias obligatorias",
+      "creditos": 413,
+      "tipo": "obligatorias"
+    }
+  ],
+  "notas": [
+    "Principios de Administración requiere 90 créditos; Programación I, 135.",
+    "Electroneumática e Instrumentación Industrial requieren 180 créditos; Robótica A, 225.",
+    "Administración de Proyectos, Ingeniería Automotriz, Administración de Personal, Seguridad e Higiene Industrial y Diagramas Eléctricos requieren 315 créditos.",
+    "Seminario, Tratamiento de Imágenes, Inteligencia Artificial Aplicada e Ingeniería Asistida por Computadora requieren 360 créditos.",
+    "Prácticas Profesionales IMT requiere 315 créditos y haber acreditado los niveles I a VI; se cursa entre los niveles VII y X y no junto con Proyecto Integrador IMT.",
+    "Validación de la Lengua Extranjera se acredita con 460 puntos TOEFL ITP.",
+    "Seminario de Egreso se acredita al presentar por primera vez el EGEL Plus-IMECATRO y requiere 405 créditos.",
+    "Actividades de Aprendizaje (I a X) y Movilidad (I a VIII) son bloques de optativas.",
+    "Para la pasantía se deben aprobar todos los créditos obligatorios (413) y optativas hasta cubrir al menos 450 créditos."
+  ],
+  "materias": [
+    {
+      "id": "5688",
+      "nombre": "Habilidades Socio Afectivas y Éticas",
+      "semestre": 1,
+      "creditos": 3,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "0041",
+      "nombre": "Álgebra A",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "0000",
+      "nombre": "Geometría y Trigonometría",
+      "semestre": 1,
+      "creditos": 0,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "prerrequisito",
+      "nota": "Pre-requisito (sin créditos)."
+    },
+    {
+      "id": "0051",
+      "nombre": "Cálculo A",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "0061",
+      "nombre": "Física A",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "5690",
+      "nombre": "Dibujo en Ingeniería Mecánica",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "0071",
+      "nombre": "Química A",
+      "semestre": 1,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "1005",
+      "nombre": "Metodología de la Investigación",
+      "semestre": 1,
+      "creditos": 4,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "grupo": "niveles-1-6",
+      "departamento": "humanistica"
+    },
+    {
+      "id": "5918",
+      "nombre": "Seminario de Orientación IMT",
+      "semestre": 1,
+      "creditos": 1,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "carrera"
+    },
+    {
+      "id": "0042",
+      "nombre": "Álgebra B",
+      "semestre": 2,
+      "creditos": 8,
+      "prerrequisitos": [
+        "0041"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "0054",
+      "nombre": "Cálculo D",
+      "semestre": 2,
+      "creditos": 8,
+      "prerrequisitos": [
+        "0051"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "0052",
+      "nombre": "Cálculo B",
+      "semestre": 2,
+      "creditos": 8,
+      "prerrequisitos": [
+        "0051"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "dfm"
+    },
+    {
+      "id": "5694",
+      "nombre": "Estática",
+      "semestre": 2,
+      "creditos": 8,
+      "prerrequisitos": [
+        "0061"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5689",
+      "nombre": "Dibujo Asistido por Computadora",
+      "semestre": 2,
+      "creditos": 3,
+      "prerrequisitos": [
+        "5690"
+      ],
+      "clasificacion": "IA",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5699",
+      "nombre": "Materiales para Ingeniería",
+      "semestre": 2,
+      "creditos": 9,
+      "prerrequisitos": [
+        "0071"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1015",
+      "nombre": "Liderazgo",
+      "semestre": 2,
+      "creditos": 1,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "grupo": "niveles-1-6",
+      "departamento": "humanistica"
+    },
+    {
+      "id": "1936",
+      "nombre": "Inglés 1",
+      "semestre": 2,
+      "creditos": 5,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "dui"
+    },
+    {
+      "id": "5731",
+      "nombre": "Fundamentos de Programación",
+      "semestre": 3,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5960",
+      "nombre": "Matemáticas Aplicadas",
+      "semestre": 3,
+      "creditos": 6,
+      "prerrequisitos": [
+        "0042",
+        "0054"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1016",
+      "nombre": "Emprendimiento",
+      "semestre": 3,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "grupo": "niveles-1-6",
+      "departamento": "humanistica"
+    },
+    {
+      "id": "5692",
+      "nombre": "Electrotécnia para Ingeniería I",
+      "semestre": 3,
+      "creditos": 9,
+      "prerrequisitos": [
+        "0051",
+        "0061"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5695",
+      "nombre": "Mecánica de Materiales I",
+      "semestre": 3,
+      "creditos": 11,
+      "prerrequisitos": [
+        "5694"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5930",
+      "nombre": "Ingeniería y Gestión Ambiental",
+      "semestre": 3,
+      "creditos": 3,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1006",
+      "nombre": "Técnicas de Comunicación Oral y Escrita",
+      "semestre": 3,
+      "creditos": 5,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "humanistica"
+    },
+    {
+      "id": "1937",
+      "nombre": "Inglés 2",
+      "semestre": 3,
+      "creditos": 5,
+      "prerrequisitos": [
+        "1936"
+      ],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "dui"
+    },
+    {
+      "id": "5900",
+      "nombre": "Principios de Administración",
+      "semestre": 4,
+      "creditos": 6,
+      "prerrequisitos": [],
+      "clasificacion": "CE",
+      "grupo": "niveles-1-6",
+      "departamento": "area",
+      "creditosMinimos": 90
+    },
+    {
+      "id": "5707",
+      "nombre": "Programación I",
+      "semestre": 4,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5731"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "carrera",
+      "creditosMinimos": 135
+    },
+    {
+      "id": "5517",
+      "nombre": "Circuitos Eléctricos A",
+      "semestre": 4,
+      "creditos": 12,
+      "prerrequisitos": [
+        "0054",
+        "5692"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5691",
+      "nombre": "Dinámica",
+      "semestre": 4,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5694",
+        "0052"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5641",
+      "nombre": "Mecánica de Materiales II",
+      "semestre": 4,
+      "creditos": 6,
+      "prerrequisitos": [
+        "5695"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1938",
+      "nombre": "Inglés 3",
+      "semestre": 4,
+      "creditos": 5,
+      "prerrequisitos": [
+        "1937"
+      ],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "dui"
+    },
+    {
+      "id": "5643",
+      "nombre": "Probabilidad e Inferencia Estadística",
+      "semestre": 5,
+      "creditos": 10,
+      "prerrequisitos": [
+        "0041"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5708",
+      "nombre": "Programación II",
+      "semestre": 5,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5707"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5673",
+      "nombre": "Diseño de Sistemas Digitales",
+      "semestre": 5,
+      "creditos": 7,
+      "prerrequisitos": [
+        "5517"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5703",
+      "nombre": "Modelado y Simulación de Sistemas",
+      "semestre": 5,
+      "creditos": 7,
+      "prerrequisitos": [
+        "5960",
+        "5517"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5590",
+      "nombre": "Electrónica I",
+      "semestre": 5,
+      "creditos": 12,
+      "prerrequisitos": [
+        "5517"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1939",
+      "nombre": "Inglés 4",
+      "semestre": 5,
+      "creditos": 5,
+      "prerrequisitos": [
+        "1938"
+      ],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "dui"
+    },
+    {
+      "id": "5965",
+      "nombre": "Control de Calidad",
+      "semestre": 6,
+      "creditos": 6,
+      "prerrequisitos": [
+        "5643",
+        "5900"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5709",
+      "nombre": "Análisis Numérico",
+      "semestre": 6,
+      "creditos": 6,
+      "prerrequisitos": [
+        "5707"
+      ],
+      "clasificacion": "CB",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5670",
+      "nombre": "Microcontroladores",
+      "semestre": 6,
+      "creditos": 7,
+      "prerrequisitos": [
+        "5673"
+      ],
+      "clasificacion": "IA",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5981",
+      "nombre": "Ingeniería de Control I",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5703",
+        "5590"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5591",
+      "nombre": "Electrónica II",
+      "semestre": 6,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5590"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "5522",
+      "nombre": "Cinemática de las Máquinas",
+      "semestre": 6,
+      "creditos": 10,
+      "prerrequisitos": [
+        "5691"
+      ],
+      "clasificacion": "CI",
+      "grupo": "niveles-1-6",
+      "departamento": "area"
+    },
+    {
+      "id": "1940",
+      "nombre": "Inglés 5",
+      "semestre": 6,
+      "creditos": 5,
+      "prerrequisitos": [
+        "1939"
+      ],
+      "clasificacion": "CC",
+      "grupo": "niveles-1-6",
+      "departamento": "dui"
+    },
+    {
+      "id": "5982",
+      "nombre": "Ingeniería de Control II",
+      "semestre": 7,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5670",
+        "5981"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area"
+    },
+    {
+      "id": "5717",
+      "nombre": "Electrónica Industrial A",
+      "semestre": 7,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5591"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area"
+    },
+    {
+      "id": "5702",
+      "nombre": "Circuitos y Motores Eléctricos",
+      "semestre": 7,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5517"
+      ],
+      "clasificacion": "CI",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5714",
+      "nombre": "Electroneumática",
+      "semestre": 7,
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "DI",
+      "departamento": "area",
+      "creditosMinimos": 180
+    },
+    {
+      "id": "5713",
+      "nombre": "Instrumentación Industrial",
+      "semestre": 7,
+      "creditos": 7,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "creditosMinimos": 180
+    },
+    {
+      "id": "5686",
+      "nombre": "Diseño Mecánico A",
+      "semestre": 7,
+      "creditos": 11,
+      "prerrequisitos": [
+        "5522",
+        "5641"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area"
+    },
+    {
+      "id": "1927",
+      "nombre": "Validación de la Lengua Extranjera",
+      "semestre": 7,
+      "creditos": 0,
+      "prerrequisitos": [
+        "1940"
+      ],
+      "clasificacion": "CC",
+      "departamento": "area",
+      "nota": "Se acredita con 460 puntos TOEFL ITP en el examen de dominio del inglés."
+    },
+    {
+      "id": "5927",
+      "nombre": "Investigación de Operaciones I",
+      "semestre": 8,
+      "creditos": 6,
+      "prerrequisitos": [
+        "0042",
+        "5900"
+      ],
+      "clasificacion": "CI",
+      "departamento": "area"
+    },
+    {
+      "id": "5719",
+      "nombre": "Robótica A",
+      "semestre": 8,
+      "creditos": 10,
+      "prerrequisitos": [],
+      "clasificacion": "DI",
+      "departamento": "area",
+      "creditosMinimos": 225
+    },
+    {
+      "id": "5715",
+      "nombre": "Interfaces HW-SW",
+      "semestre": 8,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5670"
+      ],
+      "clasificacion": "DI",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5909",
+      "nombre": "Administración de Proyectos",
+      "semestre": 8,
+      "creditos": 6,
+      "prerrequisitos": [],
+      "clasificacion": "CE",
+      "departamento": "area",
+      "creditosMinimos": 315
+    },
+    {
+      "id": "5716",
+      "nombre": "Control Lógico Programable",
+      "semestre": 8,
+      "creditos": 8,
+      "prerrequisitos": [
+        "5714",
+        "5713"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area"
+    },
+    {
+      "id": "5503",
+      "nombre": "Procesos de Manufactura I",
+      "semestre": 8,
+      "creditos": 10,
+      "prerrequisitos": [
+        "5699"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area"
+    },
+    {
+      "id": "5725",
+      "nombre": "Proyecto Integrador IMT",
+      "semestre": 9,
+      "creditos": 10,
+      "prerrequisitos": [
+        "5909"
+      ],
+      "clasificacion": "DI",
+      "departamento": "carrera"
+    },
+    {
+      "id": "5718",
+      "nombre": "Redes Industriales",
+      "semestre": 9,
+      "creditos": 12,
+      "prerrequisitos": [
+        "5716"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area"
+    },
+    {
+      "id": "5988",
+      "nombre": "Seminario",
+      "semestre": 9,
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "area",
+      "creditosMinimos": 360
+    },
+    {
+      "id": "5805",
+      "nombre": "Prácticas Profesionales IMT",
+      "semestre": 10,
+      "creditos": 15,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "carrera",
+      "optativa": true,
+      "creditosMinimos": 315,
+      "grupoCompleto": "niveles-1-6",
+      "nota": "Se puede cursar entre los niveles VII y X; no con inscripción simultánea de Proyecto Integrador IMT."
+    },
+    {
+      "id": "1926",
+      "nombre": "Seminario de Egreso",
+      "semestre": 10,
+      "creditos": 0,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "area",
+      "creditosMinimos": 405,
+      "nota": "Se acredita al presentar por primera vez el EGEL Plus-IMECATRO."
+    },
+    {
+      "id": "5685",
+      "nombre": "Metrología",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5643"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: V."
+    },
+    {
+      "id": "5687",
+      "nombre": "Diseño Mecánico B",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 9,
+      "prerrequisitos": [
+        "5686"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: VIII."
+    },
+    {
+      "id": "5613",
+      "nombre": "Método de los Elementos Finitos",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 9,
+      "prerrequisitos": [
+        "5686"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: VIII."
+    },
+    {
+      "id": "5504",
+      "nombre": "Procesos de Manufactura II",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5503"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX."
+    },
+    {
+      "id": "5631",
+      "nombre": "Control Numérico Computarizado",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5504"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX."
+    },
+    {
+      "id": "5800",
+      "nombre": "Ingeniería Asistida por Computadora",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX.",
+      "creditosMinimos": 360
+    },
+    {
+      "id": "5545",
+      "nombre": "Ingeniería Automotriz",
+      "semestre": "Optativas: Rama Mecánica",
+      "creditos": 10,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X.",
+      "creditosMinimos": 315
+    },
+    {
+      "id": "5723",
+      "nombre": "Robótica B",
+      "semestre": "Optativas: Rama de la Integración Mecatrónica",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5719"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX."
+    },
+    {
+      "id": "5704",
+      "nombre": "Manufactura Integrada",
+      "semestre": "Optativas: Rama de la Integración Mecatrónica",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5719"
+      ],
+      "clasificacion": "DI",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX."
+    },
+    {
+      "id": "5721",
+      "nombre": "Tratamiento de Imágenes",
+      "semestre": "Optativas: Rama de la Integración Mecatrónica",
+      "creditos": 12,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X.",
+      "creditosMinimos": 360
+    },
+    {
+      "id": "5732",
+      "nombre": "Inteligencia Artificial Aplicada",
+      "semestre": "Optativas: Rama de la Integración Mecatrónica",
+      "creditos": 8,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X.",
+      "creditosMinimos": 360
+    },
+    {
+      "id": "5902",
+      "nombre": "Administración de Personal",
+      "semestre": "Optativas: Rama de Administración y Calidad",
+      "creditos": 6,
+      "prerrequisitos": [],
+      "clasificacion": "CE",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX.",
+      "creditosMinimos": 315
+    },
+    {
+      "id": "5975",
+      "nombre": "Sist. de Gestión de Calidad y Mejora Continua",
+      "semestre": "Optativas: Rama de Administración y Calidad",
+      "creditos": 6,
+      "prerrequisitos": [
+        "5965"
+      ],
+      "clasificacion": "CE",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X."
+    },
+    {
+      "id": "1012",
+      "nombre": "Arte, Cultura y Humanidades I",
+      "semestre": "Optativas: Rama de Humanidades",
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "humanistica",
+      "optativa": true,
+      "nota": "Semestre sugerido: V."
+    },
+    {
+      "id": "1013",
+      "nombre": "Arte, Cultura y Humanidades II",
+      "semestre": "Optativas: Rama de Humanidades",
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "humanistica",
+      "optativa": true,
+      "nota": "Semestre sugerido: VIII."
+    },
+    {
+      "id": "1014",
+      "nombre": "Actividades Artísticas, Deportivas o de Divulgación",
+      "semestre": "Optativas: Rama de Humanidades",
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CS",
+      "departamento": "humanistica",
+      "optativa": true,
+      "nota": "Semestre sugerido: VI."
+    },
+    {
+      "id": "1916",
+      "nombre": "Actividades de Aprendizaje",
+      "semestre": "Optativas: Con contenido variable",
+      "creditos": 2,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Bloque de 10 asignaturas (I a X, claves 1916–1925). Semestre sugerido: VI."
+    },
+    {
+      "id": "1908",
+      "nombre": "Movilidad",
+      "semestre": "Optativas: Con contenido variable",
+      "creditos": 6,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Bloque de 8 asignaturas (I a VIII, claves 1908–1915). Semestre sugerido: VII."
+    },
+    {
+      "id": "0064",
+      "nombre": "Física D",
+      "semestre": "Optativas: Otras",
+      "creditos": 6,
+      "prerrequisitos": [
+        "0061"
+      ],
+      "clasificacion": "CB",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: II."
+    },
+    {
+      "id": "5618",
+      "nombre": "Termodinámica",
+      "semestre": "Optativas: Otras",
+      "creditos": 11,
+      "prerrequisitos": [
+        "0054"
+      ],
+      "clasificacion": "CI",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: III."
+    },
+    {
+      "id": "5726",
+      "nombre": "Procesamiento Digital de Señales",
+      "semestre": "Optativas: Otras",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5673",
+        "5591"
+      ],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: VIII."
+    },
+    {
+      "id": "5647",
+      "nombre": "Sistemas de Producción",
+      "semestre": "Optativas: Otras",
+      "creditos": 8,
+      "prerrequisitos": [
+        "5927"
+      ],
+      "clasificacion": "CE",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: IX."
+    },
+    {
+      "id": "5972",
+      "nombre": "Seguridad e Higiene Industrial",
+      "semestre": "Optativas: Otras",
+      "creditos": 6,
+      "prerrequisitos": [],
+      "clasificacion": "CC",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X.",
+      "creditosMinimos": 315
+    },
+    {
+      "id": "5607",
+      "nombre": "Diagramas Eléctricos",
+      "semestre": "Optativas: Otras",
+      "creditos": 3,
+      "prerrequisitos": [],
+      "clasificacion": "IA",
+      "departamento": "area",
+      "optativa": true,
+      "nota": "Semestre sugerido: X.",
+      "creditosMinimos": 315
+    }
+  ]
+}
