@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tracker del Plan de Estudios</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="plan-nombre">Plan de estudios</h1>
+    <div class="acciones">
+      <input id="buscar" type="search" placeholder="Buscar materia…" aria-label="Buscar materia">
+      <label class="boton">Cargar plan
+        <input id="input-plan" type="file" accept=".json,application/json" hidden>
+      </label>
+      <button id="btn-exportar" class="boton">Exportar progreso</button>
+      <label class="boton">Importar progreso
+        <input id="input-progreso" type="file" accept=".json,application/json" hidden>
+      </label>
+      <button id="btn-reiniciar" class="boton peligro">Reiniciar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel">
+      <section>
+        <h2>Progreso</h2>
+        <div class="barra"><div id="barra-relleno" class="barra-relleno"></div></div>
+        <p id="txt-porcentaje" class="porcentaje">0%</p>
+        <p id="txt-creditos" class="sub">0 / 0 créditos</p>
+      </section>
+
+      <section>
+        <h2>Resumen</h2>
+        <ul class="leyenda">
+          <li><span class="punto aprobada"></span>Aprobadas <b id="n-aprobada">0</b></li>
+          <li><span class="punto cursando"></span>Cursando <b id="n-cursando">0</b></li>
+          <li><span class="punto disponible"></span>Disponibles <b id="n-disponible">0</b></li>
+          <li><span class="punto bloqueada"></span>Bloqueadas <b id="n-bloqueada">0</b></li>
+        </ul>
+      </section>
+
+      <section id="detalle" class="detalle" hidden>
+        <h2 id="det-nombre"></h2>
+        <p class="sub" id="det-meta"></p>
+        <div class="estados" role="group" aria-label="Estado de la materia">
+          <button data-estado="pendiente">Pendiente</button>
+          <button data-estado="cursando">Cursando</button>
+          <button data-estado="aprobada">Aprobada</button>
+        </div>
+        <h3>Requiere</h3>
+        <ul id="det-req" class="chips"></ul>
+        <h3>Desbloquea</h3>
+        <ul id="det-desb" class="chips"></ul>
+      </section>
+
+      <section class="ayuda">
+        <h2>Cómo usar</h2>
+        <ul>
+          <li><b>Clic</b> en una materia: cambia su estado (pendiente → cursando → aprobada).</li>
+          <li><b>Pasa el cursor</b>: resalta su cadena de prerrequisitos y lo que desbloquea.</li>
+          <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
+          <li>Tu progreso se guarda automáticamente en este navegador.</li>
+        </ul>
+      </section>
+    </aside>
+
+    <section class="lienzo-wrap">
+      <svg id="lienzo" role="img" aria-label="Diagrama de materias y prerrequisitos">
+        <defs>
+          <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="flecha"></path>
+          </marker>
+        </defs>
+        <g id="viewport">
+          <g id="capa-columnas"></g>
+          <g id="capa-aristas"></g>
+          <g id="capa-nodos"></g>
+        </g>
+      </svg>
+      <div class="zoom">
+        <button id="zoom-mas" aria-label="Acercar">+</button>
+        <button id="zoom-menos" aria-label="Alejar">−</button>
+        <button id="zoom-ajustar" aria-label="Ajustar a pantalla">⤢</button>
+      </div>
+      <div id="toast" class="toast" role="status" hidden></div>
+    </section>
+  </main>
+
+  <script src="planes/ejemplo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
