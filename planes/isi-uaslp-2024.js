@@ -2,6 +2,56 @@
 window.PLAN_PREDETERMINADO = {
   "nombre": "Ingeniería en Sistemas Inteligentes — UASLP (Agosto 2024)",
   "creditosParaEgresar": 405,
+  "clasificaciones": {
+    "CB": {
+      "nombre": "Ciencias Básicas y Matemáticas",
+      "color": "#a99bc9",
+      "texto": "#ffffff"
+    },
+    "CI": {
+      "nombre": "Ciencias de la Ingeniería",
+      "color": "#2f6fe4",
+      "texto": "#ffffff"
+    },
+    "IA": {
+      "nombre": "Ingeniería Aplicada",
+      "color": "#e3261b",
+      "texto": "#ffe94d"
+    },
+    "CS": {
+      "nombre": "Ciencias Sociales y Humanidades",
+      "color": "#f5e400",
+      "texto": "#d42020"
+    },
+    "CE": {
+      "nombre": "Ciencias Económico-Administrativas",
+      "color": "#f07a1a",
+      "texto": "#ffffff"
+    },
+    "CC": {
+      "nombre": "Otros cursos",
+      "color": "",
+      "texto": ""
+    }
+  },
+  "departamentos": {
+    "carrera": {
+      "nombre": "Carrera",
+      "estilo": "grueso"
+    },
+    "fisicomat": {
+      "nombre": "Depto. Físico Matemáticas",
+      "estilo": "delgado"
+    },
+    "humanistica": {
+      "nombre": "Formación Humanística",
+      "estilo": "doble"
+    },
+    "ingles": {
+      "nombre": "Depto. Universitario de Inglés",
+      "estilo": "redondeado"
+    }
+  },
   "grupos": {
     "nucleo": "Núcleo Básico",
     "robotica": "Robótica Inteligente e IA",
@@ -44,7 +94,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2229",
@@ -53,7 +104,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2151",
@@ -62,7 +114,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2150",
@@ -71,7 +124,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0071",
@@ -80,7 +134,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "1005",
@@ -89,7 +144,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 4,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "2002",
@@ -97,7 +153,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 1,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "carrera"
     },
     {
       "id": "2806",
@@ -106,7 +163,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2231",
@@ -117,7 +175,8 @@ window.PLAN_PREDETERMINADO = {
         "2229"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2152",
@@ -128,7 +187,8 @@ window.PLAN_PREDETERMINADO = {
         "2151"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0042",
@@ -139,7 +199,8 @@ window.PLAN_PREDETERMINADO = {
         "2150"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "0051",
@@ -148,7 +209,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "1008",
@@ -157,7 +219,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "1936",
@@ -165,7 +228,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 2,
       "creditos": 5,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2304",
@@ -176,7 +240,8 @@ window.PLAN_PREDETERMINADO = {
         "2806"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2232",
@@ -187,7 +252,8 @@ window.PLAN_PREDETERMINADO = {
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2233",
@@ -198,7 +264,8 @@ window.PLAN_PREDETERMINADO = {
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0061",
@@ -207,7 +274,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "0052",
@@ -219,6 +287,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "CB",
       "grupo": "nucleo",
+      "departamento": "fisicomat",
       "optativa": true
     },
     {
@@ -228,7 +297,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "1937",
@@ -238,7 +308,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "1936"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2234",
@@ -250,7 +321,8 @@ window.PLAN_PREDETERMINADO = {
         "2232"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2235",
@@ -261,7 +333,8 @@ window.PLAN_PREDETERMINADO = {
         "2232"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2314",
@@ -272,7 +345,8 @@ window.PLAN_PREDETERMINADO = {
         "2233"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2840",
@@ -283,7 +357,8 @@ window.PLAN_PREDETERMINADO = {
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0054",
@@ -294,7 +369,8 @@ window.PLAN_PREDETERMINADO = {
         "0051"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "2111",
@@ -303,7 +379,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2236",
@@ -314,7 +391,8 @@ window.PLAN_PREDETERMINADO = {
         "2234"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2813",
@@ -325,7 +403,8 @@ window.PLAN_PREDETERMINADO = {
         "2235"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2807",
@@ -334,7 +413,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2823",
@@ -343,7 +423,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2252",
@@ -352,7 +433,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "1009",
@@ -361,7 +443,8 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "1938",
@@ -371,7 +454,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "1937"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "1006",
@@ -379,7 +463,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 6,
       "creditos": 5,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "humanistica"
     },
     {
       "id": "2053",
@@ -388,6 +473,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CE",
+      "departamento": "carrera",
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
         "creditos": 200
@@ -400,6 +486,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
         "creditos": 200
@@ -411,7 +498,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 6,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "CB"
+      "clasificacion": "CB",
+      "departamento": "carrera"
     },
     {
       "id": "1012",
@@ -419,7 +507,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 6,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1939",
@@ -429,7 +518,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "1938"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2050",
@@ -440,6 +530,7 @@ window.PLAN_PREDETERMINADO = {
         "2053"
       ],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "grupoCompleto": "nucleo"
     },
     {
@@ -450,7 +541,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "2053"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "2228",
@@ -459,6 +551,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "optativa": true
     },
     {
@@ -467,7 +560,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 7,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "CB"
+      "clasificacion": "CB",
+      "departamento": "carrera"
     },
     {
       "id": "1015",
@@ -475,7 +569,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 7,
       "creditos": 1,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1940",
@@ -485,7 +580,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "1939"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2051",
@@ -495,7 +591,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "2050"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "1908",
@@ -504,6 +601,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 6,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "optativa": true,
       "creditosMinimos": 225
     },
@@ -514,6 +612,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
+      "departamento": "humanistica",
       "optativa": true
     },
     {
@@ -522,7 +621,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 8,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1916",
@@ -531,6 +631,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "humanistica",
       "optativa": true,
       "creditosMinimos": 90
     },
@@ -542,7 +643,8 @@ window.PLAN_PREDETERMINADO = {
       "prerrequisitos": [
         "2051"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "2085",
@@ -551,6 +653,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "creditosMinimos": 350
     },
     {
@@ -559,7 +662,8 @@ window.PLAN_PREDETERMINADO = {
       "semestre": 9,
       "creditos": 0,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "humanistica"
     },
     {
       "id": "1014",
@@ -568,6 +672,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
+      "departamento": "humanistica",
       "optativa": true
     },
     {
@@ -577,6 +682,7 @@ window.PLAN_PREDETERMINADO = {
       "creditos": 15,
       "prerrequisitos": [],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "optativa": true,
       "creditosMinimos": 315
     },
@@ -590,6 +696,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -606,6 +713,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -622,6 +730,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -638,6 +747,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -654,6 +764,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -670,6 +781,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -686,6 +798,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -702,6 +815,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -718,6 +832,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -734,6 +849,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -750,6 +866,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -766,6 +883,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -782,6 +900,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -798,6 +917,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -814,6 +934,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -830,6 +951,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -846,6 +968,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -862,6 +985,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -878,6 +1002,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -894,6 +1019,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -910,6 +1036,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -926,6 +1053,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -942,6 +1070,7 @@ window.PLAN_PREDETERMINADO = {
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
