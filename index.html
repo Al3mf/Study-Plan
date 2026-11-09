@@ -20,6 +20,7 @@
     <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-menos" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-papelera" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/></symbol>
     <symbol id="i-ajustar" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
   </svg>
   <header class="topbar">
@@ -27,6 +28,7 @@
       <h1 id="plan-nombre" contenteditable="plaintext-only" spellcheck="false"
           title="Clic para editar el título">Plan de estudios</h1>
       <button id="btn-titulo" class="icono-boton" type="button" aria-label="Editar título" title="Editar título"><svg class="ico" aria-hidden="true"><use href="#i-lapiz"></use></svg></button>
+      <span id="sesion-nombre" class="sesion-chip"></span>
     </div>
     <div class="acciones">
       <div class="menu" id="menu-reglas">
@@ -46,14 +48,14 @@
             <li><b>Clasificaciones</b> (panel lateral): clic para resaltar esas materias.</li>
             <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
             <li><b>Título</b>: haz clic en él para cambiarlo.</li>
-            <li><b>Cambiar carrera</b>: elige otro plan; el progreso de cada carrera se guarda aparte.</li>
+            <li><b>Sesiones</b>: crea hasta 3 sesiones por plan, cada una con su propio progreso; ábrelas, renómbralas o elimínalas desde el menú de inicio.</li>
             <li>Tu progreso se guarda automáticamente en este navegador.</li>
           </ul>
         </div>
       </div>
       <label id="toggle-extras" class="boton interruptor"><input id="chk-extras" type="checkbox" checked> <span id="txt-extras">Áreas de énfasis</span></label>
       <input id="buscar" type="search" placeholder="Buscar materia…" aria-label="Buscar materia">
-      <button id="btn-carrera" class="boton" type="button">Cambiar carrera</button>
+      <button id="btn-carrera" class="boton" type="button">Sesiones</button>
       <button id="btn-exportar" class="boton">Exportar progreso</button>
       <label class="boton">Importar progreso
         <input id="input-progreso" type="file" accept=".json,application/json" hidden>
@@ -145,8 +147,8 @@
   <div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="inicio-titulo" hidden>
     <div class="inicio-caja">
       <button id="inicio-cerrar" class="icono-boton inicio-cerrar" type="button" aria-label="Cerrar" hidden><svg class="ico" aria-hidden="true"><use href="#i-x"></use></svg></button>
-      <h2 id="inicio-titulo">¿Qué carrera estudias?</h2>
-      <p class="sub">Elige tu plan de estudios. Tu progreso se guarda por separado para cada carrera y puedes cambiar cuando quieras.</p>
+      <h2 id="inicio-titulo">Sesiones</h2>
+      <p class="sub">Crea una sesión en tu plan de estudios para empezar a registrar tu avance. Cada sesión guarda su propio progreso; puedes tener hasta 3 por plan.</p>
       <div id="lista-carreras" class="lista-carreras"></div>
     </div>
   </div>

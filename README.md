@@ -19,16 +19,32 @@ can track your progress through your degree.
   click one to highlight its courses.
 - The **Reglas** and **Cómo usar** menus in the header show the plan rules and a quick
   guide. Click the **title** to rename it (saved in the browser).
-- Progress is **saved automatically** in the browser (localStorage). You can also
-  export/import it as JSON to back it up or move it to another device.
+- Progress is **saved automatically** in the browser (localStorage), per session. You
+  can also export/import it as JSON to back it up or move it to another device.
 - Course search, mouse-wheel zoom, drag to pan, and automatic dark mode.
 
 > The user interface is in Spanish, and so are the field names of the plan format.
 
-## Available degrees
+## Sessions
 
-On first visit the app asks **which degree you study**; you can switch at any time
-with **Cambiar carrera**, and progress is stored separately for each degree.
+Progress is organized in **sessions**. The start menu (also available from the
+**Sesiones** button in the header) lists every degree, each with a **Nueva sesión**
+button:
+
+- A degree card does nothing until it has at least one session. Once it does, clicking
+  it expands a dropdown with its sessions.
+- Each session keeps its own progress and title, so you can try different paths for the
+  same plan (for example, an "ideal" plan and your real one). Up to **3 sessions per
+  plan**.
+- From the dropdown you can open, rename or delete a session (deleting asks for
+  confirmation). Each row shows its progress, passed courses, credits and last update.
+- The open session's name appears next to the title. Export, import and reset act on the
+  open session only.
+
+Progress saved by earlier versions (one per degree) is migrated automatically into
+«Sesión 1» of that degree.
+
+## Available degrees
 
 | Degree | Plan | Courses | Credits to graduate |
 |--------|------|---------|---------------------|
