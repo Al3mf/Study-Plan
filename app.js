@@ -107,7 +107,7 @@
   }
 
   // Parte un texto en como máximo `maxLineas` líneas de ~`maxChars` caracteres.
-  function partirTexto(texto, maxChars = 21, maxLineas = 2) {
+  function partirTexto(texto, maxChars = 20, maxLineas = 2) {
     const palabras = texto.split(/\s+/);
     const lineas = [];
     let actual = "";
@@ -388,7 +388,7 @@
         el("rect", { width: 28, height: 16, rx: 4, ...(c.color ? { fill: c.color } : {}) }, ins);
         el("text", { x: 14, y: 12, "text-anchor": "middle", ...(c.texto ? { fill: c.texto } : {}) }, ins).textContent = m.clasificacion;
       }
-      el("text", { class: "icono", x: NODO_W - 12, y: 20, "text-anchor": "end" }, g);
+      el("use", { class: "icono", x: NODO_W - 24, y: 8, width: 14, height: 14 }, g);
       const titulo = el("title", {}, g);
       g._titulo = titulo;
       elNodos.set(m.id, g);
@@ -431,8 +431,18 @@
     sel.addRange(r);
   };
 
-  const ICONOS = { aprobada: "✓", cursando: "●", disponible: "", bloqueada: "🔒",
-                   reprobada: "✗", recursando: "↻", unica: "⚠" };
+  // Ícono (del sprite de index.html) para cada estado visual.
+  const ICONOS = { aprobada: "check", cursando: "reloj", disponible: "", bloqueada: "candado",
+                   reprobada: "x", recursando: "repetir", unica: "alerta" };
+
+  // Ícono en línea para HTML, del mismo sprite.
+  function iconoHTML(nombre) {
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "ico");
+    svg.setAttribute("aria-hidden", "true");
+    el("use", { href: "#i-" + nombre }, svg);
+    return svg;
+  }
   const ETIQUETAS = { aprobada: "Aprobada", cursando: "Cursando", disponible: "Disponible", bloqueada: "Bloqueada",
                       reprobada: "Reprobada", recursando: "Recursando", unica: "Materia única" };
 
@@ -449,8 +459,8 @@
       if (!g) continue;
       g.setAttribute("class", `nodo ${e}${g._estilo}${seleccion === m.id ? " seleccionado" : ""}`);
       const icono = g.querySelector(".icono");
-      icono.textContent = ICONOS[e];
-      icono.setAttribute("fill", `var(--${e})`);
+      if (ICONOS[e]) icono.setAttribute("href", "#i-" + ICONOS[e]);
+      else icono.removeAttribute("href");
       g._titulo.textContent = `${m.nombre} (${m.id}) — ${ETIQUETAS[e]}`;
     }
 
@@ -679,7 +689,7 @@
     if (m.nota) reqs.push({ texto: m.nota, nota: true });
     for (const r of reqs) {
       const li = document.createElement("li");
-      li.textContent = (r.nota ? "ℹ " : r.ok ? "✓ " : "✗ ") + r.texto;
+      li.append(iconoHTML(r.nota ? "info" : r.ok ? "check" : "x"), r.texto);
       li.className = r.nota ? "" : r.ok ? "ok" : "falta";
       extra.appendChild(li);
     }

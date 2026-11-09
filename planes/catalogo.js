@@ -1101,7 +1101,7 @@ window.CARRERAS = [
       },
       {
         "id": "2853",
-        "nombre": "Geoaplicaciones Web y Móviles",
+        "nombre": "Geoaplicaciones Web y Moviles",
         "semestre": "Énfasis: Sistemas Geoespaciales",
         "creditos": 8,
         "prerrequisitos": [
@@ -1235,11 +1235,6 @@ window.CARRERAS = [
         "nombre": "Materias obligatorias",
         "creditos": 413,
         "tipo": "obligatorias"
-      },
-      {
-        "nombre": "Optativas",
-        "creditos": 37,
-        "tipo": "optativas"
       }
     ],
     "notas": [
@@ -1472,7 +1467,7 @@ window.CARRERAS = [
       },
       {
         "id": "5692",
-        "nombre": "Electrotecnia para Ingeniería I",
+        "nombre": "Electrotécnia para Ingeniería I",
         "semestre": 3,
         "creditos": 9,
         "prerrequisitos": [
@@ -2052,7 +2047,7 @@ window.CARRERAS = [
       {
         "id": "5723",
         "nombre": "Robótica B",
-        "semestre": "Optativas: Integración Mecatrónica",
+        "semestre": "Optativas: Rama de la Integración Mecatrónica",
         "creditos": 8,
         "prerrequisitos": [
           "5719"
@@ -2065,7 +2060,7 @@ window.CARRERAS = [
       {
         "id": "5704",
         "nombre": "Manufactura Integrada",
-        "semestre": "Optativas: Integración Mecatrónica",
+        "semestre": "Optativas: Rama de la Integración Mecatrónica",
         "creditos": 8,
         "prerrequisitos": [
           "5719"
@@ -2078,7 +2073,7 @@ window.CARRERAS = [
       {
         "id": "5721",
         "nombre": "Tratamiento de Imágenes",
-        "semestre": "Optativas: Integración Mecatrónica",
+        "semestre": "Optativas: Rama de la Integración Mecatrónica",
         "creditos": 12,
         "prerrequisitos": [],
         "clasificacion": "IA",
@@ -2090,7 +2085,7 @@ window.CARRERAS = [
       {
         "id": "5732",
         "nombre": "Inteligencia Artificial Aplicada",
-        "semestre": "Optativas: Integración Mecatrónica",
+        "semestre": "Optativas: Rama de la Integración Mecatrónica",
         "creditos": 8,
         "prerrequisitos": [],
         "clasificacion": "IA",
@@ -2102,7 +2097,7 @@ window.CARRERAS = [
       {
         "id": "5902",
         "nombre": "Administración de Personal",
-        "semestre": "Optativas: Administración y Calidad",
+        "semestre": "Optativas: Rama de Administración y Calidad",
         "creditos": 6,
         "prerrequisitos": [],
         "clasificacion": "CE",
@@ -2113,8 +2108,8 @@ window.CARRERAS = [
       },
       {
         "id": "5975",
-        "nombre": "Sistemas de Gestión de Calidad y Mejora Continua",
-        "semestre": "Optativas: Administración y Calidad",
+        "nombre": "Sist. de Gestión de Calidad y Mejora Continua",
+        "semestre": "Optativas: Rama de Administración y Calidad",
         "creditos": 6,
         "prerrequisitos": [
           "5965"
@@ -2127,7 +2122,7 @@ window.CARRERAS = [
       {
         "id": "1012",
         "nombre": "Arte, Cultura y Humanidades I",
-        "semestre": "Optativas: Humanidades y contenido variable",
+        "semestre": "Optativas: Rama de Humanidades",
         "creditos": 2,
         "prerrequisitos": [],
         "clasificacion": "CS",
@@ -2138,7 +2133,7 @@ window.CARRERAS = [
       {
         "id": "1013",
         "nombre": "Arte, Cultura y Humanidades II",
-        "semestre": "Optativas: Humanidades y contenido variable",
+        "semestre": "Optativas: Rama de Humanidades",
         "creditos": 2,
         "prerrequisitos": [],
         "clasificacion": "CS",
@@ -2149,7 +2144,7 @@ window.CARRERAS = [
       {
         "id": "1014",
         "nombre": "Actividades Artísticas, Deportivas o de Divulgación",
-        "semestre": "Optativas: Humanidades y contenido variable",
+        "semestre": "Optativas: Rama de Humanidades",
         "creditos": 2,
         "prerrequisitos": [],
         "clasificacion": "CS",
@@ -2160,7 +2155,7 @@ window.CARRERAS = [
       {
         "id": "1916",
         "nombre": "Actividades de Aprendizaje",
-        "semestre": "Optativas: Humanidades y contenido variable",
+        "semestre": "Optativas: Con contenido variable",
         "creditos": 2,
         "prerrequisitos": [],
         "clasificacion": "CC",
@@ -2171,7 +2166,7 @@ window.CARRERAS = [
       {
         "id": "1908",
         "nombre": "Movilidad",
-        "semestre": "Optativas: Humanidades y contenido variable",
+        "semestre": "Optativas: Con contenido variable",
         "creditos": 6,
         "prerrequisitos": [],
         "clasificacion": "CC",

@@ -166,7 +166,12 @@ body { display: flex; flex-direction: column; }
 .nodo rect.franja { fill: var(--bloqueada); }
 .nodo text.nombre { font-size: 12.5px; font-weight: 600; fill: var(--texto); }
 .nodo text.meta { font-size: 10.5px; fill: var(--sub); }
-.nodo text.icono { font-size: 13px; font-weight: 700; }
+.nodo .icono { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; color: var(--bloqueada); }
+.nodo.aprobada .icono { color: var(--aprobada); }
+.nodo.cursando .icono { color: var(--cursando); }
+.nodo.reprobada .icono { color: var(--reprobada); }
+.nodo.recursando .icono { color: var(--recursando); }
+.nodo.unica .icono { color: var(--unica); }
 
 .nodo.bloqueada { opacity: .75; }
 .nodo.bloqueada rect.caja { stroke-dasharray: 4 3; }
@@ -224,7 +229,7 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .menu[hidden] { display: none; }
 .menu-boton[aria-expanded="true"] { border-color: var(--disponible); }
 .menu-panel {
-  position: absolute; right: 0; top: calc(100% + 6px); z-index: 20;
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 20;
   width: min(380px, calc(100vw - 32px)); max-height: 70vh; overflow-y: auto;
   padding: 14px 16px; border: 1px solid var(--borde); border-radius: 10px;
   background: var(--panel); box-shadow: 0 10px 30px rgba(0,0,0,.18);
@@ -341,3 +346,18 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .nodo.depto-punteado rect.caja { stroke-width: 1.6; stroke-dasharray: 2 3; }
 .muestra-depto.redondeado-simple { border-width: 1px; border-radius: 8px; }
 .muestra-depto.punteado { border: 1.5px dashed var(--texto); }
+
+/* --- Íconos de línea --- */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ico {
+  width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.15em;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.icono-boton, .zoom button { display: inline-flex; align-items: center; justify-content: center; }
+.icono-boton .ico { width: 16px; height: 16px; }
+.zoom button .ico { width: 18px; height: 18px; }
+.menu-boton { display: inline-flex; align-items: center; gap: 4px; }
+.menu-boton .ico { width: 14px; height: 14px; transition: transform .15s; }
+.menu-boton[aria-expanded="true"] .ico { transform: rotate(180deg); }
+.requisitos li { display: flex; gap: 6px; align-items: flex-start; }
+.requisitos li .ico { margin-top: 2px; }
