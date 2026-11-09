@@ -322,12 +322,12 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
   width: min(1120px, 100%); margin: 0 auto; padding: 32px 24px 0;
 }
 .inicio-cabecera { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
-.inicio-marca { margin: 0; font-size: 30px; letter-spacing: -.02em; }
-.inicio-lema { margin: 4px 0 0; color: var(--sub); font-size: 15px; }
+.inicio-marca { margin: 0; font-size: 44px; line-height: 1.1; letter-spacing: -.025em; }
+.inicio-lema { margin: 8px 0 0; color: var(--sub); font-size: 16px; }
 .inicio-volver[hidden] { display: none; }
 /* Columnas: calendario a la izquierda, sesiones a la derecha.
    Arriba para que abrir o cerrar un desplegable no mueva el resto. */
-.inicio-grid { flex: 1; display: grid; grid-template-columns: minmax(300px, 5fr) 7fr; gap: 20px; align-items: start; }
+.inicio-grid { flex: 1; display: grid; grid-template-columns: minmax(300px, 5fr) 7fr; gap: 20px; align-items: stretch; align-content: start; }
 .tarjeta {
   padding: 20px; border: 1px solid var(--borde); border-radius: 14px;
   background: var(--panel); box-shadow: 0 1px 2px rgba(0,0,0,.04);
@@ -349,10 +349,11 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .cal-nav b { font-size: 15px; text-transform: capitalize; }
 .ico.izq { transform: rotate(90deg); }
 .ico.der { transform: rotate(-90deg); }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
-.cal-dia-semana { text-align: center; font-size: 11px; font-weight: 600; color: var(--sub); padding: 4px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; max-width: 320px; margin: 0 auto; }
+.cal-nav { max-width: 320px; margin-left: auto; margin-right: auto; }
+.cal-dia-semana { text-align: center; font-size: 11px; font-weight: 600; color: var(--sub); padding: 2px 0; }
 .cal-dia {
-  height: 34px; display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
   font-size: 13px; border-radius: 8px; position: relative;
 }
 .cal-dia:is(.clases, .examenes, .tramite, .inhabil, .vacaciones) {
@@ -365,12 +366,12 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .inhabil { --c: var(--reprobada); }
 .vacaciones { --c: var(--aprobada); }
 .cal-tipo { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--c); flex-shrink: 0; }
-.cal-leyenda { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--sub); }
+.cal-leyenda { list-style: none; padding: 0; margin: 14px 0 0; justify-content: center; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--sub); }
 .cal-leyenda li { display: flex; align-items: center; gap: 6px; }
-.cal-subtitulo { margin: 18px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--sub); }
+.cal-subtitulo { margin: 16px 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--sub); }
 .cal-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
 .cal-evento {
-  display: flex; align-items: center; gap: 10px; padding: 7px 8px; margin: 0 -8px;
+  display: flex; align-items: center; gap: 10px; padding: 6px 8px; margin: 0 -8px;
   border-radius: 8px; font-size: 13px; cursor: pointer;
 }
 .cal-evento:hover { background: var(--bg); }
@@ -384,7 +385,7 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
   .inicio-grid { grid-template-columns: 1fr; }
   .inicio-grid .calendario { order: 2; } /* en móvil, primero las sesiones */
   .inicio-cabecera { align-items: flex-start; flex-direction: column; }
-  .inicio-marca { font-size: 26px; }
+  .inicio-marca { font-size: 32px; }
 }
 .lista-carreras { display: grid; gap: 10px; }
 .carrera {

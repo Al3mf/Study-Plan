@@ -1265,7 +1265,7 @@
     // Próximas fechas: eventos que no han terminado, empezando por hoy.
     const lista = $("#cal-proximas");
     lista.replaceChildren();
-    const proximos = eventosCal.filter((e) => e.d1 >= h).sort((a, b) => a.d0 - b.d0).slice(0, 5);
+    const proximos = eventosCal.filter((e) => e.d1 >= h).sort((a, b) => a.d0 - b.d0).slice(0, 3);
     if (!proximos.length) lista.append(crearElemento("li", "sub", "Sin fechas próximas en este calendario."));
     for (const e of proximos) {
       const li = crearElemento("li", "cal-evento");
