@@ -9,7 +9,12 @@
   const CABECERA_H = 72; // espacio para el título del semestre
   const MARGEN = 30;
 
-  const CLAVE_CARRERA = "tracker-carrera";
+  // Sesiones: cada una pertenece a un plan y guarda su propio progreso y título.
+  const CLAVE_SESIONES = "tracker-sesiones";
+  const CLAVE_SESION_ACTUAL = "tracker-sesion-actual";
+  const MAX_SESIONES = 3; // por plan
+  // Claves de la versión anterior (una carrera a la vez); se migran a sesiones.
+  const CLAVE_CARRERA_ANTIGUA = "tracker-carrera";
   // Clave antigua: cuando se podía cargar un plan desde archivo. Se borra al iniciar.
   const CLAVE_PLAN_ANTIGUA = "tracker-plan:actual";
   const CARRERAS = Array.isArray(window.CARRERAS) ? window.CARRERAS : [];
@@ -40,6 +45,7 @@
 
   // ---------- Estado ----------
   let plan = null;          // { nombre, materias: [...] }
+  let sesion = null;        // { id, carrera, nombre, creada, actualizada }
   let porId = new Map();    // id -> materia
   let hijos = new Map();    // id -> [ids que la requieren]
   let progreso = {};        // id -> uno de ESTADOS (salvo "pendiente", que no se guarda)
@@ -71,11 +77,13 @@
     toastTimer = setTimeout(() => (t.hidden = true), 3200);
   }
 
+  const claveProgresoDe = (idSesion) => "tracker-progreso-sesion:" + idSesion;
+  const claveTituloDe = (idSesion) => "tracker-titulo-sesion:" + idSesion;
   function claveProgreso() {
-    return "tracker-progreso:" + (plan?.nombre || "plan");
+    return claveProgresoDe(sesion?.id || "ninguna");
   }
   function claveTitulo() {
-    return "tracker-titulo:" + (plan?.nombre || "plan");
+    return claveTituloDe(sesion?.id || "ninguna");
   }
 
   function leerStorage(clave) {
@@ -251,7 +259,7 @@
     }
     if (estado === "pendiente") delete progreso[id];
     else progreso[id] = estado;
-    escribirStorage(claveProgreso(), progreso);
+    guardarProgreso();
     actualizar();
   }
 
@@ -406,7 +414,8 @@
   function pintarTitulo() {
     const t = tituloActual();
     $("#plan-nombre").textContent = t;
-    document.title = `${t} · Tracker`;
+    $("#sesion-nombre").textContent = sesion ? sesion.nombre : "";
+    document.title = `${t}${sesion ? " · " + sesion.nombre : ""} · Tracker`;
   }
 
   const h1 = $("#plan-nombre");
@@ -906,56 +915,299 @@
     if (avisos.length) console.warn("Avisos del plan:", avisos);
   }
 
-  // ---------- Selección de carrera ----------
+  // ---------- Sesiones ----------
+  function leerSesiones() {
+    const l = leerStorage(CLAVE_SESIONES);
+    return Array.isArray(l) ? l.filter((x) => x && x.id && CARRERAS.some((c) => c.id === x.carrera)) : [];
+  }
+  function guardarSesiones(lista) {
+    escribirStorage(CLAVE_SESIONES, lista);
+  }
+  const sesionesDe = (idCarrera) => leerSesiones().filter((x) => x.carrera === idCarrera);
+
+  function guardarProgreso() {
+    escribirStorage(claveProgreso(), progreso);
+    if (!sesion) return;
+    sesion.actualizada = Date.now();
+    guardarSesiones(leerSesiones().map((x) => (x.id === sesion.id ? { ...x, actualizada: sesion.actualizada } : x)));
+  }
+
+  function nuevoId() {
+    return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
+  // Nombre libre más bajo: "Sesión 1", "Sesión 2"...
+  function nombreLibre(idCarrera) {
+    const usados = new Set(sesionesDe(idCarrera).map((x) => x.nombre));
+    let n = 1;
+    while (usados.has(`Sesión ${n}`)) n++;
+    return `Sesión ${n}`;
+  }
+
+  function crearSesion(idCarrera, progresoInicial = {}, titulo = null) {
+    if (sesionesDe(idCarrera).length >= MAX_SESIONES) return null;
+    const x = { id: nuevoId(), carrera: idCarrera, nombre: nombreLibre(idCarrera), creada: Date.now(), actualizada: Date.now() };
+    guardarSesiones([...leerSesiones(), x]);
+    escribirStorage(claveProgresoDe(x.id), progresoInicial);
+    if (titulo) escribirStorage(claveTituloDe(x.id), titulo);
+    return x;
+  }
+
+  function renombrarSesion(id, nombre) {
+    nombre = nombre.replace(/\s+/g, " ").trim().slice(0, 40);
+    if (!nombre) return;
+    guardarSesiones(leerSesiones().map((x) => (x.id === id ? { ...x, nombre } : x)));
+    if (sesion && sesion.id === id) { sesion.nombre = nombre; pintarTitulo(); }
+  }
+
+  function eliminarSesion(id) {
+    guardarSesiones(leerSesiones().filter((x) => x.id !== id));
+    try {
+      localStorage.removeItem(claveProgresoDe(id));
+      localStorage.removeItem(claveTituloDe(id));
+    } catch { /* sin almacenamiento */ }
+    if (sesion && sesion.id === id) {
+      // La sesión abierta ya no existe: no queda nada que mostrar detrás del menú.
+      sesion = null;
+      plan = null;
+      try { localStorage.removeItem(CLAVE_SESION_ACTUAL); } catch { /* sin almacenamiento */ }
+    }
+  }
+
+  // Resumen de una sesión para el menú: materias y créditos aprobados.
+  function resumenSesion(x, carrera) {
+    const prog = leerStorage(claveProgresoDe(x.id)) || {};
+    const cred = new Map(carrera.materias.map((m) => [String(m.id), Number(m.creditos) || 0]));
+    let aprobadas = 0, creditos = 0;
+    for (const [id, est] of Object.entries(prog)) {
+      if (est === "aprobada" && cred.has(id)) { aprobadas++; creditos += cred.get(id); }
+    }
+    const meta = carrera.creditosParaEgresar || [...cred.values()].reduce((a, b) => a + b, 0);
+    return { aprobadas, creditos, pct: meta ? Math.min(100, Math.round((creditos / meta) * 100)) : 0 };
+  }
+
+  function fechaCorta(ms) {
+    try {
+      return new Date(ms).toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" });
+    } catch { return ""; }
+  }
+
+  const abiertas = new Set(); // carreras con el desplegable abierto en el menú
+  let resaltar = null;        // sesión recién creada, para destacarla
+  let confirmando = null;     // sesión con la confirmación de borrado visible
+  let renombrando = null;     // sesión en edición de nombre
+
+  function crearElemento(tag, clase, texto) {
+    const e = document.createElement(tag);
+    if (clase) e.className = clase;
+    if (texto != null) e.textContent = texto;
+    return e;
+  }
+
+  function botonIcono(icono, etiqueta, clase = "") {
+    const b = crearElemento("button", "icono-boton " + clase);
+    b.type = "button";
+    b.setAttribute("aria-label", etiqueta);
+    b.title = etiqueta;
+    b.append(iconoHTML(icono));
+    return b;
+  }
+
+  function filaSesion(x, c) {
+    const fila = crearElemento("li", "sesion" + (sesion && sesion.id === x.id ? " actual" : "") + (resaltar === x.id ? " nueva" : ""));
+    const r = resumenSesion(x, c);
+
+    if (confirmando === x.id) {
+      fila.classList.add("confirmando");
+      fila.append(crearElemento("span", "sesion-confirmar", `¿Eliminar «${x.nombre}» y su progreso?`));
+      const no = crearElemento("button", "boton chico", "Cancelar");
+      const si = crearElemento("button", "boton chico peligro", "Eliminar");
+      no.type = si.type = "button";
+      no.onclick = () => { confirmando = null; pintarInicio(); };
+      si.onclick = () => { confirmando = null; eliminarSesion(x.id); pintarInicio(); };
+      fila.append(no, si);
+      return fila;
+    }
+
+    if (renombrando === x.id) {
+      const input = crearElemento("input", "sesion-input");
+      input.value = x.nombre;
+      input.maxLength = 40;
+      input.setAttribute("aria-label", "Nombre de la sesión");
+      const terminar = (guardar) => {
+        if (renombrando !== x.id) return;
+        renombrando = null;
+        if (guardar) renombrarSesion(x.id, input.value);
+        pintarInicio();
+      };
+      input.onkeydown = (e) => {
+        if (e.key === "Enter") { e.preventDefault(); terminar(true); }
+        if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); terminar(false); }
+      };
+      input.onblur = () => terminar(true);
+      fila.append(input);
+      queueMicrotask(() => { input.focus(); input.select(); });
+      return fila;
+    }
+
+    const abrir = crearElemento("button", "sesion-abrir");
+    abrir.type = "button";
+    const nombre = crearElemento("span", "sesion-nombre", x.nombre);
+    if (sesion && sesion.id === x.id) nombre.append(crearElemento("span", "etiqueta", "Abierta"));
+    else if (resaltar === x.id) nombre.append(crearElemento("span", "etiqueta nueva", "Nueva"));
+    const barra = crearElemento("span", "barra fina");
+    const relleno = crearElemento("span", "barra-relleno");
+    relleno.style.width = r.pct + "%";
+    barra.append(relleno);
+    const meta = crearElemento("span", "sesion-meta",
+      `${r.pct}% · ${r.aprobadas} aprobadas · ${r.creditos} cr · ${fechaCorta(x.actualizada || x.creada)}`);
+    abrir.append(nombre, barra, meta);
+    abrir.onclick = () => abrirSesion(x.id);
+
+    const ren = botonIcono("lapiz", `Renombrar «${x.nombre}»`);
+    ren.onclick = () => { renombrando = x.id; confirmando = null; pintarInicio(); };
+    const del = botonIcono("papelera", `Eliminar «${x.nombre}»`, "peligro");
+    del.onclick = () => { confirmando = x.id; renombrando = null; pintarInicio(); };
+    fila.append(abrir, ren, del);
+    return fila;
+  }
+
   function pintarInicio() {
     const lista = $("#lista-carreras");
+    const foco = document.activeElement?.dataset?.foco; // conservar el foco al repintar
     lista.replaceChildren();
     for (const c of CARRERAS) {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "carrera" + (plan && plan.id === c.id ? " actual" : "");
-      const materias = c.materias.length;
-      const tienes = Object.keys(leerStorage("tracker-progreso:" + c.nombre) || {}).length;
-      b.innerHTML = `<span class="carrera-nombre"></span><span class="carrera-meta"></span><span class="carrera-progreso"></span>`;
-      b.querySelector(".carrera-nombre").textContent = c.carrera;
-      b.querySelector(".carrera-meta").textContent =
-        [c.institucion, c.version && `Plan ${c.version}`, `${materias} materias`,
-         c.creditosParaEgresar && `${c.creditosParaEgresar} créditos`].filter(Boolean).join(" · ");
-      b.querySelector(".carrera-progreso").textContent =
-        plan && plan.id === c.id ? "Carrera actual" : tienes ? `Tienes progreso guardado (${tienes} materias)` : "";
-      b.onclick = () => elegirCarrera(c.id);
-      lista.appendChild(b);
+      const ses = sesionesDe(c.id);
+      const tiene = ses.length > 0;
+      if (!tiene) abiertas.delete(c.id);
+      const abierta = abiertas.has(c.id);
+
+      const tarjeta = crearElemento("div", "carrera" + (tiene ? " con-sesiones" : "") + (abierta ? " abierta" : "")
+        + (plan && plan.id === c.id ? " actual" : ""));
+
+      // Cabecera: solo es interactiva cuando el plan tiene sesiones.
+      const cab = crearElemento("div", "carrera-cabecera");
+      const info = crearElemento("div", "carrera-info");
+      info.append(
+        crearElemento("span", "carrera-nombre", c.carrera),
+        crearElemento("span", "carrera-meta",
+          [c.institucion, c.version && `Plan ${c.version}`, `${c.materias.length} materias`,
+           c.creditosParaEgresar && `${c.creditosParaEgresar} créditos`].filter(Boolean).join(" · ")));
+      cab.append(info);
+      if (tiene) {
+        cab.tabIndex = 0;
+        cab.setAttribute("role", "button");
+        cab.setAttribute("aria-expanded", String(abierta));
+        cab.dataset.foco = "cab-" + c.id;
+        const cuenta = crearElemento("span", "carrera-cuenta", `${ses.length} ${ses.length === 1 ? "sesión" : "sesiones"}`);
+        const chevron = iconoHTML("chevron");
+        chevron.classList.add("carrera-chevron");
+        cab.append(cuenta, chevron);
+        const alternar = () => {
+          if (abiertas.has(c.id)) abiertas.delete(c.id); else abiertas.add(c.id);
+          confirmando = renombrando = null;
+          pintarInicio();
+        };
+        cab.onclick = alternar;
+        cab.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alternar(); } };
+      } else {
+        cab.setAttribute("aria-disabled", "true");
+      }
+
+      const nueva = crearElemento("button", "boton nueva-sesion");
+      nueva.type = "button";
+      nueva.dataset.foco = "nueva-" + c.id;
+      const lleno = ses.length >= MAX_SESIONES;
+      nueva.disabled = lleno;
+      nueva.title = lleno ? `Máximo ${MAX_SESIONES} sesiones por plan` : `Nueva sesión de ${c.carrera}`;
+      nueva.append(iconoHTML("mas"), lleno ? `Máximo ${MAX_SESIONES}` : "Nueva sesión");
+      nueva.onclick = () => {
+        const x = crearSesion(c.id);
+        if (!x) return;
+        resaltar = x.id;
+        abiertas.add(c.id);
+        confirmando = renombrando = null;
+        pintarInicio();
+      };
+
+      const fila = crearElemento("div", "carrera-fila");
+      fila.append(cab, nueva);
+      tarjeta.append(fila);
+
+      // Desplegable de sesiones (se anima al abrir).
+      const cont = crearElemento("div", "sesiones");
+      cont.setAttribute("aria-hidden", String(!abierta));
+      const interior = crearElemento("div", "sesiones-interior");
+      const ul = crearElemento("ul", "sesiones-lista");
+      for (const x of ses) ul.append(filaSesion(x, c));
+      interior.append(ul, crearElemento("p", "sesiones-limite", `${ses.length} de ${MAX_SESIONES} sesiones`));
+      cont.append(interior);
+      if (!abierta) cont.inert = true;
+      tarjeta.append(cont);
+      lista.append(tarjeta);
     }
     $("#inicio-cerrar").hidden = !plan;
+    if (foco) lista.querySelector(`[data-foco="${foco}"]`)?.focus();
   }
 
   function abrirInicio() {
     cerrarMenus();
     cerrarSelector();
+    confirmando = renombrando = resaltar = null;
+    // Abre el desplegable del plan de la sesión actual.
+    if (plan) abiertas.add(plan.id);
     pintarInicio();
     $("#inicio").hidden = false;
-    $("#lista-carreras button")?.focus();
+    $("#lista-carreras [data-foco]")?.focus();
   }
 
   function cerrarInicio() {
-    if (!plan) return; // sin carrera elegida no hay nada que mostrar detrás
+    if (!plan) return; // sin sesión abierta no hay nada que mostrar detrás
     $("#inicio").hidden = true;
   }
 
-  function elegirCarrera(id) {
-    const c = CARRERAS.find((x) => x.id === id);
+  function abrirSesion(id) {
+    const x = leerSesiones().find((s) => s.id === id);
+    const c = x && CARRERAS.find((k) => k.id === x.carrera);
     if (!c) return false;
+    const anterior = sesion;
+    sesion = x;
     try {
       cargarPlan(c);
     } catch (err) {
       // Solo pasaría si un plan del catálogo está mal escrito.
       console.error(err);
+      sesion = anterior;
       toast(`No se pudo abrir «${c.carrera}»: ${err.message}`);
       return false;
     }
-    escribirStorage(CLAVE_CARRERA, id);
+    escribirStorage(CLAVE_SESION_ACTUAL, id);
+    resaltar = null;
     $("#inicio").hidden = true;
     return true;
+  }
+
+  // Versión anterior: el progreso se guardaba por carrera. Lo convertimos en
+  // la primera sesión de cada carrera para no perder nada.
+  function migrarProgresoAntiguo() {
+    if (leerStorage(CLAVE_SESIONES)) return null;
+    guardarSesiones([]);
+    let abrir = null;
+    const ultima = leerStorage(CLAVE_CARRERA_ANTIGUA);
+    for (const c of CARRERAS) {
+      const prog = leerStorage("tracker-progreso:" + c.nombre);
+      const titulo = leerStorage("tracker-titulo:" + c.nombre);
+      if ((prog && typeof prog === "object" && Object.keys(prog).length) || titulo) {
+        const x = crearSesion(c.id, prog && typeof prog === "object" ? prog : {}, typeof titulo === "string" ? titulo : null);
+        if (x && c.id === ultima) abrir = x.id;
+      }
+      try {
+        localStorage.removeItem("tracker-progreso:" + c.nombre);
+        localStorage.removeItem("tracker-titulo:" + c.nombre);
+      } catch { /* sin almacenamiento */ }
+    }
+    try { localStorage.removeItem(CLAVE_CARRERA_ANTIGUA); } catch { /* sin almacenamiento */ }
+    return abrir;
   }
 
   $("#btn-carrera").onclick = abrirInicio;
@@ -965,8 +1217,9 @@
   // ---------- Exportar / importar progreso ----------
   $("#btn-exportar").onclick = () => {
     const nombre = (plan.id || plan.nombre).replace(/[^\w\-]+/g, "_").toLowerCase();
-    descargar(`progreso_${nombre}.json`,
-      { carrera: plan.id, plan: plan.nombre, fecha: new Date().toISOString(), progreso });
+    const ses = sesion.nombre.replace(/[^\w\-]+/g, "_").toLowerCase();
+    descargar(`progreso_${nombre}_${ses}.json`,
+      { carrera: plan.id, plan: plan.nombre, sesion: sesion.nombre, fecha: new Date().toISOString(), progreso });
   };
 
   $("#input-progreso").addEventListener("change", (e) => leerArchivoJSON(e.target, (datos) => {
@@ -975,22 +1228,22 @@
     const deOtra = datos.carrera ? datos.carrera !== plan.id : datos.plan && datos.plan !== plan.nombre;
     if (deOtra) {
       const otra = CARRERAS.find((c) => c.id === datos.carrera || c.nombre === datos.plan);
-      return toast(`Ese progreso es de ${otra ? otra.carrera : "otra carrera"}. Cambia de carrera para importarlo.`);
+      return toast(`Ese progreso es de ${otra ? otra.carrera : "otra carrera"}. Abre una sesión de esa carrera para importarlo.`);
     }
     const validos = {};
     for (const [id, est] of Object.entries(prog)) {
       if (porId.has(id) && est !== "pendiente" && ESTADOS_VALIDOS.has(est)) validos[id] = est;
     }
     progreso = validos;
-    escribirStorage(claveProgreso(), progreso);
+    guardarProgreso();
     actualizar();
-    toast(`Progreso importado: ${Object.keys(validos).length} materia(s) marcadas.`);
+    toast(`Progreso importado a «${sesion.nombre}»: ${Object.keys(validos).length} materia(s) marcadas.`);
   }));
 
   $("#btn-reiniciar").onclick = () => {
-    if (!confirm("¿Borrar todo tu progreso en este plan?")) return;
+    if (!confirm(`¿Borrar todo el progreso de «${sesion.nombre}»?`)) return;
     progreso = {};
-    escribirStorage(claveProgreso(), progreso);
+    guardarProgreso();
     actualizar();
   };
 
@@ -1010,6 +1263,7 @@
 
   // ---------- Inicio ----------
   try { localStorage.removeItem(CLAVE_PLAN_ANTIGUA); } catch { /* sin almacenamiento */ }
-  const guardada = leerStorage(CLAVE_CARRERA);
-  if (!(guardada && elegirCarrera(guardada))) abrirInicio();
+  const migrada = migrarProgresoAntiguo();
+  const guardada = migrada || leerStorage(CLAVE_SESION_ACTUAL);
+  if (!(guardada && abrirSesion(guardada))) abrirInicio();
 })();

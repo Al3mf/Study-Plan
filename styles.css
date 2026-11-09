@@ -330,16 +330,11 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .inicio-cerrar[hidden] { display: none; }
 .lista-carreras { display: grid; gap: 10px; }
 .carrera {
-  display: grid; gap: 3px; text-align: left; cursor: pointer;
-  font: inherit; padding: 14px 16px; border: 1px solid var(--borde); border-radius: 10px;
-  background: var(--panel); color: var(--texto);
+  border: 1px solid var(--borde); border-radius: 10px; overflow: hidden;
+  background: var(--panel); color: var(--texto); transition: border-color .15s;
 }
-.carrera:hover, .carrera:focus-visible { border-color: var(--disponible); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--disponible) 20%, transparent); }
-.carrera.actual { border-color: var(--aprobada); }
 .carrera-nombre { font-size: 16px; font-weight: 700; }
 .carrera-meta { color: var(--sub); font-size: 13px; }
-.carrera-progreso { color: var(--aprobada); font-size: 12.5px; font-weight: 600; }
-.carrera-progreso:empty { display: none; }
 
 /* --- Estilos de recuadro adicionales (Mecatrónica) --- */
 .nodo.depto-redondeado-simple rect.caja { stroke-width: 1.6; }
@@ -361,3 +356,75 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 .menu-boton[aria-expanded="true"] .ico { transform: rotate(180deg); }
 .requisitos li { display: flex; gap: 6px; align-items: flex-start; }
 .requisitos li .ico { margin-top: 2px; }
+
+/* --- Sesiones (menú de inicio) --- */
+.sesion-chip {
+  font-size: 12px; font-weight: 600; color: var(--sub); white-space: nowrap;
+  padding: 2px 8px; border: 1px solid var(--borde); border-radius: 99px;
+}
+.sesion-chip:empty { display: none; }
+.inicio-caja { width: min(620px, 100%); }
+.carrera.con-sesiones:hover, .carrera.abierta { border-color: color-mix(in srgb, var(--disponible) 55%, var(--borde)); }
+.carrera.actual { border-color: var(--aprobada); }
+.carrera-fila { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; }
+.carrera-cabecera {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
+  margin: -6px; padding: 6px; border-radius: 8px; outline: none;
+}
+.carrera.con-sesiones .carrera-cabecera { cursor: pointer; }
+.carrera.con-sesiones .carrera-cabecera:hover { background: var(--bg); }
+.carrera-cabecera:focus-visible { box-shadow: 0 0 0 2px var(--disponible); }
+.carrera-info { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.carrera-cuenta { font-size: 12px; color: var(--sub); white-space: nowrap; }
+.carrera-chevron { width: 16px; height: 16px; color: var(--sub); transition: transform .2s; }
+.carrera.abierta .carrera-chevron { transform: rotate(180deg); }
+.nueva-sesion { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0; }
+.nueva-sesion .ico { width: 14px; height: 14px; }
+.nueva-sesion:disabled { opacity: .55; cursor: not-allowed; border-color: var(--borde); }
+
+.sesiones { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .22s ease; }
+.carrera.abierta .sesiones { grid-template-rows: 1fr; }
+.sesiones-interior { overflow: hidden; min-height: 0; }
+.carrera.abierta .sesiones-interior { border-top: 1px solid var(--borde); }
+.sesiones-lista { list-style: none; margin: 0; padding: 8px; display: grid; gap: 4px; }
+.sesiones-limite { margin: 0; padding: 0 16px 10px; font-size: 12px; color: var(--sub); }
+
+.sesion {
+  display: flex; align-items: center; gap: 4px; padding: 2px 4px 2px 2px;
+  border: 1px solid transparent; border-radius: 8px;
+}
+.sesion:hover { background: var(--bg); }
+.sesion.actual { border-color: color-mix(in srgb, var(--aprobada) 45%, transparent); }
+.sesion.nueva { border-color: color-mix(in srgb, var(--disponible) 45%, transparent); }
+.sesion-abrir {
+  flex: 1; min-width: 0; display: grid; gap: 4px; text-align: left; cursor: pointer;
+  font: inherit; color: var(--texto); background: none; border: 0; border-radius: 6px; padding: 8px 10px;
+}
+.sesion-abrir:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--disponible); }
+.sesion-nombre { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
+.sesion-meta { font-size: 12px; color: var(--sub); }
+.sesion .barra.fina { display: block; height: 4px; }
+.sesion .barra-relleno { display: block; }
+.etiqueta {
+  font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px;
+  color: var(--aprobada); background: color-mix(in srgb, var(--aprobada) 12%, transparent);
+}
+.etiqueta.nueva { color: var(--disponible); background: color-mix(in srgb, var(--disponible) 12%, transparent); }
+.icono-boton.peligro:hover { color: var(--peligro); }
+.sesion.confirmando { padding: 8px 10px; gap: 8px; background: color-mix(in srgb, var(--peligro) 7%, transparent); }
+.sesion-confirmar { flex: 1; font-size: 13px; }
+.boton.chico { padding: 4px 10px; font-size: 12.5px; }
+.sesion-input {
+  flex: 1; font: inherit; font-weight: 600; padding: 8px 10px; margin: 2px 0;
+  border: 1px solid var(--disponible); border-radius: 6px; background: var(--panel); color: var(--texto); outline: none;
+}
+@media (max-width: 520px) {
+  .carrera-fila { flex-wrap: wrap; }
+  .nueva-sesion { width: 100%; justify-content: center; }
+}
+
+/* Anillo de foco consistente (solo con teclado) */
+:is(.boton, .icono-boton, .zoom button, .estados button, .selector-estados button):focus { outline: none; }
+:is(.boton, .icono-boton, .zoom button, .estados button, .selector-estados button):focus-visible {
+  outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--disponible) 60%, transparent);
+}
