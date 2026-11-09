@@ -31,6 +31,8 @@
     { id: "unica", nombre: "Materia única" },
   ];
   const ESTADOS_VALIDOS = new Set(ESTADOS.map((e) => e.id));
+  // Resultados que se pueden registrar para una materia en un semestre.
+  const ESTADOS_SEMESTRE = new Set(["cursando", "aprobada", "reprobada", "recursando", "unica"]);
   // Estados que significan "la reprobaste al menos una vez".
   const REPROBADAS = new Set(["reprobada", "recursando", "unica"]);
 
@@ -56,7 +58,13 @@
   let hoverId = null;
   let vista = { x: 0, y: 0, k: 1 };
   let mostrarExtras = true; // columnas con nombre (p. ej. áreas de énfasis)
-  let filtroClasif = null;  // { tipo: "clasificacion" | "departamento", valor } para resaltar
+  let filtroClasif = null;  // { tipo, valor } o { ids: Set } para resaltar materias
+  // Semestres registrados de la sesión (como ramas ya fusionadas) y el
+  // semestre en edición (como una rama abierta). El diagrama "principal"
+  // solo cambia al guardar un semestre.
+  let semestres = [];       // [{ id, materias: { idMateria: estado }, nota?, creado }]
+  let borrador = null;      // { editando: idSemestre | null, materias: { idMateria: estado } }
+  let semAbierto = null;    // semestre desplegado en el panel derecho
 
   const esVisible = (m) => mostrarExtras || typeof m.semestre === "number";
 
@@ -79,6 +87,7 @@
 
   const claveProgresoDe = (idSesion) => "tracker-progreso-sesion:" + idSesion;
   const claveTituloDe = (idSesion) => "tracker-titulo-sesion:" + idSesion;
+  const claveSemestresDe = (idSesion) => "tracker-semestres-sesion:" + idSesion;
   function claveProgreso() {
     return claveProgresoDe(sesion?.id || "ninguna");
   }
@@ -248,18 +257,25 @@
     return motivosBloqueo(m).length ? "bloqueada" : "disponible";
   }
 
+  // Cambia el resultado de una materia dentro del semestre en edición.
+  // Fuera de un semestre en edición el diagrama es de solo lectura.
   function fijarEstado(id, estado) {
-    if (!ESTADOS_VALIDOS.has(estado)) return;
+    if (!borrador) return;
     const m = porId.get(id);
-    // Si la marcas como cursando o aprobada sin cumplir requisitos, se aplica
-    // igual (tú decides) pero se avisa.
-    if ((estado === "cursando" || estado === "aprobada") && estadoGuardado(id) !== estado) {
-      const f = motivosBloqueo(m);
-      if (f.length) toast(`Ojo: a "${m.nombre}" le falta ${f.join("; ")}.`);
+    if (estado === "quitar") {
+      delete borrador.materias[id];
+    } else {
+      if (!ESTADOS_SEMESTRE.has(estado)) return;
+      // Si no cumple requisitos se registra igual (tú decides), pero se avisa.
+      // Los requisitos se revisan contra lo ya registrado, sin este semestre.
+      if ((estado === "cursando" || estado === "aprobada") && borrador.materias[id] !== estado) {
+        const f = motivosBloqueoBase(m);
+        if (f.length) toast(`Ojo: a "${m.nombre}" le falta ${f.join("; ")}.`);
+      }
+      borrador.materias[id] = estado;
     }
-    if (estado === "pendiente") delete progreso[id];
-    else progreso[id] = estado;
-    guardarProgreso();
+    guardarSemestres();
+    recomputar();
     actualizar();
   }
 
@@ -378,6 +394,7 @@
       const estilo = plan.departamentos[m.departamento]?.estilo || "";
       const rx = estilo === "redondeado" || estilo === "redondeado-simple" ? 20 : 10;
       g._estilo = estilo ? " depto-" + estilo : "";
+      el("rect", { class: "halo", x: -5, y: -5, width: NODO_W + 10, height: NODO_H + 10, rx: rx + 4 }, g);
       el("rect", { class: "caja", width: NODO_W, height: NODO_H, rx }, g);
       if (estilo === "doble" || estilo === "redondeado") {
         el("rect", { class: "caja-interna", x: 4, y: 4, width: NODO_W - 8, height: NODO_H - 8, rx: rx - 3 }, g);
@@ -466,7 +483,8 @@
       if (e === "aprobada") credOk += m.creditos;
       const g = elNodos.get(m.id);
       if (!g) continue;
-      g.setAttribute("class", `nodo ${e}${g._estilo}${seleccion === m.id ? " seleccionado" : ""}`);
+      const enBorrador = borrador && borrador.materias[m.id] ? " en-borrador" : "";
+      g.setAttribute("class", `nodo ${e}${g._estilo}${enBorrador}${seleccion === m.id ? " seleccionado" : ""}`);
       const icono = g.querySelector(".icono");
       if (ICONOS[e]) icono.setAttribute("href", "#i-" + ICONOS[e]);
       else icono.removeAttribute("href");
@@ -498,6 +516,7 @@
     $("#n-reprobadas-total").textContent = conteo.reprobada + conteo.recursando + conteo.unica;
     pintarMetas();
     pintarClasificaciones();
+    pintarSemestres();
     pintarSelector();
 
     pintarDetalle();
@@ -573,6 +592,8 @@
       li.append(span, b);
       const alternar = () => {
         filtroClasif = activo ? null : { tipo, valor };
+        semAbierto = null;
+        pintarSemestres();
         pintarClasificaciones();
         aplicarFoco();
       };
@@ -608,7 +629,7 @@
   // ---------- Selector de estado ----------
   function crearBotonesEstado(cont, alElegir) {
     cont.replaceChildren();
-    for (const est of ESTADOS) {
+    for (const est of ESTADOS.filter((x) => ESTADOS_SEMESTRE.has(x.id))) {
       const b = document.createElement("button");
       b.type = "button";
       b.dataset.estado = est.id;
@@ -628,7 +649,8 @@
     const pop = $("#selector");
     pop.hidden = false;
     posicionarSelector();
-    pop.querySelector(`button[data-estado="${estadoGuardado(id)}"]`)?.focus();
+    if (borrador) pop.querySelector(`#sel-estados button[data-estado="${borrador.materias[id] || "cursando"}"]`)?.focus();
+    else pop.querySelector("#sel-registrar")?.focus();
   }
 
   function cerrarSelector(devolverFoco = false) {
@@ -660,11 +682,20 @@
     if (!selectorId) return;
     const m = porId.get(selectorId);
     $("#sel-nombre").textContent = m.nombre;
-    const f = motivosBloqueo(m);
+    const editando = !!borrador;
+    const actual = editando ? borrador.materias[m.id] : null;
+    const f = motivosBloqueoBase(m);
     const aviso = $("#sel-aviso");
-    aviso.hidden = f.length === 0 || estadoGuardado(m.id) === "aprobada";
+    aviso.hidden = !editando || f.length === 0 || estadoBase(m.id) === "aprobada";
     aviso.textContent = "Te falta: " + f.join("; ");
-    for (const b of $("#sel-estados").children) b.classList.toggle("activo", b.dataset.estado === estadoGuardado(m.id));
+    $("#sel-modo").textContent = editando
+      ? `¿Cómo te fue en el semestre ${numeroBorrador()}?`
+      : `Estado: ${ETIQUETAS[estadoVisual(m)]}`;
+    $("#sel-estados").hidden = !editando;
+    $("#sel-quitar").hidden = !editando || !actual;
+    for (const b of $("#sel-estados").children) b.classList.toggle("activo", b.dataset.estado === actual);
+    pintarHistorial($("#sel-historial"), m.id);
+    $("#sel-solo-lectura").hidden = editando;
     posicionarSelector();
   }
 
@@ -675,6 +706,33 @@
   });
   crearBotonesEstado($("#det-estados"), (est) => seleccion && fijarEstado(seleccion, est));
   $("#sel-cerrar").onclick = () => cerrarSelector(true);
+  $("#sel-quitar").onclick = () => { const id = selectorId; fijarEstado(id, "quitar"); cerrarSelector(true); };
+  $("#det-quitar").onclick = () => seleccion && fijarEstado(seleccion, "quitar");
+  $("#sel-registrar").onclick = () => { const id = selectorId; registrarSemestre(); if (id) abrirSelector(id); };
+
+  // Historial de una materia: en qué semestres la llevaste y cómo te fue.
+  function pintarHistorial(ul, id) {
+    ul.replaceChildren();
+    const filas = [];
+    semestres.forEach((x, i) => { if (x.materias[id]) filas.push([`Semestre ${i + 1}`, x.materias[id], x.id === borrador?.editando]); });
+    if (borrador && !borrador.editando && borrador.materias[id]) filas.push([`Semestre ${numeroBorrador()}`, borrador.materias[id], true]);
+    else if (borrador && borrador.editando) {
+      const i = semestres.findIndex((x) => x.id === borrador.editando);
+      if (i >= 0) { // en edición: muestra el valor del borrador en esa fila
+        const k = filas.findIndex((f) => f[0] === `Semestre ${i + 1}`);
+        if (k >= 0) filas.splice(k, 1);
+        if (borrador.materias[id]) filas.push([`Semestre ${i + 1}`, borrador.materias[id], true]);
+        filas.sort((a, b) => parseInt(a[0].slice(9)) - parseInt(b[0].slice(9)));
+      }
+    }
+    ul.hidden = filas.length === 0;
+    for (const [sem, est, edit] of filas) {
+      const li = crearElemento("li", edit ? "en-edicion" : "");
+      li.append(crearElemento("span", "punto " + est), crearElemento("span", "", sem),
+        crearElemento("b", "", ETIQUETAS[est] + (edit ? " (en edición)" : "")));
+      ul.append(li);
+    }
+  }
 
   document.addEventListener("pointerdown", (e) => {
     if (selectorId && !e.target.closest("#selector") && !e.target.closest(".nodo")) cerrarSelector();
@@ -703,9 +761,15 @@
       extra.appendChild(li);
     }
     extra.hidden = reqs.length === 0;
+    const enEdicion = !!borrador;
+    $("#det-estados").hidden = !enEdicion;
+    $("#det-quitar").hidden = !enEdicion || !borrador.materias[m.id];
+    $("#det-solo-lectura").hidden = enEdicion;
     for (const b of $("#det-estados").children) {
-      b.classList.toggle("activo", b.dataset.estado === estadoGuardado(m.id));
+      b.classList.toggle("activo", enEdicion && b.dataset.estado === borrador.materias[m.id]);
     }
+    pintarHistorial($("#det-historial"), m.id);
+    $("#det-historial-titulo").hidden = $("#det-historial").hidden;
     const chips = (ul, ids) => {
       ul.replaceChildren();
       if (!ids.length) {
@@ -745,6 +809,9 @@
       nodosFoco = new Set(plan.materias
         .filter((m) => m.nombre.toLowerCase().includes(q) || m.id.toLowerCase().includes(q))
         .map((m) => m.id));
+      aristasFoco = () => false;
+    } else if (filtroClasif && filtroClasif.ids) {
+      nodosFoco = filtroClasif.ids;
       aristasFoco = () => false;
     } else if (filtroClasif) {
       nodosFoco = new Set(plan.materias.filter((m) => m[filtroClasif.tipo] === filtroClasif.valor).map((m) => m.id));
@@ -894,11 +961,9 @@
       if (!hijos.has(p)) hijos.set(p, []);
       hijos.get(p).push(m.id);
     }
-    progreso = leerStorage(claveProgreso()) || {};
-    if (typeof progreso !== "object" || Array.isArray(progreso)) progreso = {};
-    for (const [id, est] of Object.entries(progreso)) {
-      if (!porId.has(id) || est === "pendiente" || !ESTADOS_VALIDOS.has(est)) delete progreso[id];
-    }
+    cargarSemestres();
+    recomputar();
+    semAbierto = null;
     cerrarSelector();
     seleccion = null;
     hoverId = null;
@@ -915,6 +980,260 @@
     if (avisos.length) console.warn("Avisos del plan:", avisos);
   }
 
+  // ---------- Semestres registrados ----------
+
+  function limpiarMaterias(obj) {
+    const r = {};
+    if (obj && typeof obj === "object") {
+      for (const [id, est] of Object.entries(obj)) if (porId.has(id) && ESTADOS_SEMESTRE.has(est)) r[id] = est;
+    }
+    return r;
+  }
+
+  function cargarSemestres() {
+    const datos = leerStorage(claveSemestresDe(sesion?.id || "ninguna"));
+    if (datos && Array.isArray(datos.semestres)) {
+      semestres = datos.semestres.filter((x) => x && x.id).map((x) => ({ ...x, materias: limpiarMaterias(x.materias) }));
+      borrador = datos.borrador && typeof datos.borrador === "object"
+        ? { editando: semestres.some((x) => x.id === datos.borrador.editando) ? datos.borrador.editando : null,
+            materias: limpiarMaterias(datos.borrador.materias) }
+        : null;
+      return;
+    }
+    // Sesión de antes de los semestres: su progreso pasa a ser el semestre 1.
+    const previo = limpiarMaterias(leerStorage(claveProgreso()));
+    semestres = Object.keys(previo).length
+      ? [{ id: nuevoId(), materias: previo, nota: "Progreso anterior", creado: Date.now() }] : [];
+    borrador = null;
+    if (sesion) escribirStorage(claveSemestresDe(sesion.id), { semestres, borrador });
+  }
+
+  function guardarSemestres() {
+    if (!sesion) return;
+    escribirStorage(claveSemestresDe(sesion.id), { semestres, borrador });
+  }
+
+  // Estado principal: cada materia toma el resultado del semestre más reciente
+  // en que aparece (como fusionar las ramas en orden).
+  function derivar(lista = semestres) {
+    const r = {};
+    for (const x of lista) Object.assign(r, x.materias);
+    return r;
+  }
+
+  // Lo que se ve: el estado principal, más la vista previa del semestre en edición.
+  function recomputar() {
+    if (!borrador) { progreso = derivar(); return; }
+    const lista = borrador.editando
+      ? semestres.map((x) => (x.id === borrador.editando ? { ...x, materias: borrador.materias } : x))
+      : [...semestres, { materias: borrador.materias }];
+    progreso = derivar(lista);
+  }
+
+  // Estado y requisitos sin contar el semestre en edición (para avisos).
+  function estadoBase(id) {
+    const lista = borrador && borrador.editando ? semestres.filter((x) => x.id !== borrador.editando) : semestres;
+    return derivar(lista)[id] || "pendiente";
+  }
+  function motivosBloqueoBase(m) {
+    const guardado = progreso;
+    const lista = borrador && borrador.editando
+      ? semestres.slice(0, semestres.findIndex((x) => x.id === borrador.editando))
+      : semestres;
+    progreso = derivar(lista);
+    const r = motivosBloqueo(m);
+    progreso = guardado;
+    return r;
+  }
+
+  function numeroBorrador() {
+    if (!borrador) return null;
+    if (borrador.editando) return semestres.findIndex((x) => x.id === borrador.editando) + 1;
+    return semestres.length + 1;
+  }
+
+  function registrarSemestre() {
+    if (borrador) { toast(`Ya estás editando el semestre ${numeroBorrador()}. Guárdalo o descártalo primero.`); return; }
+    borrador = { editando: null, materias: {} };
+    semAbierto = null;
+    filtroClasif = null;
+    guardarSemestres();
+    recomputar();
+    actualizar();
+    toast(`Semestre ${numeroBorrador()}: haz clic en las materias que llevaste y elige su resultado.`);
+  }
+
+  function editarSemestre(id) {
+    if (borrador) { toast(`Ya estás editando el semestre ${numeroBorrador()}. Guárdalo o descártalo primero.`); return; }
+    const x = semestres.find((k) => k.id === id);
+    if (!x) return;
+    borrador = { editando: id, materias: { ...x.materias } };
+    semAbierto = null;
+    filtroClasif = null;
+    guardarSemestres();
+    recomputar();
+    actualizar();
+  }
+
+  function guardarSemestre() {
+    if (!borrador) return;
+    const n = Object.keys(borrador.materias).length;
+    if (!n) { toast("Agrega al menos una materia al semestre, o descártalo."); return; }
+    const num = numeroBorrador();
+    if (borrador.editando) {
+      semestres = semestres.map((x) => (x.id === borrador.editando ? { ...x, materias: borrador.materias } : x));
+    } else {
+      semestres.push({ id: nuevoId(), materias: borrador.materias, creado: Date.now() });
+    }
+    borrador = null;
+    guardarSemestres();
+    recomputar();
+    guardarProgreso();
+    cerrarSelector();
+    actualizar();
+    toast(`Semestre ${num} guardado: ${n} materia${n === 1 ? "" : "s"}. El diagrama se actualizó.`);
+  }
+
+  function descartarBorrador() {
+    if (!borrador) return;
+    const n = Object.keys(borrador.materias).length;
+    const num = numeroBorrador();
+    if (n && !confirm(`¿Descartar los cambios del semestre ${num}?`)) return;
+    borrador = null;
+    guardarSemestres();
+    recomputar();
+    cerrarSelector();
+    actualizar();
+  }
+
+  let semConfirmando = null;
+  function eliminarSemestre(id) {
+    semestres = semestres.filter((x) => x.id !== id);
+    if (semAbierto === id) { semAbierto = null; filtroClasif = null; }
+    guardarSemestres();
+    recomputar();
+    guardarProgreso();
+    actualizar();
+  }
+
+  function resumenMaterias(mats) {
+    let cr = 0;
+    const c = { aprobada: 0, cursando: 0, reprobadas: 0 };
+    for (const [id, est] of Object.entries(mats)) {
+      if (est === "aprobada") { c.aprobada++; cr += porId.get(id)?.creditos || 0; }
+      else if (est === "cursando") c.cursando++;
+      else c.reprobadas++;
+    }
+    return { n: Object.keys(mats).length, cr, ...c };
+  }
+
+  function filaSemestre(x, i, esBorrador) {
+    const id = esBorrador ? "borrador" : x.id;
+    const num = esBorrador ? numeroBorrador() : i + 1;
+    const mats = esBorrador ? borrador.materias : x.materias;
+    const editandoEste = esBorrador || (borrador && borrador.editando === x.id);
+    const abierto = semAbierto === id;
+    const li = crearElemento("li", "semestre" + (abierto ? " abierto" : "") + (editandoEste ? " editando" : ""));
+
+    if (!esBorrador && semConfirmando === x.id) {
+      li.classList.add("confirmando");
+      li.append(crearElemento("span", "sesion-confirmar", `¿Eliminar el semestre ${num}? Se quitará del diagrama.`));
+      const no = crearElemento("button", "boton chico", "Cancelar");
+      const si = crearElemento("button", "boton chico peligro", "Eliminar");
+      no.type = si.type = "button";
+      no.onclick = () => { semConfirmando = null; pintarSemestres(); };
+      si.onclick = () => { semConfirmando = null; eliminarSemestre(x.id); };
+      li.append(no, si);
+      return li;
+    }
+
+    const r = resumenMaterias(editandoEste && !esBorrador ? borrador.materias : mats);
+    const cab = crearElemento("button", "semestre-cabecera");
+    cab.type = "button";
+    cab.setAttribute("aria-expanded", String(abierto));
+    const titulo = crearElemento("span", "semestre-titulo", `Semestre ${num}`);
+    if (editandoEste) titulo.append(crearElemento("span", "etiqueta editando", "En edición"));
+    else if (x.nota) titulo.append(crearElemento("span", "etiqueta neutra", x.nota));
+    const meta = crearElemento("span", "semestre-meta",
+      `${r.n} materia${r.n === 1 ? "" : "s"} · ${r.cr} cr aprobados`);
+    const conteos = crearElemento("span", "semestre-conteos");
+    for (const [k, clase, uno, varios] of [["aprobada", "aprobada", "aprobada", "aprobadas"], ["cursando", "cursando", "cursando", "cursando"], ["reprobadas", "reprobada", "reprobada", "reprobadas"]]) {
+      if (!r[k]) continue;
+      const s = crearElemento("span", "conteo");
+      s.append(crearElemento("span", "punto " + clase), `${r[k]} ${r[k] === 1 ? uno : varios}`);
+      conteos.append(s);
+    }
+    const chevron = iconoHTML("chevron");
+    chevron.classList.add("semestre-chevron");
+    cab.append(titulo, chevron, meta, conteos);
+    cab.onclick = () => {
+      semAbierto = abierto ? null : id;
+      semConfirmando = null;
+      const lista = editandoEste ? (borrador?.materias || {}) : mats;
+      filtroClasif = semAbierto ? { ids: new Set(Object.keys(lista)) } : null;
+      pintarSemestres();
+      aplicarFoco();
+    };
+    li.append(cab);
+
+    if (!esBorrador && !borrador) {
+      const acc = crearElemento("div", "semestre-acciones");
+      const ed = botonIcono("lapiz", `Editar semestre ${num}`);
+      ed.onclick = () => editarSemestre(x.id);
+      const del = botonIcono("papelera", `Eliminar semestre ${num}`, "peligro");
+      del.onclick = () => { semConfirmando = x.id; pintarSemestres(); };
+      acc.append(ed, del);
+      li.append(acc);
+    }
+
+    if (abierto) {
+      const ul = crearElemento("ul", "semestre-materias");
+      const ids = Object.keys(editandoEste ? borrador.materias : mats);
+      if (!ids.length) ul.append(crearElemento("li", "sub", "Aún no hay materias en este semestre."));
+      for (const mid of ids) {
+        const m = porId.get(mid);
+        const est = (editandoEste ? borrador.materias : mats)[mid];
+        const it = crearElemento("li", "semestre-materia");
+        it.append(crearElemento("span", "punto " + est), crearElemento("span", "nombre", m.nombre), crearElemento("span", "estado", ETIQUETAS[est]));
+        it.title = "Ver en el diagrama";
+        it.onclick = () => {
+          if (!pos.has(mid)) { mostrarExtras = true; $("#chk-extras").checked = true; redibujar(); }
+          seleccion = mid; actualizar(); centrarEn(mid);
+        };
+        ul.append(it);
+      }
+      li.append(ul);
+    }
+    return li;
+  }
+
+  function pintarSemestres() {
+    if (!plan) return;
+    const ul = $("#lista-semestres");
+    ul.replaceChildren();
+    semestres.forEach((x, i) => ul.append(filaSemestre(x, i, false)));
+    if (borrador && !borrador.editando) ul.append(filaSemestre(null, semestres.length, true));
+    $("#sem-vacio").hidden = semestres.length > 0 || !!borrador;
+    for (const b of ["#btn-registrar", "#btn-registrar-panel"]) $(b).hidden = !!borrador;
+
+    // Barra de edición en el encabezado.
+    const barra = $("#barra-edicion");
+    barra.hidden = !borrador;
+    document.body.classList.toggle("modo-edicion", !!borrador);
+    if (borrador) {
+      const n = Object.keys(borrador.materias).length;
+      $("#edicion-titulo").textContent = `Editando semestre ${numeroBorrador()}`;
+      $("#edicion-resumen").textContent = n
+        ? `${n} materia${n === 1 ? "" : "s"} en este semestre`
+        : "Haz clic en las materias que llevaste y elige su resultado";
+    }
+  }
+
+  $("#btn-registrar").onclick = registrarSemestre;
+  $("#btn-registrar-panel").onclick = registrarSemestre;
+  $("#btn-guardar-semestre").onclick = guardarSemestre;
+  $("#btn-descartar").onclick = descartarBorrador;
+
   // ---------- Sesiones ----------
   function leerSesiones() {
     const l = leerStorage(CLAVE_SESIONES);
@@ -925,8 +1244,10 @@
   }
   const sesionesDe = (idCarrera) => leerSesiones().filter((x) => x.carrera === idCarrera);
 
+  // Guarda el estado principal (solo semestres registrados, sin borrador),
+  // que es lo que resume la pantalla de inicio.
   function guardarProgreso() {
-    escribirStorage(claveProgreso(), progreso);
+    escribirStorage(claveProgreso(), derivar());
     if (!sesion) return;
     sesion.actualizada = Date.now();
     guardarSesiones(leerSesiones().map((x) => (x.id === sesion.id ? { ...x, actualizada: sesion.actualizada } : x)));
@@ -965,6 +1286,7 @@
     try {
       localStorage.removeItem(claveProgresoDe(id));
       localStorage.removeItem(claveTituloDe(id));
+      localStorage.removeItem(claveSemestresDe(id));
     } catch { /* sin almacenamiento */ }
     if (sesion && sesion.id === id) {
       // La sesión abierta ya no existe: no queda nada que mostrar detrás del menú.
@@ -1290,30 +1612,41 @@
     const nombre = (plan.id || plan.nombre).replace(/[^\w\-]+/g, "_").toLowerCase();
     const ses = sesion.nombre.replace(/[^\w\-]+/g, "_").toLowerCase();
     descargar(`progreso_${nombre}_${ses}.json`,
-      { carrera: plan.id, plan: plan.nombre, sesion: sesion.nombre, fecha: new Date().toISOString(), progreso });
+      { carrera: plan.id, plan: plan.nombre, sesion: sesion.nombre, fecha: new Date().toISOString(),
+        semestres: semestres.map((x, i) => ({ numero: i + 1, ...(x.nota ? { nota: x.nota } : {}), materias: x.materias })),
+        progreso: derivar() });
   };
 
   $("#input-progreso").addEventListener("change", (e) => leerArchivoJSON(e.target, (datos) => {
     const prog = datos.progreso;
-    if (!prog || typeof prog !== "object") return toast('El archivo no tiene un bloque "progreso".');
+    const sems = Array.isArray(datos.semestres) ? datos.semestres : null;
+    if (!sems && (!prog || typeof prog !== "object")) return toast('El archivo no tiene semestres ni progreso.');
     const deOtra = datos.carrera ? datos.carrera !== plan.id : datos.plan && datos.plan !== plan.nombre;
     if (deOtra) {
       const otra = CARRERAS.find((c) => c.id === datos.carrera || c.nombre === datos.plan);
       return toast(`Ese progreso es de ${otra ? otra.carrera : "otra carrera"}. Abre una sesión de esa carrera para importarlo.`);
     }
-    const validos = {};
-    for (const [id, est] of Object.entries(prog)) {
-      if (porId.has(id) && est !== "pendiente" && ESTADOS_VALIDOS.has(est)) validos[id] = est;
-    }
-    progreso = validos;
+    if (semestres.length && !confirm(`Esto reemplaza los ${semestres.length} semestres registrados de ${sesion.nombre}. ¿Continuar?`)) return;
+    semestres = sems
+      ? sems.map((x) => ({ id: nuevoId(), materias: limpiarMaterias(x && x.materias), ...(x && x.nota ? { nota: String(x.nota) } : {}), creado: Date.now() }))
+          .filter((x) => Object.keys(x.materias).length)
+      : [{ id: nuevoId(), materias: limpiarMaterias(prog), nota: "Progreso importado", creado: Date.now() }].filter((x) => Object.keys(x.materias).length);
+    borrador = null;
+    guardarSemestres();
+    recomputar();
     guardarProgreso();
     actualizar();
-    toast(`Progreso importado a ${sesion.nombre}: ${Object.keys(validos).length} materia(s) marcadas.`);
+    toast(`Importado a ${sesion.nombre}: ${semestres.length} semestre${semestres.length === 1 ? "" : "s"}.`);
   }));
 
   $("#btn-reiniciar").onclick = () => {
-    if (!confirm(`¿Borrar todo el progreso de ${sesion.nombre}?`)) return;
-    progreso = {};
+    if (!confirm(`¿Borrar todos los semestres registrados de ${sesion.nombre}?`)) return;
+    semestres = [];
+    borrador = null;
+    semAbierto = null;
+    filtroClasif = null;
+    guardarSemestres();
+    recomputar();
     guardarProgreso();
     actualizar();
   };

@@ -31,6 +31,7 @@
       <span id="sesion-nombre" class="sesion-chip"></span>
     </div>
     <div class="acciones">
+      <button id="btn-registrar" class="boton primario" type="button"><svg class="ico" aria-hidden="true"><use href="#i-mas"></use></svg> Registrar semestre</button>
       <div class="menu" id="menu-reglas">
         <button class="boton menu-boton" type="button" aria-expanded="false" aria-controls="panel-reglas">Reglas <svg class="ico" aria-hidden="true"><use href="#i-chevron"></use></svg></button>
         <div class="menu-panel" id="panel-reglas" hidden>
@@ -43,7 +44,9 @@
         <div class="menu-panel" id="panel-ayuda" hidden>
           <h2>Cómo usar</h2>
           <ul>
-            <li><b>Clic</b> en una materia: elige su estado (pendiente, cursando, aprobada, reprobada, recursando o materia única).</li>
+            <li><b>Registrar semestre</b>: abre un semestre en edición; haz clic en las materias que llevaste y elige su resultado. El diagrama solo cambia al <b>guardar</b> el semestre.</li>
+            <li><b>Semestres registrados</b> (panel derecho): despliega uno para ver y resaltar sus materias, edítalo o elimínalo.</li>
+            <li><b>Clic</b> en una materia fuera de edición: muestra su estado y su historial por semestre.</li>
             <li><b>Pasa el cursor</b>: resalta su cadena de prerrequisitos y lo que desbloquea.</li>
             <li><b>Clasificaciones</b> (panel lateral): clic para resaltar esas materias.</li>
             <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
@@ -61,6 +64,17 @@
         <input id="input-progreso" type="file" accept=".json,application/json" hidden>
       </label>
       <button id="btn-reiniciar" class="boton peligro">Reiniciar</button>
+    </div>
+    <div id="barra-edicion" class="barra-edicion" role="status" hidden>
+      <span class="edicion-indicador" aria-hidden="true"></span>
+      <div class="edicion-texto">
+        <b id="edicion-titulo"></b>
+        <span id="edicion-resumen" class="sub"></span>
+      </div>
+      <div class="edicion-acciones">
+        <button id="btn-descartar" class="boton" type="button">Descartar</button>
+        <button id="btn-guardar-semestre" class="boton primario" type="button"><svg class="ico" aria-hidden="true"><use href="#i-check"></use></svg> Guardar semestre</button>
+      </div>
     </div>
   </header>
 
@@ -96,7 +110,11 @@
       <section id="detalle" class="detalle" hidden>
         <h2 id="det-nombre"></h2>
         <p class="sub" id="det-meta"></p>
-        <div id="det-estados" class="estados" role="group" aria-label="Estado de la materia"></div>
+        <div id="det-estados" class="estados" role="group" aria-label="Resultado en el semestre en edición"></div>
+        <button id="det-quitar" class="boton chico quitar" type="button" hidden>Quitar del semestre</button>
+        <p id="det-solo-lectura" class="sub solo-lectura">Para cambiar su estado, registra o edita un semestre.</p>
+        <h3 id="det-historial-titulo">Historial</h3>
+        <ul id="det-historial" class="historial"></ul>
         <ul id="det-extra" class="requisitos" hidden></ul>
         <h3>Requiere</h3>
         <ul id="det-req" class="chips"></ul>
@@ -137,11 +155,27 @@
           <b id="sel-nombre"></b>
           <button id="sel-cerrar" class="icono-boton" type="button" aria-label="Cerrar"><svg class="ico" aria-hidden="true"><use href="#i-x"></use></svg></button>
         </div>
+        <p id="sel-modo" class="selector-modo"></p>
         <p id="sel-aviso" class="selector-aviso" hidden></p>
-        <div id="sel-estados" class="selector-estados" role="group" aria-label="Elegir estado"></div>
+        <div id="sel-estados" class="selector-estados" role="group" aria-label="Resultado en el semestre"></div>
+        <button id="sel-quitar" class="boton chico quitar" type="button" hidden>Quitar del semestre</button>
+        <ul id="sel-historial" class="historial"></ul>
+        <div id="sel-solo-lectura" class="solo-lectura">
+          <p class="sub">El diagrama solo cambia al registrar un semestre.</p>
+          <button id="sel-registrar" class="boton primario chico" type="button"><svg class="ico" aria-hidden="true"><use href="#i-mas"></use></svg> Registrar semestre</button>
+        </div>
       </div>
       <div id="toast" class="toast" role="status" hidden></div>
     </section>
+
+    <aside class="panel panel-derecho" aria-labelledby="sem-titulo">
+      <section>
+        <h2 id="sem-titulo">Semestres registrados</h2>
+        <p id="sem-vacio" class="sub">Aún no registras semestres. Registra el primero con las materias que llevaste para actualizar tu avance.</p>
+        <ul id="lista-semestres" class="lista-semestres"></ul>
+        <button id="btn-registrar-panel" class="boton primario ancho" type="button"><svg class="ico" aria-hidden="true"><use href="#i-mas"></use></svg> Registrar semestre</button>
+      </section>
+    </aside>
   </main>
 
   <div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="inicio-marca" hidden>
