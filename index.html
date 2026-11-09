@@ -144,16 +144,62 @@
     </section>
   </main>
 
-  <div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="inicio-titulo" hidden>
-    <div class="inicio-caja">
-      <button id="inicio-cerrar" class="icono-boton inicio-cerrar" type="button" aria-label="Cerrar" hidden><svg class="ico" aria-hidden="true"><use href="#i-x"></use></svg></button>
-      <h2 id="inicio-titulo">Sesiones</h2>
-      <p class="sub">Crea una sesión en tu plan de estudios para empezar a registrar tu avance. Cada sesión guarda su propio progreso; puedes tener hasta 3 por plan.</p>
-      <div id="lista-carreras" class="lista-carreras"></div>
+  <div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="inicio-marca" hidden>
+    <div class="inicio-pagina">
+      <header class="inicio-cabecera">
+        <div>
+          <h1 id="inicio-marca" class="inicio-marca">Tu Plan de Estudios</h1>
+          <p class="inicio-lema">Sigue tu avance en la carrera, materia por materia.</p>
+        </div>
+        <button id="inicio-cerrar" class="boton inicio-volver" type="button" hidden>Volver a la sesión</button>
+      </header>
+
+      <main class="inicio-grid">
+        <section class="tarjeta calendario" aria-labelledby="cal-titulo">
+          <div class="tarjeta-cabecera">
+            <div>
+              <h2 id="cal-titulo">Calendario UASLP</h2>
+              <p id="cal-nombre" class="sub"></p>
+            </div>
+          </div>
+          <div class="cal-nav">
+            <button id="cal-anterior" class="icono-boton" type="button" aria-label="Mes anterior" title="Mes anterior"><svg class="ico izq" aria-hidden="true"><use href="#i-chevron"></use></svg></button>
+            <b id="cal-mes" aria-live="polite"></b>
+            <button id="cal-siguiente" class="icono-boton" type="button" aria-label="Mes siguiente" title="Mes siguiente"><svg class="ico der" aria-hidden="true"><use href="#i-chevron"></use></svg></button>
+          </div>
+          <div id="cal-grid" class="cal-grid" role="grid"></div>
+          <ul class="cal-leyenda">
+            <li><span class="cal-tipo clases"></span>Clases</li>
+            <li><span class="cal-tipo examenes"></span>Exámenes</li>
+            <li><span class="cal-tipo tramite"></span>Trámites</li>
+            <li><span class="cal-tipo inhabil"></span>Inhábil</li>
+            <li><span class="cal-tipo vacaciones"></span>Vacaciones</li>
+          </ul>
+          <h3 class="cal-subtitulo">Próximas fechas</h3>
+          <ul id="cal-proximas" class="cal-lista"></ul>
+          <p class="cal-fuente sub">Fuente: <a id="cal-fuente" target="_blank" rel="noopener"></a>. Verifica las fechas en el sitio oficial.</p>
+        </section>
+
+        <section class="tarjeta" aria-labelledby="inicio-titulo">
+          <div class="tarjeta-cabecera">
+            <div>
+              <h2 id="inicio-titulo">Sesiones</h2>
+              <p class="sub">Crea una sesión en tu plan de estudios para empezar a registrar tu avance. Cada sesión guarda su propio progreso; puedes tener hasta 3 por plan.</p>
+            </div>
+          </div>
+          <div id="lista-carreras" class="lista-carreras"></div>
+        </section>
+      </main>
+
+      <footer class="inicio-pie">
+        <span>Creado por <a href="https://github.com/Al3mf" target="_blank" rel="noopener">Al3mf</a> · 2026</span>
+        <span><a href="https://github.com/Al3mf/Study-Plan" target="_blank" rel="noopener">Código en GitHub</a> · Licencia MIT</span>
+      </footer>
     </div>
   </div>
 
   <script src="planes/catalogo.js"></script>
+  <script src="calendario/fi-uaslp-2026-2027.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

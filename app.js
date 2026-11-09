@@ -1157,8 +1157,9 @@
     // Abre el desplegable del plan de la sesión actual.
     if (plan) abiertas.add(plan.id);
     pintarInicio();
+    pintarCalendario();
     $("#inicio").hidden = false;
-    $("#lista-carreras [data-foco]")?.focus();
+    $("#inicio").scrollTop = 0;
   }
 
   function cerrarInicio() {
@@ -1209,6 +1210,76 @@
     try { localStorage.removeItem(CLAVE_CARRERA_ANTIGUA); } catch { /* sin almacenamiento */ }
     return abrir;
   }
+
+  // ---------- Calendario UASLP (pantalla de inicio) ----------
+  const CALENDARIO = window.CALENDARIO && Array.isArray(window.CALENDARIO.eventos) ? window.CALENDARIO : null;
+  const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto",
+                 "septiembre", "octubre", "noviembre", "diciembre"];
+  const DIAS = ["L", "M", "M", "J", "V", "S", "D"];
+  const ETIQUETA_TIPO = { clases: "Clases", examenes: "Exámenes", tramite: "Trámite", inhabil: "Inhábil", vacaciones: "Vacaciones" };
+
+  const aFecha = (iso) => { const [a, m, d] = iso.split("-").map(Number); return new Date(a, m - 1, d); };
+  const mismoDia = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  const eventosCal = CALENDARIO ? CALENDARIO.eventos.map((e) => ({ ...e, d0: aFecha(e.inicio), d1: aFecha(e.fin || e.inicio) })) : [];
+  const eventosDelDia = (dia) => eventosCal.filter((e) => dia >= e.d0 && dia <= e.d1);
+
+  function hoy() { const h = new Date(); return new Date(h.getFullYear(), h.getMonth(), h.getDate()); }
+  let calMes = new Date(hoy().getFullYear(), hoy().getMonth(), 1);
+
+  function rangoTexto(e) {
+    const f = (d, conMes) => d.getDate() + (conMes ? " " + MESES[d.getMonth()].slice(0, 3) : "");
+    if (!e.fin || e.fin === e.inicio) return f(e.d0, true);
+    return e.d0.getMonth() === e.d1.getMonth() ? `${f(e.d0)}–${f(e.d1, true)}` : `${f(e.d0, true)} – ${f(e.d1, true)}`;
+  }
+
+  function pintarCalendario() {
+    const tarjeta = document.querySelector(".calendario");
+    tarjeta.hidden = !CALENDARIO;
+    if (!CALENDARIO) return;
+    $("#cal-nombre").textContent = CALENDARIO.nombre;
+    const fuente = $("#cal-fuente");
+    fuente.textContent = CALENDARIO.fuente;
+    fuente.href = CALENDARIO.url;
+    $("#cal-mes").textContent = `${MESES[calMes.getMonth()]} ${calMes.getFullYear()}`;
+
+    const grid = $("#cal-grid");
+    grid.replaceChildren();
+    for (const d of DIAS) grid.append(crearElemento("span", "cal-dia-semana", d));
+    const primero = (calMes.getDay() + 6) % 7; // lunes = 0
+    const diasMes = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 0).getDate();
+    for (let i = 0; i < primero; i++) grid.append(crearElemento("span", "cal-vacio"));
+    const h = hoy();
+    for (let n = 1; n <= diasMes; n++) {
+      const dia = new Date(calMes.getFullYear(), calMes.getMonth(), n);
+      const evs = eventosDelDia(dia);
+      const celda = crearElemento("span", "cal-dia" + (evs.length ? " " + evs[0].tipo : "") + (mismoDia(dia, h) ? " hoy" : ""), String(n));
+      celda.setAttribute("role", "gridcell");
+      if (evs.length) {
+        const texto = evs.map((e) => e.titulo).join(" · ");
+        celda.title = texto;
+        celda.setAttribute("aria-label", `${n} de ${MESES[dia.getMonth()]}: ${texto}`);
+      }
+      grid.append(celda);
+    }
+
+    // Próximas fechas: eventos que no han terminado, empezando por hoy.
+    const lista = $("#cal-proximas");
+    lista.replaceChildren();
+    const proximos = eventosCal.filter((e) => e.d1 >= h).sort((a, b) => a.d0 - b.d0).slice(0, 3);
+    if (!proximos.length) lista.append(crearElemento("li", "sub", "Sin fechas próximas en este calendario."));
+    for (const e of proximos) {
+      const li = crearElemento("li", "cal-evento");
+      li.append(crearElemento("span", "cal-tipo " + e.tipo), crearElemento("span", "cal-fecha", rangoTexto(e)),
+        crearElemento("span", "cal-evento-titulo", e.titulo));
+      if (e.d0 <= h) li.append(crearElemento("span", "etiqueta", "En curso"));
+      li.title = ETIQUETA_TIPO[e.tipo] || "";
+      li.onclick = () => { calMes = new Date(e.d0.getFullYear(), e.d0.getMonth(), 1); pintarCalendario(); };
+      lista.append(li);
+    }
+  }
+
+  $("#cal-anterior").onclick = () => { calMes = new Date(calMes.getFullYear(), calMes.getMonth() - 1, 1); pintarCalendario(); };
+  $("#cal-siguiente").onclick = () => { calMes = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 1); pintarCalendario(); };
 
   $("#btn-carrera").onclick = abrirInicio;
   $("#inicio-cerrar").onclick = cerrarInicio;
