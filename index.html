@@ -10,6 +10,7 @@
   <header class="topbar">
     <h1 id="plan-nombre">Plan de estudios</h1>
     <div class="acciones">
+      <label id="toggle-extras" class="boton interruptor"><input id="chk-extras" type="checkbox" checked> Áreas de énfasis</label>
       <input id="buscar" type="search" placeholder="Buscar materia…" aria-label="Buscar materia">
       <label class="boton">Cargar plan
         <input id="input-plan" type="file" accept=".json,application/json" hidden>
@@ -39,6 +40,12 @@
           <li><span class="punto disponible"></span>Disponibles <b id="n-disponible">0</b></li>
           <li><span class="punto bloqueada"></span>Bloqueadas <b id="n-bloqueada">0</b></li>
         </ul>
+        <p class="sub nota-leyenda">* optativa</p>
+      </section>
+
+      <section id="sec-metas" hidden>
+        <h2>Metas</h2>
+        <div id="metas"></div>
       </section>
 
       <section id="detalle" class="detalle" hidden>
@@ -49,10 +56,16 @@
           <button data-estado="cursando">Cursando</button>
           <button data-estado="aprobada">Aprobada</button>
         </div>
+        <ul id="det-extra" class="requisitos" hidden></ul>
         <h3>Requiere</h3>
         <ul id="det-req" class="chips"></ul>
         <h3>Desbloquea</h3>
         <ul id="det-desb" class="chips"></ul>
+      </section>
+
+      <section id="sec-notas" class="ayuda" hidden>
+        <h2>Reglas del plan</h2>
+        <ul id="notas"></ul>
       </section>
 
       <section class="ayuda">
@@ -88,7 +101,7 @@
     </section>
   </main>
 
-  <script src="planes/ejemplo.js"></script>
+  <script src="planes/isi-uaslp-2024.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

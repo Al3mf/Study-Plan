@@ -168,3 +168,21 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
   .panel { width: auto; max-height: 40vh; border-right: 0; border-top: 1px solid var(--borde); }
   .ayuda { display: none; }
 }
+
+/* --- Metas, requisitos y columnas extra --- */
+.meta { margin-bottom: 10px; }
+.meta-fila { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 4px; }
+.meta.cumplida .meta-fila b { color: var(--aprobada); }
+.barra.fina { height: 6px; }
+.nota-leyenda { font-size: 12px; margin-top: 6px; }
+
+.requisitos { list-style: none; padding: 0; margin: 12px 0 0; font-size: 12.5px; }
+.requisitos li { padding: 2px 0; }
+.requisitos li.ok { color: var(--aprobada); }
+.requisitos li.falta { color: var(--peligro); }
+
+.col-titulo.chico { font-size: 12.5px; }
+.col-extra .col-fondo { fill: color-mix(in srgb, var(--disponible) 10%, var(--panel)); opacity: .8; }
+.interruptor { display: inline-flex; align-items: center; gap: 6px; }
+.interruptor input { margin: 0; accent-color: var(--disponible); }
+.interruptor[hidden] { display: none; }
