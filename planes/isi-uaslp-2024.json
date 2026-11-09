@@ -1,6 +1,56 @@
 {
   "nombre": "Ingeniería en Sistemas Inteligentes — UASLP (Agosto 2024)",
   "creditosParaEgresar": 405,
+  "clasificaciones": {
+    "CB": {
+      "nombre": "Ciencias Básicas y Matemáticas",
+      "color": "#a99bc9",
+      "texto": "#ffffff"
+    },
+    "CI": {
+      "nombre": "Ciencias de la Ingeniería",
+      "color": "#2f6fe4",
+      "texto": "#ffffff"
+    },
+    "IA": {
+      "nombre": "Ingeniería Aplicada",
+      "color": "#e3261b",
+      "texto": "#ffe94d"
+    },
+    "CS": {
+      "nombre": "Ciencias Sociales y Humanidades",
+      "color": "#f5e400",
+      "texto": "#d42020"
+    },
+    "CE": {
+      "nombre": "Ciencias Económico-Administrativas",
+      "color": "#f07a1a",
+      "texto": "#ffffff"
+    },
+    "CC": {
+      "nombre": "Otros cursos",
+      "color": "",
+      "texto": ""
+    }
+  },
+  "departamentos": {
+    "carrera": {
+      "nombre": "Carrera",
+      "estilo": "grueso"
+    },
+    "fisicomat": {
+      "nombre": "Depto. Físico Matemáticas",
+      "estilo": "delgado"
+    },
+    "humanistica": {
+      "nombre": "Formación Humanística",
+      "estilo": "doble"
+    },
+    "ingles": {
+      "nombre": "Depto. Universitario de Inglés",
+      "estilo": "redondeado"
+    }
+  },
   "grupos": {
     "nucleo": "Núcleo Básico",
     "robotica": "Robótica Inteligente e IA",
@@ -43,7 +93,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2229",
@@ -52,7 +103,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2151",
@@ -61,7 +113,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2150",
@@ -70,7 +123,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0071",
@@ -79,7 +133,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "1005",
@@ -88,7 +143,8 @@
       "creditos": 4,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "2002",
@@ -96,7 +152,8 @@
       "semestre": 1,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "carrera"
     },
     {
       "id": "2806",
@@ -105,7 +162,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2231",
@@ -116,7 +174,8 @@
         "2229"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2152",
@@ -127,7 +186,8 @@
         "2151"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0042",
@@ -138,7 +198,8 @@
         "2150"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "0051",
@@ -147,7 +208,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "1008",
@@ -156,7 +218,8 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "1936",
@@ -164,7 +227,8 @@
       "semestre": 2,
       "creditos": 5,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2304",
@@ -175,7 +239,8 @@
         "2806"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2232",
@@ -186,7 +251,8 @@
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2233",
@@ -197,7 +263,8 @@
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0061",
@@ -206,7 +273,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "0052",
@@ -218,6 +286,7 @@
       ],
       "clasificacion": "CB",
       "grupo": "nucleo",
+      "departamento": "fisicomat",
       "optativa": true
     },
     {
@@ -227,7 +296,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "1937",
@@ -237,7 +307,8 @@
       "prerrequisitos": [
         "1936"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2234",
@@ -249,7 +320,8 @@
         "2232"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2235",
@@ -260,7 +332,8 @@
         "2232"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2314",
@@ -271,7 +344,8 @@
         "2233"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2840",
@@ -282,7 +356,8 @@
         "2231"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "0054",
@@ -293,7 +368,8 @@
         "0051"
       ],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "fisicomat"
     },
     {
       "id": "2111",
@@ -302,7 +378,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CB",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2236",
@@ -313,7 +390,8 @@
         "2234"
       ],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2813",
@@ -324,7 +402,8 @@
         "2235"
       ],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2807",
@@ -333,7 +412,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2823",
@@ -342,7 +422,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "2252",
@@ -351,7 +432,8 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CI",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "carrera"
     },
     {
       "id": "1009",
@@ -360,7 +442,8 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
-      "grupo": "nucleo"
+      "grupo": "nucleo",
+      "departamento": "humanistica"
     },
     {
       "id": "1938",
@@ -370,7 +453,8 @@
       "prerrequisitos": [
         "1937"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "1006",
@@ -378,7 +462,8 @@
       "semestre": 6,
       "creditos": 5,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "humanistica"
     },
     {
       "id": "2053",
@@ -387,6 +472,7 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "CE",
+      "departamento": "carrera",
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
         "creditos": 200
@@ -399,6 +485,7 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
         "creditos": 200
@@ -410,7 +497,8 @@
       "semestre": 6,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "CB"
+      "clasificacion": "CB",
+      "departamento": "carrera"
     },
     {
       "id": "1012",
@@ -418,7 +506,8 @@
       "semestre": 6,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1939",
@@ -428,7 +517,8 @@
       "prerrequisitos": [
         "1938"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2050",
@@ -439,6 +529,7 @@
         "2053"
       ],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "grupoCompleto": "nucleo"
     },
     {
@@ -449,7 +540,8 @@
       "prerrequisitos": [
         "2053"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "2228",
@@ -458,6 +550,7 @@
       "creditos": 8,
       "prerrequisitos": [],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "optativa": true
     },
     {
@@ -466,7 +559,8 @@
       "semestre": 7,
       "creditos": 8,
       "prerrequisitos": [],
-      "clasificacion": "CB"
+      "clasificacion": "CB",
+      "departamento": "carrera"
     },
     {
       "id": "1015",
@@ -474,7 +568,8 @@
       "semestre": 7,
       "creditos": 1,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1940",
@@ -484,7 +579,8 @@
       "prerrequisitos": [
         "1939"
       ],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "ingles"
     },
     {
       "id": "2051",
@@ -494,7 +590,8 @@
       "prerrequisitos": [
         "2050"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "1908",
@@ -503,6 +600,7 @@
       "creditos": 6,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "optativa": true,
       "creditosMinimos": 225
     },
@@ -513,6 +611,7 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
+      "departamento": "humanistica",
       "optativa": true
     },
     {
@@ -521,7 +620,8 @@
       "semestre": 8,
       "creditos": 2,
       "prerrequisitos": [],
-      "clasificacion": "CS"
+      "clasificacion": "CS",
+      "departamento": "humanistica"
     },
     {
       "id": "1916",
@@ -530,6 +630,7 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "humanistica",
       "optativa": true,
       "creditosMinimos": 90
     },
@@ -541,7 +642,8 @@
       "prerrequisitos": [
         "2051"
       ],
-      "clasificacion": "CE"
+      "clasificacion": "CE",
+      "departamento": "carrera"
     },
     {
       "id": "2085",
@@ -550,6 +652,7 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CC",
+      "departamento": "carrera",
       "creditosMinimos": 350
     },
     {
@@ -558,7 +661,8 @@
       "semestre": 9,
       "creditos": 0,
       "prerrequisitos": [],
-      "clasificacion": "CC"
+      "clasificacion": "CC",
+      "departamento": "humanistica"
     },
     {
       "id": "1014",
@@ -567,6 +671,7 @@
       "creditos": 2,
       "prerrequisitos": [],
       "clasificacion": "CS",
+      "departamento": "humanistica",
       "optativa": true
     },
     {
@@ -576,6 +681,7 @@
       "creditos": 15,
       "prerrequisitos": [],
       "clasificacion": "IA",
+      "departamento": "carrera",
       "optativa": true,
       "creditosMinimos": 315
     },
@@ -589,6 +695,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -605,6 +712,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -621,6 +729,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -637,6 +746,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -653,6 +763,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -669,6 +780,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -685,6 +797,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "robotica",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -701,6 +814,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -717,6 +831,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -733,6 +848,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -749,6 +865,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -765,6 +882,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "videojuegos",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -781,6 +899,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -797,6 +916,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -813,6 +933,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -829,6 +950,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -845,6 +967,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -861,6 +984,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "ciberseguridad",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -877,6 +1001,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -893,6 +1018,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -909,6 +1035,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -925,6 +1052,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",
@@ -941,6 +1069,7 @@
       ],
       "clasificacion": "IA",
       "grupo": "web",
+      "departamento": "carrera",
       "electiva": true,
       "creditosMinimosGrupo": {
         "grupo": "nucleo",

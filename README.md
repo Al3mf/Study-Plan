@@ -7,13 +7,18 @@ can track your progress through your degree.
 
 - Each **course** is a node, laid out in columns by **semester**.
 - **Arrows** show prerequisites.
-- **Click** a course to cycle its status: pending → in progress → passed. If you are
-  missing prerequisites, the app tells you which ones. (You can force any status from
-  the side panel.)
+- **Click** a course to open a status picker and choose: pending, in progress, passed,
+  failed (*reprobada*), retaking (*recursando*) or last chance (*materia única*). The
+  failed statuses use increasingly intense reds. If you are missing prerequisites, the
+  picker tells you which ones.
 - **Hover** over a course to highlight its whole chain: what you need before it and
   what it unlocks afterwards.
 - The side panel shows your **% progress** (by credits), how many courses are passed,
-  in progress, available and locked, and the progress of each semester.
+  in progress, available, locked and failed, the progress of each semester, and the
+  **classifications** (CACEI and faculty department) with credits per classification;
+  click one to highlight its courses.
+- The **Reglas** and **Cómo usar** menus in the header show the plan rules and a quick
+  guide. Click the **title** to rename it (saved in the browser).
 - Progress is **saved automatically** in the browser (localStorage). You can also
   export/import it as JSON to back it up or move it to another device.
 - Course search, mouse-wheel zoom, drag to pan, and automatic dark mode.
@@ -65,7 +70,8 @@ Fields of each course (`materias`):
 | `prerrequisitos`       | no       | List of `id`s that must be passed first.                        |
 | `optativa`             | no       | `true` for optional courses (marked with `*`).                  |
 | `electiva`             | no       | `true` for electives (counted by goals of type `electivas`).    |
-| `clasificacion`        | no       | Short label shown on the node (e.g. `CB`, `IA`).                |
+| `clasificacion`        | no       | Classification badge shown on the node (e.g. `CB`, `IA`).       |
+| `departamento`         | no       | Key of a `departamentos` entry; sets the node's border style.    |
 | `grupo`                | no       | Group the course belongs to (e.g. `nucleo`).                    |
 | `creditosMinimos`      | no       | Total passed credits required to take the course.               |
 | `creditosMinimosGrupo` | no       | `{ "grupo": "nucleo", "creditos": 200 }`: credits required from a group. |
@@ -79,13 +85,19 @@ Optional plan-level fields:
 
 - `creditosParaEgresar`: credit target used for the % progress (defaults to the sum of all courses).
 - `grupos`: readable group names, e.g. `{ "nucleo": "Núcleo Básico" }`.
+- `clasificaciones`: name and badge colors per classification, e.g.
+  `{ "IA": { "nombre": "Ingeniería Aplicada", "color": "#e3261b", "texto": "#ffe94d" } }`.
+- `departamentos`: name and border style per department, e.g.
+  `{ "ingles": { "nombre": "Depto. Universitario de Inglés", "estilo": "redondeado" } }`
+  (`estilo` can be `grueso`, `delgado`, `doble` or `redondeado`).
 - `metas`: extra progress bars, e.g.
   `{ "nombre": "Electivas", "creditos": 64, "tipo": "electivas" }`
   (`tipo` can be `obligatorias`, `optativas` or `electivas`; or use `"grupo": "..."`).
 - `notas`: list of plan rules shown in the side panel.
 
 The file may also include `"progreso": { "CAL1": "aprobada" }` to preload statuses
-(`cursando` = in progress, `aprobada` = passed). The last loaded plan is remembered.
+(`cursando` = in progress, `aprobada` = passed, `reprobada` = failed,
+`recursando` = retaking, `unica` = last chance). The last loaded plan is remembered.
 
 The default plan lives in `planes/isi-uaslp-2024.json`. Since browsers do not allow
 reading local JSON files when `index.html` is opened directly, the page loads the copy

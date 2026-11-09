@@ -10,7 +10,21 @@
   const MARGEN = 30;
 
   const CLAVE_PLAN = "tracker-plan:actual";
-  const CICLO = { pendiente: "cursando", cursando: "aprobada", aprobada: "pendiente" };
+  const CLAVE_EXTRAS = "tracker-mostrar-extras";
+
+  // Estados que el usuario puede elegir. "pendiente" se muestra como
+  // disponible o bloqueada según los requisitos.
+  const ESTADOS = [
+    { id: "pendiente", nombre: "Pendiente" },
+    { id: "cursando", nombre: "Cursando" },
+    { id: "aprobada", nombre: "Aprobada" },
+    { id: "reprobada", nombre: "Reprobada" },
+    { id: "recursando", nombre: "Recursando" },
+    { id: "unica", nombre: "Materia única" },
+  ];
+  const ESTADOS_VALIDOS = new Set(ESTADOS.map((e) => e.id));
+  // Estados que significan "la reprobaste al menos una vez".
+  const REPROBADAS = new Set(["reprobada", "recursando", "unica"]);
 
   const SVG_NS = "http://www.w3.org/2000/svg";
   const $ = (sel) => document.querySelector(sel);
@@ -25,7 +39,7 @@
   let plan = null;          // { nombre, materias: [...] }
   let porId = new Map();    // id -> materia
   let hijos = new Map();    // id -> [ids que la requieren]
-  let progreso = {};        // id -> "pendiente" | "cursando" | "aprobada"
+  let progreso = {};        // id -> uno de ESTADOS (salvo "pendiente", que no se guarda)
   let pos = new Map();      // id -> {x, y}
   let elNodos = new Map();  // id -> <g>
   let elAristas = [];       // [{de, a, el}]
@@ -33,6 +47,7 @@
   let hoverId = null;
   let vista = { x: 0, y: 0, k: 1 };
   let mostrarExtras = true; // columnas con nombre (p. ej. áreas de énfasis)
+  let filtroClasif = null;  // { tipo: "clasificacion" | "departamento", valor } para resaltar
 
   const esVisible = (m) => mostrarExtras || typeof m.semestre === "number";
 
@@ -55,6 +70,9 @@
 
   function claveProgreso() {
     return "tracker-progreso:" + (plan?.nombre || "plan");
+  }
+  function claveTitulo() {
+    return "tracker-titulo:" + (plan?.nombre || "plan");
   }
 
   function leerStorage(clave) {
@@ -131,6 +149,7 @@
         prerrequisitos: (m.prerrequisitos || []).map(String),
         clasificacion: m.clasificacion ? String(m.clasificacion) : "",
         grupo: m.grupo ? String(m.grupo) : "",
+        departamento: m.departamento ? String(m.departamento) : "",
         optativa: !!m.optativa,
         electiva: !!m.electiva,
         creditosMinimos: Number(m.creditosMinimos) || 0,
@@ -151,6 +170,8 @@
         nombre: String(datos.nombre || "Mi plan de estudios"),
         creditosParaEgresar: Number(datos.creditosParaEgresar) || 0,
         grupos: datos.grupos && typeof datos.grupos === "object" ? datos.grupos : {},
+        clasificaciones: datos.clasificaciones && typeof datos.clasificaciones === "object" ? datos.clasificaciones : {},
+        departamentos: datos.departamentos && typeof datos.departamentos === "object" ? datos.departamentos : {},
         metas: Array.isArray(datos.metas) ? datos.metas.filter((x) => x && x.nombre && x.creditos > 0) : [],
         notas: Array.isArray(datos.notas) ? datos.notas.map(String) : [],
         materias,
@@ -207,7 +228,7 @@
     ];
   }
 
-  // Estado visual: aprobada / cursando / disponible / bloqueada
+  // Estado visual: el guardado, o disponible / bloqueada si está pendiente.
   function estadoVisual(m) {
     const e = estadoGuardado(m.id);
     if (e !== "pendiente") return e;
@@ -215,24 +236,18 @@
   }
 
   function fijarEstado(id, estado) {
+    if (!ESTADOS_VALIDOS.has(estado)) return;
+    const m = porId.get(id);
+    // Si la marcas como cursando o aprobada sin cumplir requisitos, se aplica
+    // igual (tú decides) pero se avisa.
+    if ((estado === "cursando" || estado === "aprobada") && estadoGuardado(id) !== estado) {
+      const f = motivosBloqueo(m);
+      if (f.length) toast(`Ojo: a "${m.nombre}" le falta ${f.join("; ")}.`);
+    }
     if (estado === "pendiente") delete progreso[id];
     else progreso[id] = estado;
     escribirStorage(claveProgreso(), progreso);
     actualizar();
-  }
-
-  function ciclarEstado(id) {
-    const m = porId.get(id);
-    const actual = estadoGuardado(id);
-    if (actual === "pendiente") {
-      const f = motivosBloqueo(m);
-      if (f.length) {
-        toast(`Aún te falta: ${f.join("; ")}. ` +
-              `Usa los botones del panel si quieres marcarla de todos modos.`);
-        return;
-      }
-    }
-    fijarEstado(id, CICLO[actual]);
   }
 
   function ancestros(id, acc = new Set()) {
@@ -346,29 +361,77 @@
       if (!pos.has(m.id)) continue;
       const { x, y } = pos.get(m.id);
       const g = el("g", { class: "nodo", transform: `translate(${x},${y})`, tabindex: 0, "data-id": m.id }, capaNodos);
-      el("rect", { class: "caja", width: NODO_W, height: NODO_H, rx: 10 }, g);
-      el("rect", { class: "franja", width: 6, height: NODO_H - 16, x: 6, y: 8, rx: 3 }, g);
+      // Estilo del recuadro según la clasificación de la facultad (como en el PDF).
+      const estilo = plan.departamentos[m.departamento]?.estilo || "";
+      const rx = estilo === "redondeado" ? 20 : 10;
+      g._estilo = estilo ? " depto-" + estilo : "";
+      el("rect", { class: "caja", width: NODO_W, height: NODO_H, rx }, g);
+      if (estilo === "doble" || estilo === "redondeado") {
+        el("rect", { class: "caja-interna", x: 4, y: 4, width: NODO_W - 8, height: NODO_H - 8, rx: rx - 3 }, g);
+      }
+      el("rect", { class: "franja", width: 6, height: NODO_H - 16, x: 9, y: 8, rx: 3 }, g);
       const lineas = partirTexto(m.nombre + (m.optativa ? " *" : ""));
       const y0 = lineas.length === 1 ? 26 : 20;
-      lineas.forEach((l, i) => (el("text", { class: "nombre", x: 20, y: y0 + i * 15 }, g).textContent = l));
-      el("text", { class: "meta", x: 20, y: NODO_H - 10 }, g).textContent =
-        [m.id, m.creditos ? m.creditos + " cr" : "", m.clasificacion, m.optativa ? "optativa" : ""]
+      lineas.forEach((l, i) => (el("text", { class: "nombre", x: 22, y: y0 + i * 15 }, g).textContent = l));
+      el("text", { class: "meta", x: 22, y: NODO_H - 11 }, g).textContent =
+        [m.id, m.creditos ? m.creditos + " cr" : "", m.optativa ? "optativa" : ""]
           .filter(Boolean).join(" · ");
+      if (m.clasificacion) {
+        // Insignia de clasificación (p. ej. CACEI), con los colores del plan.
+        const c = plan.clasificaciones[m.clasificacion] || {};
+        const ins = el("g", { class: "insignia" + (c.color ? "" : " sin-color"), transform: `translate(${NODO_W - 36},${NODO_H - 24})` }, g);
+        el("rect", { width: 28, height: 16, rx: 4, ...(c.color ? { fill: c.color } : {}) }, ins);
+        el("text", { x: 14, y: 12, "text-anchor": "middle", ...(c.texto ? { fill: c.texto } : {}) }, ins).textContent = m.clasificacion;
+      }
       el("text", { class: "icono", x: NODO_W - 12, y: 20, "text-anchor": "end" }, g);
       const titulo = el("title", {}, g);
       g._titulo = titulo;
       elNodos.set(m.id, g);
     }
 
-    $("#plan-nombre").textContent = plan.nombre;
-    document.title = `${plan.nombre} · Tracker`;
+    pintarTitulo();
   }
 
-  const ICONOS = { aprobada: "✓", cursando: "●", disponible: "", bloqueada: "🔒" };
-  const ETIQUETAS = { aprobada: "Aprobada", cursando: "Cursando", disponible: "Disponible", bloqueada: "Bloqueada" };
+  // ---------- Título editable ----------
+  function tituloActual() {
+    const t = leerStorage(claveTitulo());
+    return typeof t === "string" && t.trim() ? t : plan.nombre;
+  }
+
+  function pintarTitulo() {
+    const t = tituloActual();
+    $("#plan-nombre").textContent = t;
+    document.title = `${t} · Tracker`;
+  }
+
+  const h1 = $("#plan-nombre");
+  h1.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); h1.blur(); }
+    if (e.key === "Escape") { h1.textContent = tituloActual(); h1.blur(); }
+  });
+  h1.addEventListener("blur", () => {
+    const t = h1.textContent.replace(/\s+/g, " ").trim();
+    if (!t || t === plan.nombre) {
+      try { localStorage.removeItem(claveTitulo()); } catch { /* sin almacenamiento */ }
+    } else escribirStorage(claveTitulo(), t);
+    pintarTitulo();
+  });
+  $("#btn-titulo").onclick = () => {
+    h1.focus();
+    const r = document.createRange();
+    r.selectNodeContents(h1);
+    const sel = getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+  };
+
+  const ICONOS = { aprobada: "✓", cursando: "●", disponible: "", bloqueada: "🔒",
+                   reprobada: "✗", recursando: "↻", unica: "⚠" };
+  const ETIQUETAS = { aprobada: "Aprobada", cursando: "Cursando", disponible: "Disponible", bloqueada: "Bloqueada",
+                      reprobada: "Reprobada", recursando: "Recursando", unica: "Materia única" };
 
   function actualizar() {
-    const conteo = { aprobada: 0, cursando: 0, disponible: 0, bloqueada: 0 };
+    const conteo = { aprobada: 0, cursando: 0, disponible: 0, bloqueada: 0, reprobada: 0, recursando: 0, unica: 0 };
     let credTot = 0, credOk = 0;
 
     for (const m of plan.materias) {
@@ -378,7 +441,7 @@
       if (e === "aprobada") credOk += m.creditos;
       const g = elNodos.get(m.id);
       if (!g) continue;
-      g.setAttribute("class", `nodo ${e}${seleccion === m.id ? " seleccionado" : ""}`);
+      g.setAttribute("class", `nodo ${e}${g._estilo}${seleccion === m.id ? " seleccionado" : ""}`);
       const icono = g.querySelector(".icono");
       icono.textContent = ICONOS[e];
       icono.setAttribute("fill", `var(--${e})`);
@@ -406,7 +469,11 @@
       ? `${credOk} / ${credTot} créditos · ${conteo.aprobada} de ${plan.materias.length} materias`
       : `${conteo.aprobada} de ${plan.materias.length} materias`;
     for (const k of Object.keys(conteo)) $("#n-" + k).textContent = conteo[k];
+    // "Reprobadas" cuenta todas las que reprobaste alguna vez y aún no apruebas.
+    $("#n-reprobadas-total").textContent = conteo.reprobada + conteo.recursando + conteo.unica;
     pintarMetas();
+    pintarClasificaciones();
+    pintarSelector();
 
     pintarDetalle();
     aplicarFoco();
@@ -441,13 +508,151 @@
   function pintarNotas() {
     const ul = $("#notas");
     ul.replaceChildren();
-    $("#sec-notas").hidden = plan.notas.length === 0;
+    $("#menu-reglas").hidden = plan.notas.length === 0;
     for (const n of plan.notas) {
       const li = document.createElement("li");
       li.textContent = n;
       ul.appendChild(li);
     }
   }
+
+  // ---------- Clasificaciones ----------
+  function pintarClasificaciones() {
+    const sec = $("#sec-clasif");
+    // Valores usados por las materias, en el orden en que el plan los define.
+    const usadas = (campo, defs) => {
+      const set = new Set(plan.materias.map((m) => m[campo]).filter(Boolean));
+      return [...Object.keys(defs).filter((k) => set.has(k)), ...[...set].filter((k) => !(k in defs))];
+    };
+    const clasifs = usadas("clasificacion", plan.clasificaciones);
+    const deptos = usadas("departamento", plan.departamentos);
+    sec.hidden = clasifs.length === 0 && deptos.length === 0;
+    if (sec.hidden) return;
+
+    const fila = (tipo, valor, muestra, nombre) => {
+      const delGrupo = plan.materias.filter((m) => m[tipo] === valor);
+      const tot = delGrupo.reduce((t, m) => t + m.creditos, 0);
+      const ok = creditosAprobados((m) => m[tipo] === valor);
+      const li = document.createElement("li");
+      li.tabIndex = 0;
+      li.setAttribute("role", "button");
+      const activo = filtroClasif && filtroClasif.tipo === tipo && filtroClasif.valor === valor;
+      li.className = activo ? "activo" : "";
+      li.title = "Resaltar estas materias";
+      li.append(muestra);
+      const span = document.createElement("span");
+      span.textContent = nombre;
+      const b = document.createElement("b");
+      b.textContent = tot ? `${ok}/${tot}` : `${delGrupo.length}`;
+      li.append(span, b);
+      const alternar = () => {
+        filtroClasif = activo ? null : { tipo, valor };
+        pintarClasificaciones();
+        aplicarFoco();
+      };
+      li.onclick = alternar;
+      li.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); alternar(); } };
+      return li;
+    };
+
+    const ulC = $("#lista-clasif");
+    ulC.replaceChildren();
+    $("#titulo-clasif").hidden = ulC.hidden = clasifs.length === 0;
+    for (const c of clasifs) {
+      const def = plan.clasificaciones[c] || {};
+      const muestra = document.createElement("span");
+      muestra.className = "insignia-html" + (def.color ? "" : " sin-color");
+      muestra.textContent = c;
+      if (def.color) muestra.style.background = def.color;
+      if (def.texto) muestra.style.color = def.texto;
+      ulC.appendChild(fila("clasificacion", c, muestra, def.nombre || c));
+    }
+
+    const ulD = $("#lista-deptos");
+    ulD.replaceChildren();
+    $("#titulo-deptos").hidden = ulD.hidden = deptos.length === 0;
+    for (const d of deptos) {
+      const def = plan.departamentos[d] || {};
+      const muestra = document.createElement("span");
+      muestra.className = "muestra-depto " + (def.estilo || "");
+      ulD.appendChild(fila("departamento", d, muestra, def.nombre || d));
+    }
+  }
+
+  // ---------- Selector de estado ----------
+  function crearBotonesEstado(cont, alElegir) {
+    cont.replaceChildren();
+    for (const est of ESTADOS) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.estado = est.id;
+      b.innerHTML = `<span class="punto ${est.id}"></span>`;
+      b.append(est.nombre);
+      b.onclick = () => alElegir(est.id);
+      cont.appendChild(b);
+    }
+  }
+
+  let selectorId = null;
+
+  function abrirSelector(id) {
+    selectorId = id;
+    seleccion = id;
+    actualizar();
+    const pop = $("#selector");
+    pop.hidden = false;
+    posicionarSelector();
+    pop.querySelector(`button[data-estado="${estadoGuardado(id)}"]`)?.focus();
+  }
+
+  function cerrarSelector(devolverFoco = false) {
+    if (!selectorId) return;
+    const id = selectorId;
+    selectorId = null;
+    $("#selector").hidden = true;
+    if (devolverFoco) elNodos.get(id)?.focus();
+  }
+
+  function posicionarSelector() {
+    if (!selectorId) return;
+    const g = elNodos.get(selectorId);
+    if (!g) return cerrarSelector();
+    const pop = $("#selector");
+    const wrap = svg.parentElement.getBoundingClientRect();
+    const r = g.getBoundingClientRect();
+    const w = pop.offsetWidth, h = pop.offsetHeight;
+    let x = r.right - wrap.left + 8;
+    if (x + w > wrap.width - 8) x = r.left - wrap.left - w - 8;   // no cabe a la derecha
+    x = Math.max(8, Math.min(x, wrap.width - w - 8));
+    let y = r.top - wrap.top;
+    y = Math.max(8, Math.min(y, wrap.height - h - 8));
+    pop.style.left = x + "px";
+    pop.style.top = y + "px";
+  }
+
+  function pintarSelector() {
+    if (!selectorId) return;
+    const m = porId.get(selectorId);
+    $("#sel-nombre").textContent = m.nombre;
+    const f = motivosBloqueo(m);
+    const aviso = $("#sel-aviso");
+    aviso.hidden = f.length === 0 || estadoGuardado(m.id) === "aprobada";
+    aviso.textContent = "Te falta: " + f.join("; ");
+    for (const b of $("#sel-estados").children) b.classList.toggle("activo", b.dataset.estado === estadoGuardado(m.id));
+    posicionarSelector();
+  }
+
+  crearBotonesEstado($("#sel-estados"), (est) => {
+    const id = selectorId;
+    fijarEstado(id, est);
+    cerrarSelector(true);
+  });
+  crearBotonesEstado($("#det-estados"), (est) => seleccion && fijarEstado(seleccion, est));
+  $("#sel-cerrar").onclick = () => cerrarSelector(true);
+
+  document.addEventListener("pointerdown", (e) => {
+    if (selectorId && !e.target.closest("#selector") && !e.target.closest(".nodo")) cerrarSelector();
+  });
 
   // ---------- Panel de detalle ----------
   function pintarDetalle() {
@@ -472,7 +677,7 @@
       extra.appendChild(li);
     }
     extra.hidden = reqs.length === 0;
-    for (const b of document.querySelectorAll(".estados button")) {
+    for (const b of $("#det-estados").children) {
       b.classList.toggle("activo", b.dataset.estado === estadoGuardado(m.id));
     }
     const chips = (ul, ids) => {
@@ -488,6 +693,7 @@
         const li = document.createElement("li");
         li.textContent = porId.get(id).nombre;
         if (estadoGuardado(id) === "aprobada") li.className = "ok";
+        else if (REPROBADAS.has(estadoGuardado(id))) li.className = "mal";
         li.onclick = () => {
           if (!pos.has(id)) { mostrarExtras = true; $("#chk-extras").checked = true; redibujar(); }
           seleccion = id; actualizar(); centrarEn(id);
@@ -514,6 +720,9 @@
         .filter((m) => m.nombre.toLowerCase().includes(q) || m.id.toLowerCase().includes(q))
         .map((m) => m.id));
       aristasFoco = () => false;
+    } else if (filtroClasif) {
+      nodosFoco = new Set(plan.materias.filter((m) => m[filtroClasif.tipo] === filtroClasif.valor).map((m) => m.id));
+      aristasFoco = () => false;
     }
 
     svg.classList.toggle("enfocado", !!nodosFoco);
@@ -524,6 +733,7 @@
   // ---------- Pan & zoom ----------
   function aplicarVista() {
     viewport.setAttribute("transform", `translate(${vista.x},${vista.y}) scale(${vista.k})`);
+    posicionarSelector();
   }
 
   function ajustar() {
@@ -584,21 +794,20 @@
   // ---------- Interacción con nodos ----------
   const nodoDe = (e) => e.target.closest?.(".nodo");
 
+  // Un clic selecciona la materia y abre el selector de estado; el estado
+  // solo cambia cuando el usuario elige uno.
   svg.addEventListener("click", (e) => {
     if (seMovio) return; // fue un arrastre, no un clic
     const g = nodoDe(e);
-    if (!g) { seleccion = null; actualizar(); return; }
-    seleccion = g.dataset.id;
-    ciclarEstado(seleccion);
-    actualizar();
+    if (!g) { cerrarSelector(); seleccion = null; actualizar(); return; }
+    if (selectorId === g.dataset.id) return cerrarSelector();
+    abrirSelector(g.dataset.id);
   });
   svg.addEventListener("keydown", (e) => {
     const g = nodoDe(e);
     if (g && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
-      seleccion = g.dataset.id;
-      ciclarEstado(seleccion);
-      actualizar();
+      abrirSelector(g.dataset.id);
     }
   });
   svg.addEventListener("pointerover", (e) => {
@@ -611,9 +820,31 @@
   svg.addEventListener("focusin", (e) => { const g = nodoDe(e); if (g) { hoverId = g.dataset.id; aplicarFoco(); } });
   svg.addEventListener("focusout", () => { hoverId = null; aplicarFoco(); });
 
-  for (const b of document.querySelectorAll(".estados button")) {
-    b.onclick = () => seleccion && fijarEstado(seleccion, b.dataset.estado);
+  // ---------- Menús del encabezado ----------
+  function cerrarMenus(excepto) {
+    for (const m of document.querySelectorAll(".menu")) {
+      if (m === excepto) continue;
+      m.querySelector(".menu-panel").hidden = true;
+      m.querySelector(".menu-boton").setAttribute("aria-expanded", "false");
+    }
   }
+  for (const menu of document.querySelectorAll(".menu")) {
+    const boton = menu.querySelector(".menu-boton");
+    const panel = menu.querySelector(".menu-panel");
+    boton.onclick = () => {
+      const abrir = panel.hidden;
+      cerrarMenus(menu);
+      panel.hidden = !abrir;
+      boton.setAttribute("aria-expanded", String(abrir));
+    };
+  }
+  document.addEventListener("click", (e) => { if (!e.target.closest(".menu")) cerrarMenus(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const abierto = document.querySelector(".menu-panel:not([hidden])");
+    if (abierto) { cerrarMenus(); abierto.parentElement.querySelector(".menu-boton").focus(); }
+    else if (selectorId) cerrarSelector(true);
+  });
 
   // ---------- Búsqueda ----------
   $("#buscar").addEventListener("input", aplicarFoco);
@@ -638,14 +869,18 @@
       hijos.get(p).push(m.id);
     }
     progreso = progresoInicial || leerStorage(claveProgreso()) || {};
-    for (const id of Object.keys(progreso)) if (!porId.has(id)) delete progreso[id];
+    for (const [id, est] of Object.entries(progreso)) {
+      if (!porId.has(id) || est === "pendiente" || !ESTADOS_VALIDOS.has(est)) delete progreso[id];
+    }
     if (progresoInicial) escribirStorage(claveProgreso(), progreso);
     if (guardar) escribirStorage(CLAVE_PLAN, datos);
+    cerrarSelector();
     seleccion = null;
     hoverId = null;
+    filtroClasif = null;
     const hayExtras = plan.materias.some((m) => typeof m.semestre !== "number");
     $("#toggle-extras").hidden = !hayExtras;
-    mostrarExtras = !hayExtras || leerStorage("tracker-mostrar-extras") !== false;
+    mostrarExtras = !hayExtras || leerStorage(CLAVE_EXTRAS) !== false;
     $("#chk-extras").checked = mostrarExtras;
     dibujar();
     pintarNotas();
@@ -673,7 +908,7 @@
     if (!prog || typeof prog !== "object") return toast('El archivo no tiene un bloque "progreso".');
     const validos = {};
     for (const [id, est] of Object.entries(prog)) {
-      if (porId.has(id) && (est === "cursando" || est === "aprobada")) validos[id] = est;
+      if (porId.has(id) && est !== "pendiente" && ESTADOS_VALIDOS.has(est)) validos[id] = est;
     }
     progreso = validos;
     escribirStorage(claveProgreso(), progreso);
@@ -696,7 +931,7 @@
 
   $("#chk-extras").addEventListener("change", (e) => {
     mostrarExtras = e.target.checked;
-    escribirStorage("tracker-mostrar-extras", mostrarExtras);
+    escribirStorage(CLAVE_EXTRAS, mostrarExtras);
     redibujar();
   });
 

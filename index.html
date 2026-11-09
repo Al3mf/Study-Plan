@@ -8,8 +8,33 @@
 </head>
 <body>
   <header class="topbar">
-    <h1 id="plan-nombre">Plan de estudios</h1>
+    <div class="titulo">
+      <h1 id="plan-nombre" contenteditable="plaintext-only" spellcheck="false"
+          title="Clic para editar el título">Plan de estudios</h1>
+      <button id="btn-titulo" class="icono-boton" type="button" aria-label="Editar título" title="Editar título">✎</button>
+    </div>
     <div class="acciones">
+      <div class="menu" id="menu-reglas">
+        <button class="boton menu-boton" type="button" aria-expanded="false" aria-controls="panel-reglas">Reglas ▾</button>
+        <div class="menu-panel" id="panel-reglas" hidden>
+          <h2>Reglas del plan</h2>
+          <ul id="notas"></ul>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="boton menu-boton" type="button" aria-expanded="false" aria-controls="panel-ayuda">Cómo usar ▾</button>
+        <div class="menu-panel" id="panel-ayuda" hidden>
+          <h2>Cómo usar</h2>
+          <ul>
+            <li><b>Clic</b> en una materia: elige su estado (pendiente, cursando, aprobada, reprobada, recursando o materia única).</li>
+            <li><b>Pasa el cursor</b>: resalta su cadena de prerrequisitos y lo que desbloquea.</li>
+            <li><b>Clasificaciones</b> (panel lateral): clic para resaltar esas materias.</li>
+            <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
+            <li><b>Título</b>: haz clic en él para cambiarlo.</li>
+            <li>Tu progreso se guarda automáticamente en este navegador.</li>
+          </ul>
+        </div>
+      </div>
       <label id="toggle-extras" class="boton interruptor"><input id="chk-extras" type="checkbox" checked> Áreas de énfasis</label>
       <input id="buscar" type="search" placeholder="Buscar materia…" aria-label="Buscar materia">
       <label class="boton">Cargar plan
@@ -39,6 +64,10 @@
           <li><span class="punto cursando"></span>Cursando <b id="n-cursando">0</b></li>
           <li><span class="punto disponible"></span>Disponibles <b id="n-disponible">0</b></li>
           <li><span class="punto bloqueada"></span>Bloqueadas <b id="n-bloqueada">0</b></li>
+          <li class="separador"><span class="punto reprobada"></span>Reprobadas <b id="n-reprobadas-total">0</b></li>
+          <li class="sub-item"><span class="punto reprobada"></span>Reprobada <b id="n-reprobada">0</b></li>
+          <li class="sub-item"><span class="punto recursando"></span>Recursando <b id="n-recursando">0</b></li>
+          <li class="sub-item"><span class="punto unica"></span>Materia única <b id="n-unica">0</b></li>
         </ul>
         <p class="sub nota-leyenda">* optativa</p>
       </section>
@@ -51,11 +80,7 @@
       <section id="detalle" class="detalle" hidden>
         <h2 id="det-nombre"></h2>
         <p class="sub" id="det-meta"></p>
-        <div class="estados" role="group" aria-label="Estado de la materia">
-          <button data-estado="pendiente">Pendiente</button>
-          <button data-estado="cursando">Cursando</button>
-          <button data-estado="aprobada">Aprobada</button>
-        </div>
+        <div id="det-estados" class="estados" role="group" aria-label="Estado de la materia"></div>
         <ul id="det-extra" class="requisitos" hidden></ul>
         <h3>Requiere</h3>
         <ul id="det-req" class="chips"></ul>
@@ -63,19 +88,13 @@
         <ul id="det-desb" class="chips"></ul>
       </section>
 
-      <section id="sec-notas" class="ayuda" hidden>
-        <h2>Reglas del plan</h2>
-        <ul id="notas"></ul>
-      </section>
-
-      <section class="ayuda">
-        <h2>Cómo usar</h2>
-        <ul>
-          <li><b>Clic</b> en una materia: cambia su estado (pendiente → cursando → aprobada).</li>
-          <li><b>Pasa el cursor</b>: resalta su cadena de prerrequisitos y lo que desbloquea.</li>
-          <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
-          <li>Tu progreso se guarda automáticamente en este navegador.</li>
-        </ul>
+      <section id="sec-clasif" hidden>
+        <h2>Clasificaciones</h2>
+        <h3 id="titulo-clasif">CACEI</h3>
+        <ul id="lista-clasif" class="clasif"></ul>
+        <h3 id="titulo-deptos">Facultad de Ingeniería</h3>
+        <ul id="lista-deptos" class="clasif"></ul>
+        <p class="sub nota-leyenda">Créditos aprobados / totales. Clic para resaltar.</p>
       </section>
     </aside>
 
@@ -96,6 +115,14 @@
         <button id="zoom-mas" aria-label="Acercar">+</button>
         <button id="zoom-menos" aria-label="Alejar">−</button>
         <button id="zoom-ajustar" aria-label="Ajustar a pantalla">⤢</button>
+      </div>
+      <div id="selector" class="selector" role="dialog" aria-labelledby="sel-nombre" hidden>
+        <div class="selector-cabecera">
+          <b id="sel-nombre"></b>
+          <button id="sel-cerrar" class="icono-boton" type="button" aria-label="Cerrar">×</button>
+        </div>
+        <p id="sel-aviso" class="selector-aviso" hidden></p>
+        <div id="sel-estados" class="selector-estados" role="group" aria-label="Elegir estado"></div>
       </div>
       <div id="toast" class="toast" role="status" hidden></div>
     </section>
