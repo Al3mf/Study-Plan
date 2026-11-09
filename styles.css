@@ -492,3 +492,131 @@ svg.enfocado .arista.foco { stroke-width: 2.6; stroke: var(--texto); }
 :is(.boton, .icono-boton, .zoom button, .estados button, .selector-estados button):focus-visible {
   outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--disponible) 60%, transparent);
 }
+
+/* --- Registrar semestre --- */
+.boton.primario {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--disponible); border-color: var(--disponible); color: #fff; font-weight: 600;
+}
+.boton.primario:hover { background: color-mix(in srgb, var(--disponible) 85%, #000); border-color: color-mix(in srgb, var(--disponible) 85%, #000); }
+.boton.primario .ico { width: 14px; height: 14px; }
+.boton.primario[hidden], .boton[hidden] { display: none; }
+.boton.ancho { width: 100%; justify-content: center; margin-top: 10px; }
+
+/* Barra «Editando semestre N» dentro del encabezado */
+.barra-edicion {
+  flex-basis: 100%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 8px 10px 8px 14px; border-radius: 10px;
+  background: color-mix(in srgb, var(--disponible) 10%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--disponible) 40%, transparent);
+}
+.barra-edicion[hidden] { display: none; }
+.edicion-indicador {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--disponible); flex-shrink: 0;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--disponible) 22%, transparent);
+}
+.edicion-texto { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.edicion-texto b { font-size: 15px; }
+.edicion-acciones { display: flex; gap: 8px; }
+/* En edición, el lienzo se marca para que se note que es una vista previa */
+body.modo-edicion .lienzo-wrap { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--disponible) 45%, transparent); }
+
+/* Materias del semestre en edición */
+.nodo rect.halo { fill: none; stroke: var(--disponible); stroke-width: 2.5; opacity: 0; transition: opacity .15s; }
+.nodo.en-borrador rect.halo { opacity: 1; }
+
+/* Selector y detalle: modo lectura, quitar e historial */
+.selector-modo { margin: 0 0 8px; font-size: 12.5px; color: var(--sub); }
+.solo-lectura { margin: 10px 0 0; }
+.solo-lectura[hidden] { display: none; }
+.solo-lectura .sub { margin: 0 0 8px; font-size: 12.5px; }
+.boton.quitar { margin-top: 6px; width: 100%; }
+.historial { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 4px; font-size: 12.5px; }
+.historial[hidden] { display: none; }
+.historial li { display: flex; align-items: center; gap: 8px; }
+.historial li .punto { width: 8px; height: 8px; }
+.historial li b { margin-left: auto; font-weight: 600; }
+.historial li.en-edicion { color: var(--disponible); }
+#det-historial-titulo[hidden] { display: none; }
+
+/* --- Panel derecho: semestres registrados --- */
+.panel-derecho { border-right: 0; border-left: 1px solid var(--borde); width: 280px; }
+.lista-semestres { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.semestre {
+  position: relative; border: 1px solid var(--borde); border-radius: 10px; background: var(--panel);
+  transition: border-color .15s;
+}
+.semestre:hover { border-color: color-mix(in srgb, var(--disponible) 55%, var(--borde)); }
+.semestre.editando { border-color: color-mix(in srgb, var(--disponible) 60%, transparent); }
+.semestre-cabecera {
+  width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 3px 6px; text-align: left;
+  font: inherit; color: var(--texto); background: none; border: 0; cursor: pointer;
+  padding: 10px 12px; border-radius: 10px;
+}
+.semestre-cabecera:focus-visible { outline: none; box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--disponible) 60%, transparent); }
+.semestre-titulo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
+.semestre-chevron { width: 15px; height: 15px; color: var(--sub); transition: transform .2s; align-self: center; }
+.semestre.abierto .semestre-chevron { transform: rotate(180deg); }
+.semestre-meta, .semestre-conteos { grid-column: 1 / -1; font-size: 12px; color: var(--sub); }
+.semestre-conteos { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.semestre-conteos:empty { display: none; }
+.conteo { display: inline-flex; align-items: center; gap: 5px; }
+.conteo .punto { width: 7px; height: 7px; }
+/* Editar/eliminar: aparecen junto al título */
+.semestre-acciones { position: absolute; top: 4px; right: 30px; display: flex; gap: 0; opacity: 0; transition: opacity .15s; }
+.semestre:hover .semestre-acciones, .semestre:focus-within .semestre-acciones { opacity: 1; }
+.semestre-acciones .icono-boton { width: 26px; height: 26px; }
+.semestre-materias { list-style: none; margin: 0; padding: 4px 8px 10px; border-top: 1px solid var(--borde); display: grid; gap: 1px; }
+.semestre-materia {
+  display: flex; align-items: center; gap: 8px; padding: 5px 6px; border-radius: 6px;
+  font-size: 12.5px; cursor: pointer;
+}
+.semestre-materia:hover { background: var(--bg); }
+.semestre-materia .punto { width: 8px; height: 8px; }
+.semestre-materia .nombre { flex: 1; min-width: 0; }
+.semestre-materia .estado { color: var(--sub); font-size: 11.5px; white-space: nowrap; }
+.semestre.confirmando { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border-color: transparent; background: color-mix(in srgb, var(--peligro) 7%, transparent); }
+.semestre .boton.peligro { background: var(--peligro); border-color: var(--peligro); color: #fff; }
+.etiqueta.editando { color: var(--disponible); background: color-mix(in srgb, var(--disponible) 12%, transparent); }
+.etiqueta.neutra { color: var(--sub); background: var(--bg); font-weight: 500; }
+
+@media (max-width: 760px) {
+  .layout { flex-direction: column; }
+  .lienzo-wrap { order: 1; min-height: 55vh; }
+  .panel-derecho { order: 2; width: auto; border-left: 0; border-top: 1px solid var(--borde); }
+  .layout > .panel:not(.panel-derecho) { order: 3; }
+  .semestre-acciones { opacity: 1; }
+}
+.estados[hidden], .selector-estados[hidden] { display: none; }
+@media (max-width: 760px) {
+  .barra-edicion { align-items: flex-start; }
+  .edicion-indicador { margin-top: 6px; }
+  .edicion-texto { flex: 1 1 calc(100% - 30px); flex-direction: column; gap: 2px; }
+  .edicion-acciones { flex: 1 1 100%; }
+  .edicion-acciones .boton { flex: 1; justify-content: center; white-space: nowrap; padding-left: 8px; padding-right: 8px; }
+}
+
+/* --- Paneles laterales que se pueden comprimir --- */
+.panel { position: relative; transition: width .2s ease, padding .2s ease; }
+.colapsar { position: absolute; top: 10px; right: 8px; z-index: 2; }
+.panel > section:first-of-type h2 { padding-right: 34px; }
+.riel { display: none; }
+.panel.colapsado { width: 56px; padding: 52px 8px 12px; overflow-x: hidden; }
+.panel.colapsado > section { display: none; }
+.panel.colapsado .colapsar { right: 50%; transform: translateX(50%); }
+.panel.colapsado .riel { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.riel .icono-boton { width: 40px; height: auto; min-height: 36px; flex-direction: column; gap: 2px; padding: 6px 0; }
+.riel .icono-boton .ico { width: 18px; height: 18px; }
+.riel .icono-boton[hidden] { display: none; }
+.riel-dato { font-size: 10px; font-weight: 700; line-height: 1; color: var(--sub); }
+.riel-dato:empty { display: none; }
+#riel-registrar { color: var(--disponible); }
+/* Al saltar a una sección desde el riel, se resalta un momento */
+@keyframes destello { from { background: color-mix(in srgb, var(--disponible) 14%, transparent); } to { background: transparent; } }
+.panel > section.destello { animation: destello 1.2s ease-out; border-radius: 8px; }
+
+@media (max-width: 760px) {
+  .colapsar, .riel { display: none !important; }
+  .panel.colapsado { width: auto; padding: 16px; }
+  .panel.colapsado > section { display: block; }
+}

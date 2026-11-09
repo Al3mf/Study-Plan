@@ -7,10 +7,11 @@ can track your progress through your degree.
 
 - Each **course** is a node, laid out in columns by **semester**.
 - **Arrows** show prerequisites.
-- **Click** a course to open a status picker and choose: pending, in progress, passed,
-  failed (*reprobada*), retaking (*recursando*) or last chance (*materia única*). The
-  failed statuses use increasingly intense reds. If you are missing prerequisites, the
-  picker tells you which ones.
+- **Register semesters** (see below): the diagram is read-only and only changes when you
+  save a semester with the courses you actually took and their result: in progress,
+  passed, failed (*reprobada*), retaking (*recursando*) or last chance (*materia única*).
+  The failed statuses use increasingly intense reds.
+- **Click** a course to see its status and its history by semester.
 - **Hover** over a course to highlight its whole chain: what you need before it and
   what it unlocks afterwards.
 - The side panel shows your **% progress** (by credits), how many courses are passed,
@@ -21,7 +22,10 @@ can track your progress through your degree.
   guide. Click the **title** to rename it (saved in the browser).
 - Progress is **saved automatically** in the browser (localStorage), per session. You
   can also export/import it as JSON to back it up or move it to another device.
-- Course search, mouse-wheel zoom, drag to pan, and automatic dark mode.
+- Course search, mouse-wheel zoom, drag to pan, and automatic dark mode. The diagram
+  opens filling the screen height; the corners button shows the whole plan.
+- Both side panels can be collapsed into a slim rail with one icon per section
+  (remembered per browser).
 
 > The user interface is in Spanish, and so are the field names of the plan format.
 
@@ -43,6 +47,27 @@ button:
 
 Progress saved by earlier versions (one per degree) is migrated automatically into
 «Sesión 1» of that degree.
+
+## Registering semesters
+
+The plan shows *ideal* semesters, but every student enrolls in their own combination of
+courses. So progress is recorded **semester by semester**, much like branches in git:
+
+- The diagram works like `main`: it cannot be edited directly.
+- **Registrar semestre** opens a semester in edit mode (like a branch). The header shows
+  «Editando semestre N»; click each course you took and choose its result. The diagram
+  previews the changes, with the semester's courses outlined in blue.
+- **Guardar semestre** merges it: the diagram and progress are updated. **Descartar**
+  throws the draft away. A draft is kept if you reload the page.
+- If a course appears in several semesters, the most recent one wins (e.g. failed in
+  semester 1 and passed in semester 2 → passed).
+- The **Semestres registrados** panel on the right lists every semester with its courses,
+  credits and results. Expand one to see and highlight its courses in the diagram, or
+  edit or delete it.
+
+Progress recorded before semesters existed becomes «Semestre 1 · Progreso anterior».
+Export/import now include the semesters (older progress files are imported as one
+semester).
 
 ## Available degrees
 
