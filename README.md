@@ -1,44 +1,48 @@
-# Study-Plan · Tracker del plan de estudios
+# Study-Plan · Degree Progress Tracker
 
-Aplicación web que convierte tu plan de estudios en un **diagrama de nodos interactivo**
-para seguir tu avance en la carrera.
+A web app that turns a university study plan into an **interactive node graph** so you
+can track your progress through your degree.
 
-- Cada **materia** es un nodo, organizado en columnas por **semestre**.
-- Las **flechas** muestran los prerrequisitos.
-- **Clic** en una materia: pendiente → cursando → aprobada. Si te faltan prerrequisitos,
-  la app te avisa cuáles son. (Desde el panel lateral puedes forzar cualquier estado.)
-- **Pasa el cursor** sobre una materia para resaltar toda su cadena: lo que necesitas
-  antes y lo que desbloquea después.
-- El panel muestra tu **% de avance** (por créditos), materias aprobadas, cursando,
-  disponibles y bloqueadas, y el avance por semestre.
-- El progreso se **guarda automáticamente** en el navegador (localStorage). También
-  puedes exportarlo/importarlo como JSON para respaldarlo o pasarlo a otro equipo.
-- Búsqueda de materias, zoom con la rueda, arrastrar para moverte, modo oscuro automático.
+**Live demo:** <https://al3mf.github.io/Study-Plan/>
 
-Viene cargado con el plan de **Ingeniería en Sistemas Inteligentes — UASLP (Agosto 2024)**
-(`planes/isi-uaslp-2024.json`): 79 materias, incluidas las 4 áreas de énfasis
-(se pueden ocultar con el interruptor «Áreas de énfasis»), las reglas por créditos
-(p. ej. 200 créditos del Núcleo Básico para Administración de Proyectos I y las
-electivas) y las metas de egreso (405 créditos, 313 obligatorios, 64 de electivas).
-Los prerrequisitos se tomaron de las líneas del mapa curricular en PDF; si alguno no
-coincide con lo que marca tu facultad, corrígelo en el JSON y regenera el `.js`
-(ver abajo).
+- Each **course** is a node, laid out in columns by **semester**.
+- **Arrows** show prerequisites.
+- **Click** a course to cycle its status: pending → in progress → passed. If you are
+  missing prerequisites, the app tells you which ones. (You can force any status from
+  the side panel.)
+- **Hover** over a course to highlight its whole chain: what you need before it and
+  what it unlocks afterwards.
+- The side panel shows your **% progress** (by credits), how many courses are passed,
+  in progress, available and locked, and the progress of each semester.
+- Progress is **saved automatically** in the browser (localStorage). You can also
+  export/import it as JSON to back it up or move it to another device.
+- Course search, mouse-wheel zoom, drag to pan, and automatic dark mode.
 
-## Uso
+> The user interface is in Spanish, and so are the field names of the plan format.
 
-No necesita instalación ni servidor: abre `index.html` en el navegador.
+It comes preloaded with the **Ingeniería en Sistemas Inteligentes — UASLP (August 2024)**
+plan (`planes/isi-uaslp-2024.json`): 79 courses, including the 4 emphasis areas (which
+can be hidden with the «Áreas de énfasis» toggle), the credit-based rules (e.g. 200
+Núcleo Básico credits for Administración de Proyectos I and the electives) and the
+graduation goals (405 credits, 313 mandatory, 64 elective). The prerequisites were
+taken from the lines on the PDF curriculum map; if any of them does not match what
+your faculty requires, fix it in the JSON and regenerate the `.js` file (see below).
 
-Si prefieres servirlo:
+## Usage
+
+No installation or server required: open `index.html` in your browser.
+
+If you prefer to serve it:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-y entra a <http://localhost:8000>.
+then go to <http://localhost:8000>.
 
-## Cargar tu propio plan
+## Loading your own plan
 
-Crea un archivo `.json` con este formato y cárgalo con el botón **Cargar plan**:
+Create a `.json` file with this format and load it with the **Cargar plan** button:
 
 ```json
 {
@@ -50,49 +54,55 @@ Crea un archivo `.json` con este formato y cárgalo con el botón **Cargar plan*
 }
 ```
 
-| Campo            | Obligatorio | Descripción                                             |
-|------------------|-------------|---------------------------------------------------------|
-| `id`             | sí          | Clave única de la materia.                              |
-| `nombre`         | sí          | Nombre que se muestra en el nodo.                       |
-| `semestre`       | sí          | Número de semestre (1, 2, 3…). Define la columna.       |
-| `creditos`       | no          | Si ningún curso tiene créditos, el % se calcula por materias. |
-| `prerrequisitos` | no          | Lista de `id` que hay que aprobar antes.                |
-| `optativa`       | no          | `true` para materias optativas (se marcan con `*`).     |
-| `electiva`       | no          | `true` para electivas (cuentan en la meta de tipo `electivas`). |
-| `clasificacion`  | no          | Texto corto que se muestra en el nodo (p. ej. `CB`, `IA`). |
-| `grupo`          | no          | Grupo al que pertenece (p. ej. `nucleo`).               |
-| `creditosMinimos`| no          | Créditos aprobados (en total) necesarios para cursarla. |
-| `creditosMinimosGrupo` | no    | `{ "grupo": "nucleo", "creditos": 200 }`: créditos de un grupo. |
-| `grupoCompleto`  | no          | Exige todas las obligatorias del grupo indicado.        |
-| `nota`           | no          | Texto libre que aparece en el panel de detalle.         |
+Fields of each course (`materias`):
 
-`semestre` también puede ser un texto (por ejemplo `"Énfasis: Ciberseguridad"`):
-esas materias se dibujan en columnas aparte, a la derecha de los semestres.
+| Field                  | Required | Description                                                     |
+|------------------------|----------|-----------------------------------------------------------------|
+| `id`                   | yes      | Unique course code.                                             |
+| `nombre`               | yes      | Name shown on the node.                                         |
+| `semestre`             | yes      | Semester number (1, 2, 3…). Defines the column.                 |
+| `creditos`             | no       | Credits. If no course has credits, % is computed by course count. |
+| `prerrequisitos`       | no       | List of `id`s that must be passed first.                        |
+| `optativa`             | no       | `true` for optional courses (marked with `*`).                  |
+| `electiva`             | no       | `true` for electives (counted by goals of type `electivas`).    |
+| `clasificacion`        | no       | Short label shown on the node (e.g. `CB`, `IA`).                |
+| `grupo`                | no       | Group the course belongs to (e.g. `nucleo`).                    |
+| `creditosMinimos`      | no       | Total passed credits required to take the course.               |
+| `creditosMinimosGrupo` | no       | `{ "grupo": "nucleo", "creditos": 200 }`: credits required from a group. |
+| `grupoCompleto`        | no       | Requires every mandatory course of the given group.             |
+| `nota`                 | no       | Free text shown in the detail panel.                            |
 
-Campos opcionales del plan:
+`semestre` can also be a string (for example `"Énfasis: Ciberseguridad"`): those
+courses are drawn in separate columns to the right of the semesters.
 
-- `creditosParaEgresar`: meta de créditos para el % de avance (si no está, se usa la suma de todas las materias).
-- `grupos`: nombres legibles de los grupos, p. ej. `{ "nucleo": "Núcleo Básico" }`.
-- `metas`: barras de avance extra, p. ej.
+Optional plan-level fields:
+
+- `creditosParaEgresar`: credit target used for the % progress (defaults to the sum of all courses).
+- `grupos`: readable group names, e.g. `{ "nucleo": "Núcleo Básico" }`.
+- `metas`: extra progress bars, e.g.
   `{ "nombre": "Electivas", "creditos": 64, "tipo": "electivas" }`
-  (`tipo` puede ser `obligatorias`, `optativas` o `electivas`; o usa `"grupo": "..."`).
-- `notas`: lista de reglas del plan que se muestran en el panel.
+  (`tipo` can be `obligatorias`, `optativas` or `electivas`; or use `"grupo": "..."`).
+- `notas`: list of plan rules shown in the side panel.
 
-Opcionalmente el archivo puede incluir `"progreso": { "CAL1": "aprobada" }` para
-precargar estados. El último plan cargado se recuerda.
+The file may also include `"progreso": { "CAL1": "aprobada" }` to preload statuses
+(`cursando` = in progress, `aprobada` = passed). The last loaded plan is remembered.
 
-El plan predeterminado está en `planes/isi-uaslp-2024.json`. Como los navegadores no
-dejan leer archivos JSON locales al abrir `index.html` directamente, la página usa la
-copia `planes/isi-uaslp-2024.js`. Si editas el JSON, regenera esa copia:
+The default plan lives in `planes/isi-uaslp-2024.json`. Since browsers do not allow
+reading local JSON files when `index.html` is opened directly, the page loads the copy
+`planes/isi-uaslp-2024.js`. If you edit the JSON, regenerate that copy:
 
 ```bash
 (echo "// Generado a partir de planes/isi-uaslp-2024.json"; printf "window.PLAN_PREDETERMINADO = "; cat planes/isi-uaslp-2024.json | sed '$ s/$/;/') > planes/isi-uaslp-2024.js
 ```
 
-## Archivos
+## Files
 
-- `index.html` – estructura de la página.
-- `styles.css` – estilos (claro/oscuro, responsive).
-- `app.js` – lógica: validación del plan, layout del grafo, estados, pan/zoom, guardado.
-- `planes/isi-uaslp-2024.json` – plan de Ingeniería en Sistemas Inteligentes (UASLP).
-- `planes/isi-uaslp-2024.js` – la misma información, cargada por `index.html`.
+- `index.html` – page structure.
+- `styles.css` – styles (light/dark, responsive).
+- `app.js` – logic: plan validation, graph layout, statuses, pan/zoom, persistence.
+- `planes/isi-uaslp-2024.json` – Ingeniería en Sistemas Inteligentes (UASLP) plan.
+- `planes/isi-uaslp-2024.js` – the same data, loaded by `index.html`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
