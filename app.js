@@ -9,7 +9,10 @@
   const CABECERA_H = 72; // espacio para el título del semestre
   const MARGEN = 30;
 
-  const CLAVE_PLAN = "tracker-plan:actual";
+  const CLAVE_CARRERA = "tracker-carrera";
+  // Clave antigua: cuando se podía cargar un plan desde archivo. Se borra al iniciar.
+  const CLAVE_PLAN_ANTIGUA = "tracker-plan:actual";
+  const CARRERAS = Array.isArray(window.CARRERAS) ? window.CARRERAS : [];
   const CLAVE_EXTRAS = "tracker-mostrar-extras";
 
   // Estados que el usuario puede elegir. "pendiente" se muestra como
@@ -174,6 +177,8 @@
         departamentos: datos.departamentos && typeof datos.departamentos === "object" ? datos.departamentos : {},
         metas: Array.isArray(datos.metas) ? datos.metas.filter((x) => x && x.nombre && x.creditos > 0) : [],
         notas: Array.isArray(datos.notas) ? datos.notas.map(String) : [],
+        id: String(datos.id || ""),
+        etiquetaExtras: String(datos.etiquetaExtras || "Áreas de énfasis"),
         materias,
       },
       avisos,
@@ -363,7 +368,7 @@
       const g = el("g", { class: "nodo", transform: `translate(${x},${y})`, tabindex: 0, "data-id": m.id }, capaNodos);
       // Estilo del recuadro según la clasificación de la facultad (como en el PDF).
       const estilo = plan.departamentos[m.departamento]?.estilo || "";
-      const rx = estilo === "redondeado" ? 20 : 10;
+      const rx = estilo === "redondeado" || estilo === "redondeado-simple" ? 20 : 10;
       g._estilo = estilo ? " depto-" + estilo : "";
       el("rect", { class: "caja", width: NODO_W, height: NODO_H, rx }, g);
       if (estilo === "doble" || estilo === "redondeado") {
@@ -410,6 +415,7 @@
     if (e.key === "Escape") { h1.textContent = tituloActual(); h1.blur(); }
   });
   h1.addEventListener("blur", () => {
+    if (!plan) return;
     const t = h1.textContent.replace(/\s+/g, " ").trim();
     if (!t || t === plan.nombre) {
       try { localStorage.removeItem(claveTitulo()); } catch { /* sin almacenamiento */ }
@@ -484,6 +490,7 @@
     obligatorias: (m) => !m.optativa && !m.electiva,
     optativas: (m) => m.optativa,
     electivas: (m) => m.electiva,
+    noObligatorias: (m) => m.optativa || m.electiva,
   };
 
   function pintarMetas() {
@@ -859,7 +866,7 @@
   });
 
   // ---------- Cargar / exportar ----------
-  function cargarPlan(datos, { guardar = true, progresoInicial } = {}) {
+  function cargarPlan(datos) {
     const { plan: nuevo, avisos } = normalizarPlan(datos);
     plan = nuevo;
     porId = new Map(plan.materias.map((m) => [m.id, m]));
@@ -868,44 +875,98 @@
       if (!hijos.has(p)) hijos.set(p, []);
       hijos.get(p).push(m.id);
     }
-    progreso = progresoInicial || leerStorage(claveProgreso()) || {};
+    progreso = leerStorage(claveProgreso()) || {};
+    if (typeof progreso !== "object" || Array.isArray(progreso)) progreso = {};
     for (const [id, est] of Object.entries(progreso)) {
       if (!porId.has(id) || est === "pendiente" || !ESTADOS_VALIDOS.has(est)) delete progreso[id];
     }
-    if (progresoInicial) escribirStorage(claveProgreso(), progreso);
-    if (guardar) escribirStorage(CLAVE_PLAN, datos);
     cerrarSelector();
     seleccion = null;
     hoverId = null;
     filtroClasif = null;
     const hayExtras = plan.materias.some((m) => typeof m.semestre !== "number");
     $("#toggle-extras").hidden = !hayExtras;
+    $("#txt-extras").textContent = plan.etiquetaExtras;
     mostrarExtras = !hayExtras || leerStorage(CLAVE_EXTRAS) !== false;
     $("#chk-extras").checked = mostrarExtras;
     dibujar();
     pintarNotas();
     actualizar();
     ajustar();
-    if (avisos.length) toast(`Plan cargado con ${avisos.length} aviso(s): ${avisos.slice(0, 2).join("; ")}`);
+    if (avisos.length) console.warn("Avisos del plan:", avisos);
   }
 
-  $("#input-plan").addEventListener("change", (e) => leerArchivoJSON(e.target, (datos) => {
-    try {
-      // Un archivo de plan puede traer también un bloque "progreso".
-      const prog = datos.progreso && typeof datos.progreso === "object" ? datos.progreso : undefined;
-      cargarPlan(datos, { progresoInicial: prog });
-      toast(`Plan "${plan.nombre}" cargado (${plan.materias.length} materias).`);
-    } catch (err) { toast("No se pudo cargar el plan: " + err.message); }
-  }));
+  // ---------- Selección de carrera ----------
+  function pintarInicio() {
+    const lista = $("#lista-carreras");
+    lista.replaceChildren();
+    for (const c of CARRERAS) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "carrera" + (plan && plan.id === c.id ? " actual" : "");
+      const materias = c.materias.length;
+      const tienes = Object.keys(leerStorage("tracker-progreso:" + c.nombre) || {}).length;
+      b.innerHTML = `<span class="carrera-nombre"></span><span class="carrera-meta"></span><span class="carrera-progreso"></span>`;
+      b.querySelector(".carrera-nombre").textContent = c.carrera;
+      b.querySelector(".carrera-meta").textContent =
+        [c.institucion, c.version && `Plan ${c.version}`, `${materias} materias`,
+         c.creditosParaEgresar && `${c.creditosParaEgresar} créditos`].filter(Boolean).join(" · ");
+      b.querySelector(".carrera-progreso").textContent =
+        plan && plan.id === c.id ? "Carrera actual" : tienes ? `Tienes progreso guardado (${tienes} materias)` : "";
+      b.onclick = () => elegirCarrera(c.id);
+      lista.appendChild(b);
+    }
+    $("#inicio-cerrar").hidden = !plan;
+  }
 
+  function abrirInicio() {
+    cerrarMenus();
+    cerrarSelector();
+    pintarInicio();
+    $("#inicio").hidden = false;
+    $("#lista-carreras button")?.focus();
+  }
+
+  function cerrarInicio() {
+    if (!plan) return; // sin carrera elegida no hay nada que mostrar detrás
+    $("#inicio").hidden = true;
+  }
+
+  function elegirCarrera(id) {
+    const c = CARRERAS.find((x) => x.id === id);
+    if (!c) return false;
+    try {
+      cargarPlan(c);
+    } catch (err) {
+      // Solo pasaría si un plan del catálogo está mal escrito.
+      console.error(err);
+      toast(`No se pudo abrir «${c.carrera}»: ${err.message}`);
+      return false;
+    }
+    escribirStorage(CLAVE_CARRERA, id);
+    $("#inicio").hidden = true;
+    return true;
+  }
+
+  $("#btn-carrera").onclick = abrirInicio;
+  $("#inicio-cerrar").onclick = cerrarInicio;
+  $("#inicio").addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarInicio(); });
+
+  // ---------- Exportar / importar progreso ----------
   $("#btn-exportar").onclick = () => {
-    const nombre = plan.nombre.replace(/[^\w\-]+/g, "_").toLowerCase();
-    descargar(`progreso_${nombre}.json`, { plan: plan.nombre, fecha: new Date().toISOString(), progreso });
+    const nombre = (plan.id || plan.nombre).replace(/[^\w\-]+/g, "_").toLowerCase();
+    descargar(`progreso_${nombre}.json`,
+      { carrera: plan.id, plan: plan.nombre, fecha: new Date().toISOString(), progreso });
   };
 
   $("#input-progreso").addEventListener("change", (e) => leerArchivoJSON(e.target, (datos) => {
     const prog = datos.progreso;
     if (!prog || typeof prog !== "object") return toast('El archivo no tiene un bloque "progreso".');
+    const deOtra = datos.carrera ? datos.carrera !== plan.id : datos.plan && datos.plan !== plan.nombre;
+    if (deOtra) {
+      const otra = CARRERAS.find((c) => c.id === datos.carrera || c.nombre === datos.plan);
+      return toast(`Ese progreso es de ${otra ? otra.carrera : "otra carrera"}. Cambia de carrera para importarlo.`);
+    }
     const validos = {};
     for (const [id, est] of Object.entries(prog)) {
       if (porId.has(id) && est !== "pendiente" && ESTADOS_VALIDOS.has(est)) validos[id] = est;
@@ -938,10 +999,7 @@
   window.addEventListener("resize", () => layout && ajustar());
 
   // ---------- Inicio ----------
-  try {
-    cargarPlan(leerStorage(CLAVE_PLAN) || window.PLAN_PREDETERMINADO, { guardar: false });
-  } catch (err) {
-    toast("El plan guardado no es válido, se cargó el ejemplo. (" + err.message + ")");
-    cargarPlan(window.PLAN_PREDETERMINADO, { guardar: false });
-  }
+  try { localStorage.removeItem(CLAVE_PLAN_ANTIGUA); } catch { /* sin almacenamiento */ }
+  const guardada = leerStorage(CLAVE_CARRERA);
+  if (!(guardada && elegirCarrera(guardada))) abrirInicio();
 })();

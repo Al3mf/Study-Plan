@@ -31,15 +31,14 @@
             <li><b>Clasificaciones</b> (panel lateral): clic para resaltar esas materias.</li>
             <li><b>Arrastra</b> el fondo para moverte, <b>rueda</b> para hacer zoom.</li>
             <li><b>Título</b>: haz clic en él para cambiarlo.</li>
+            <li><b>Cambiar carrera</b>: elige otro plan; el progreso de cada carrera se guarda aparte.</li>
             <li>Tu progreso se guarda automáticamente en este navegador.</li>
           </ul>
         </div>
       </div>
-      <label id="toggle-extras" class="boton interruptor"><input id="chk-extras" type="checkbox" checked> Áreas de énfasis</label>
+      <label id="toggle-extras" class="boton interruptor"><input id="chk-extras" type="checkbox" checked> <span id="txt-extras">Áreas de énfasis</span></label>
       <input id="buscar" type="search" placeholder="Buscar materia…" aria-label="Buscar materia">
-      <label class="boton">Cargar plan
-        <input id="input-plan" type="file" accept=".json,application/json" hidden>
-      </label>
+      <button id="btn-carrera" class="boton" type="button">Cambiar carrera</button>
       <button id="btn-exportar" class="boton">Exportar progreso</button>
       <label class="boton">Importar progreso
         <input id="input-progreso" type="file" accept=".json,application/json" hidden>
@@ -128,7 +127,16 @@
     </section>
   </main>
 
-  <script src="planes/isi-uaslp-2024.js"></script>
+  <div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="inicio-titulo" hidden>
+    <div class="inicio-caja">
+      <button id="inicio-cerrar" class="icono-boton inicio-cerrar" type="button" aria-label="Cerrar" hidden>×</button>
+      <h2 id="inicio-titulo">¿Qué carrera estudias?</h2>
+      <p class="sub">Elige tu plan de estudios. Tu progreso se guarda por separado para cada carrera y puedes cambiar cuando quieras.</p>
+      <div id="lista-carreras" class="lista-carreras"></div>
+    </div>
+  </div>
+
+  <script src="planes/catalogo.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
