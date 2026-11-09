@@ -517,6 +517,7 @@
     pintarMetas();
     pintarClasificaciones();
     pintarSemestres();
+    pintarRieles();
     pintarSelector();
 
     pintarDetalle();
@@ -829,10 +830,26 @@
     posicionarSelector();
   }
 
+  // «Ver todo el plan»: todo el diagrama cabe en pantalla.
   function ajustar() {
     const r = svg.getBoundingClientRect();
     const k = Math.min(r.width / layout.ancho, r.height / layout.alto, 1.2);
     vista = { k, x: (r.width - layout.ancho * k) / 2, y: (r.height - layout.alto * k) / 2 };
+    aplicarVista();
+  }
+
+  // Vista inicial: el diagrama llena el alto de la pantalla y empieza por el
+  // primer semestre (el resto se ve arrastrando), en lugar de verse diminuto.
+  function vistaInicial() {
+    const r = svg.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const k = Math.max(Math.min(r.height / layout.alto, 1.5), 0.7);
+    const ancho = layout.ancho * k, alto = layout.alto * k;
+    vista = {
+      k,
+      x: ancho <= r.width ? (r.width - ancho) / 2 : 0,
+      y: alto <= r.height ? (r.height - alto) / 2 : 0,
+    };
     aplicarVista();
   }
 
@@ -976,7 +993,7 @@
     dibujar();
     pintarNotas();
     actualizar();
-    ajustar();
+    vistaInicial();
     if (avisos.length) console.warn("Avisos del plan:", avisos);
   }
 
@@ -1654,7 +1671,7 @@
   function redibujar() {
     dibujar();
     actualizar();
-    ajustar();
+    vistaInicial();
   }
 
   $("#chk-extras").addEventListener("change", (e) => {
@@ -1663,7 +1680,48 @@
     redibujar();
   });
 
-  window.addEventListener("resize", () => layout && ajustar());
+  window.addEventListener("resize", () => layout && vistaInicial());
+
+  // ---------- Paneles laterales que se pueden comprimir ----------
+  // Comprimidos muestran una columna de íconos, uno por sección.
+  function configurarPanel(idPanel, idBoton, clave) {
+    const panel = $("#" + idPanel), boton = $("#" + idBoton);
+    const fijar = (comprimido, guardar = true) => {
+      panel.classList.toggle("colapsado", comprimido);
+      boton.setAttribute("aria-expanded", String(!comprimido));
+      const t = comprimido ? "Expandir panel" : "Comprimir panel";
+      boton.setAttribute("aria-label", t);
+      boton.title = t;
+      if (guardar) escribirStorage(clave, comprimido);
+    };
+    fijar(leerStorage(clave) === true, false);
+    boton.onclick = () => fijar(!panel.classList.contains("colapsado"));
+    for (const b of panel.querySelectorAll(".riel [data-ir]")) {
+      b.onclick = () => {
+        fijar(false);
+        const sec = document.getElementById(b.dataset.ir);
+        if (!sec) return;
+        sec.scrollIntoView({ block: "start", behavior: "smooth" });
+        sec.classList.remove("destello");
+        void sec.offsetWidth; // reinicia la animación
+        sec.classList.add("destello");
+      };
+    }
+  }
+  configurarPanel("panel-izq", "colapsar-izq", "tracker-panel-izq-comprimido");
+  configurarPanel("panel-der", "colapsar-der", "tracker-panel-der-comprimido");
+  $("#riel-registrar").onclick = registrarSemestre;
+
+  // Los íconos del riel siguen a sus secciones (si una sección está oculta, su ícono también).
+  function pintarRieles() {
+    for (const b of document.querySelectorAll(".riel [data-ir]")) {
+      const sec = document.getElementById(b.dataset.ir);
+      b.hidden = !sec || sec.hidden;
+    }
+    $("#riel-pct").textContent = $("#txt-porcentaje").textContent;
+    $("#riel-sem").textContent = semestres.length ? String(semestres.length) : "";
+    $("#riel-registrar").hidden = !!borrador;
+  }
 
   // ---------- Inicio ----------
   try { localStorage.removeItem(CLAVE_PLAN_ANTIGUA); } catch { /* sin almacenamiento */ }

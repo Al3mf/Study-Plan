@@ -595,3 +595,28 @@ body.modo-edicion .lienzo-wrap { box-shadow: inset 0 0 0 2px color-mix(in srgb, 
   .edicion-acciones { flex: 1 1 100%; }
   .edicion-acciones .boton { flex: 1; justify-content: center; white-space: nowrap; padding-left: 8px; padding-right: 8px; }
 }
+
+/* --- Paneles laterales que se pueden comprimir --- */
+.panel { position: relative; transition: width .2s ease, padding .2s ease; }
+.colapsar { position: absolute; top: 10px; right: 8px; z-index: 2; }
+.panel > section:first-of-type h2 { padding-right: 34px; }
+.riel { display: none; }
+.panel.colapsado { width: 56px; padding: 52px 8px 12px; overflow-x: hidden; }
+.panel.colapsado > section { display: none; }
+.panel.colapsado .colapsar { right: 50%; transform: translateX(50%); }
+.panel.colapsado .riel { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.riel .icono-boton { width: 40px; height: auto; min-height: 36px; flex-direction: column; gap: 2px; padding: 6px 0; }
+.riel .icono-boton .ico { width: 18px; height: 18px; }
+.riel .icono-boton[hidden] { display: none; }
+.riel-dato { font-size: 10px; font-weight: 700; line-height: 1; color: var(--sub); }
+.riel-dato:empty { display: none; }
+#riel-registrar { color: var(--disponible); }
+/* Al saltar a una sección desde el riel, se resalta un momento */
+@keyframes destello { from { background: color-mix(in srgb, var(--disponible) 14%, transparent); } to { background: transparent; } }
+.panel > section.destello { animation: destello 1.2s ease-out; border-radius: 8px; }
+
+@media (max-width: 760px) {
+  .colapsar, .riel { display: none !important; }
+  .panel.colapsado { width: auto; padding: 16px; }
+  .panel.colapsado > section { display: block; }
+}

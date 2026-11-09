@@ -22,7 +22,10 @@ can track your progress through your degree.
   guide. Click the **title** to rename it (saved in the browser).
 - Progress is **saved automatically** in the browser (localStorage), per session. You
   can also export/import it as JSON to back it up or move it to another device.
-- Course search, mouse-wheel zoom, drag to pan, and automatic dark mode.
+- Course search, mouse-wheel zoom, drag to pan, and automatic dark mode. The diagram
+  opens filling the screen height; the corners button shows the whole plan.
+- Both side panels can be collapsed into a slim rail with one icon per section
+  (remembered per browser).
 
 > The user interface is in Spanish, and so are the field names of the plan format.
 
